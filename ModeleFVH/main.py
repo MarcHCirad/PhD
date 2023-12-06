@@ -41,8 +41,21 @@ def solveModel(equation, init, n, dt, param):
         result[ind+1][1:] = rungeKutta4(equation, result[ind][1:], dt, param)
     return result
 
+def stabilityCondition(param):
+    """
+    Compute the stabilities conditions for equationModel
+    """
+    rV, KV, alpha, muV, lambdaVH = param["rV"], param["KV"], param["alpha"], param["muV"], param["lambdaVH"]
+    rF, KF, omega, f, muF, lambdaFH = param["rF"], param["KF"], param["omega"], param["f"], param["muF"], param["lambdaFH"]
+    e, muH = param["e"], param["muH"]
+    R0V = rV/muV
+    R0F = rF/(muF + omega*f)
+    TF = (lambdaVH/muV) * (omega*f + muF)/lambdaFH * (R0F - 1) / (R0V - 1) * (1 + muH/(e*lambdaVH**2)*rV/KV)
+    TV = (muV/lambdaVH) * lambdaFH/(omega*f + muF) * (R0V - 1) / (R0F - 1) * (1 + muH/(e*lambdaFH**2)*rF/KF) / (1 + alpha*muH/(e*lambdaFH*lambdaVH))
 
-def writeResult(filename, resultSimu, param, paramSimu):
+    return {"R_0^V":R0V, "R_0^F":R0F, "T^F":TF, "T^V":TV}
+
+def writeResult(filename, resultSimu, param, paramSimu, writeStabilityCondition=False):
     """
     Write the results on a csv file
     """
@@ -54,13 +67,18 @@ def writeResult(filename, resultSimu, param, paramSimu):
         writer.writerow(["####_Simulation_Param_####"])
         writer.writerow(list(paramSimu.keys()))
         writer.writerow(list(paramSimu.values()))
+
+        if writeStabilityCondition:
+            writer.writerow(["####_Stability_Condition_####"])
+            stabilityCondition = stabilityCondition(param)
+            writer.writerow(list(stabilityCondition.keys()))
+            writer.writerow(list(stabilityCondition.values()))
+            
         writer.writerow(["############"])
         writer.writerow(["Time", "F", "V", "H"])
         for result in resultSimu:
             writer.writerow([result[0], result[1], result[2], result[3]])
         
-
-
 def main():
     t0, tf = 0., 10.
     n = 10
