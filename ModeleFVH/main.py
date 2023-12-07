@@ -137,6 +137,46 @@ def writeResult(filename, resultSimu, param, paramSimu, writeStabilityCondition=
         writer.writerow(["Time", "F", "V", "H"])
         for result in resultSimu:
             writer.writerow([result[0], result[1], result[2], result[3]])
+
+def plotVectorField(equilibrium, nameEquilibrium, param, boxSize, step):
+    [F, V, H] = equilibrium
+    coord_F = np.arange(max(F-boxSize, 0), F+boxSize, step)
+    coord_V = np.arange(max(V-boxSize, 0), V+boxSize, step)
+    coord_H = np.arange(max(H-boxSize, 0), H+boxSize, step)
+    x, y, z = np.meshgrid(coord_F,
+                            coord_V,
+                            coord_H, indexing='ij')
+    dF = np.zeros((len(coord_F), len(coord_V), len(coord_H)))
+    dV = np.zeros((len(coord_F), len(coord_V), len(coord_H)))
+    dH = np.zeros((len(coord_F), len(coord_V), len(coord_H)))
+
+    for ind_F in range(len(coord_F)):
+        for ind_V in range(len(coord_V)):
+            for ind_H in range(len(coord_H)):
+                val = equationModel([coord_F[ind_F], coord_V[ind_V], coord_H[ind_H]], param)
+                dF[ind_F, ind_V, ind_H] = val[0]
+                dV[ind_F, ind_V, ind_H] = val[1]
+                dH[ind_F, ind_V, ind_H] = val[2]
+    
+    ax = plt.figure().add_subplot(projection='3d')
+    ax.quiver(x, y, z, dF, dV, dH, normalize=True, length=1)
+    ax.plot(F, V, H, label=r'$%s$'%nameEquilibrium, marker='x', color = 'red', linestyle='')
+    ax.set(xlabel='F', ylabel='V', zlabel='H')
+    ax.legend()
+    plt.show()
+
+def plotResult(equilibrium, nameEquilibrium, listResult):
+    [F, V, H] = equilibrium
+    ax = plt.figure().add_subplot(projection="3d")
+    ax.plot(F, V, H, label=r'$%s$'%nameEquilibrium, marker='x', color = 'red', linestyle='')
+
+    for result in listResult:
+        ax.plot(result[:,1], result[:,2], result[:,3])
+    
+    
+    ax.set(xlabel='F', ylabel='V', zlabel='H')
+    ax.legend()
+    plt.show()
         
 def main():
 
@@ -144,42 +184,38 @@ def main():
     # param = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
 
     ## Param for FVH stable
-    # paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-    # paramFVH["muH"] = 0.01
-    # paramFVH["lambdaVH"] = 0.001
-    # paramFVH["lambdaFH"] = 0.1
+    paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    paramFVH["muH"] = 0.01
+    paramFVH["lambdaVH"] = 0.001
+    paramFVH["lambdaFH"] = 0.1
 
     ## Param for VH stable
-    paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-    paramVH["muH"] = 0.01
-    paramVH["lambdaVH"] = 0.1
-    paramVH["lambdaFH"] = 0.1
+    # paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    # paramVH["muH"] = 0.01
+    # paramVH["lambdaVH"] = 0.1
+    # paramVH["lambdaFH"] = 0.1
 
     # print(stabilityCondition(paramVH))
-    printStabilityCondition(stabilityCondition(paramVH))
+    printStabilityCondition(stabilityCondition(paramFVH))
 
-    t0, tf = 0., 50.
-    n = 500
+    t0, tf = 0., 100.
+    n = 1000
     dt = (tf-t0)/n
-
-    [F0, V0, H0] = computeEquilibria(paramVH, ["VH"])["VH"]
-    print([F0, V0, H0])
-    init = np.array([t0, F0+3, V0+5, H0+10])
+    [F, V, H] = computeEquilibria(paramFVH, ["FVH"])["FVH"]
+    F0, V0, H0 = F +3, V + 5, H+10
+    F1, V1, H1 = 0.1, V -5, H
     
-    resultSimu = solveModel(equationModel, init, n, dt, paramVH)
+    
+    init = np.array([t0, F0, V0, H0])
+    init1 = np.array([t0, F1, V1, H1])
+    resultSimu = solveModel(equationModel, init, n, dt, paramFVH)
+    resultSimu1 = solveModel(equationModel, init1, n, dt, paramFVH)
 
-    writeResult("ModelVH.csv", resultSimu, paramVH, {"t0":t0, "tf":tf,"dt":dt,"F0":F0, "V0":V0, "H0":H0}, True)
-
-    ax = plt.figure().add_subplot(projection="3d")
-    ax.plot(resultSimu[:,1], resultSimu[:,2], resultSimu[:,3])
-    ax.plot(F0, V0, H0, label=r'$EE^{VH}$', marker='x', color = 'red', linestyle='')
-    ax.set(xlabel='F', ylabel='V', zlabel='H')
-    ax.legend()
-    plt.show()
+    paramSimu = {"t0":t0, "tf":tf,"dt":dt,"F0":F0, "V0":V0, "H0":H0}
+    plotResult([F,V,H], "EE^{FVH}", [resultSimu, resultSimu1])
+    writeResult("ModelFVH.csv", resultSimu, paramFVH, paramSimu, True)
 
     return
-
-
 
 if __name__ == "__main__":
     main()
