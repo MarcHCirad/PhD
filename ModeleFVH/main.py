@@ -1,3 +1,6 @@
+from cProfile import label
+from mimetypes import init
+from unittest import result
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
@@ -60,7 +63,7 @@ def computeEquilibria(param, equilibria=["VH", "FH", "FVH"]):
             H_VH = e*lambdaVH/muH*V_VH
             rslt[eq] = [0, V_VH, H_VH]
         elif eq=="FH":
-            F_FH = 1/(rF/KF + e*lambdaFH**2/muF)*dF
+            F_FH = 1/(rF/KF + e*lambdaFH**2/muH)*dF
             H_FH = e*lambdaFH/muH*F_FH
             rslt[eq] = [F_FH, 0, H_FH]
         elif eq=="FVH":
@@ -88,6 +91,32 @@ def stabilityCondition(param):
     TV = (muV/lambdaVH) * lambdaFH/(omega*f + muF) * (R0V - 1) / (R0F - 1) * (1 + muH/(e*lambdaFH**2)*rF/KF) / (1 + alpha*muH/(e*lambdaFH*lambdaVH))
 
     return {"R_0^V":R0V, "R_0^F":R0F, "T^F":TF, "T^V":TV}
+
+def interpretStabilityCondition(param):
+    """
+    return a list of stable equilibrium
+    """
+    tresholds = stabilityCondition(param)
+    R0V, R0F, TV, TF = tresholds["R_0^V"], tresholds["R_0^F"], tresholds["T^V"], tresholds["T^F"]
+    if (R0V < 1) and (R0F < 1) :
+        return ["TE"]
+    elif (R0V > 1) and (R0F > 1) :
+        if (TF < 1) and (TV < 1):
+            return ["VH", "FH"]
+        elif (TF > 1) and (TV > 1):
+            return ["FVH"]
+        elif (TF < 1) and (TV > 1):
+            return ["VH"]
+        elif (TF > 1) and (TV < 1):
+            return ["FH"]
+    elif (R0V > 1) and (R0F < 1):
+        if (TF < 1):
+            return ["VH"]
+    elif (R0V < 1) and (R0F > 1):
+        if (TV < 1):
+            return ["FH"]
+    else:
+        return []
 
 def printStabilityCondition(stabilityCondition):
     """
@@ -172,8 +201,7 @@ def plotResult(equilibrium, nameEquilibrium, listResult):
 
     for result in listResult:
         ax.plot(result[:,1], result[:,2], result[:,3])
-    
-    
+        
     ax.set(xlabel='F', ylabel='V', zlabel='H')
     ax.legend()
     plt.show()
@@ -182,36 +210,95 @@ def main():
 
     ## Param given by Yatat, 2021
     # param = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-
-    ## Param for FVH stable
-    paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-    paramFVH["muH"] = 0.01
-    paramFVH["lambdaVH"] = 0.001
-    paramFVH["lambdaFH"] = 0.1
-    printStabilityCondition(stabilityCondition(paramFVH))
-
+    
     ## Param for VH stable
     # paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
     # paramVH["muH"] = 0.01
-    # paramVH["lambdaVH"] = 0.1
+    # paramVH["lambdaVH"] = 0.3
     # paramVH["lambdaFH"] = 0.1
     # print(stabilityCondition(paramVH))
 
-    t0, tf = 0., 100.
-    n = 1000
-    dt = (tf-t0)/n
-    [F, V, H] = computeEquilibria(paramFVH, ["FVH"])["FVH"]
-    F0, V0, H0 = F +3, V + 5, H+10
-    F1, V1, H1 = 0.1, V -5, H
-    
-    init = np.array([t0, F0, V0, H0])
-    init1 = np.array([t0, F1, V1, H1])
-    resultSimu = solveModel(equationModel, init, n, dt, paramFVH)
-    resultSimu1 = solveModel(equationModel, init1, n, dt, paramFVH)
+    # ## Param for FVH stable
+    # paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    # paramFVH["muH"] = 0.01
+    # paramFVH["lambdaVH"] = 0.01
+    # paramFVH["lambdaFH"] = 0.1
+    # print(stabilityCondition(paramFVH))
 
-    plotResult([F,V,H], "EE^{FVH}", [resultSimu, resultSimu1])
+    # ## Param for FH stable
+    # paramFH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    # paramFH["muH"] = 0.01
+    # paramFH["lambdaVH"] = 0.1
+    # paramFH["lambdaFH"] = 0.1
+    # print(stabilityCondition(paramFH))
+
+    # t0, tf = 0., 100.
+    # n = 1000
+    # dt = (tf-t0)/n
+    # [F, V, H] = computeEquilibria(paramFVH, ["FVH"])["FVH"]
+    # F0, V0, H0 = F +3, V + 5, H+10
+    # F1, V1, H1 = 0.1, V -5, H
+    
+    # init = np.array([t0, F0, V0, H0])
+    # init1 = np.array([t0, F1, V1, H1])
+    # resultSimu = solveModel(equationModel, init, n, dt, paramFVH)
+    # resultSimu1 = solveModel(equationModel, init1, n, dt, paramFVH)
+
+    # plotResult([F,V,H], "EE^{FVH}", [resultSimu, resultSimu1])
     # paramSimu = {"t0":t0, "tf":tf,"dt":dt,"F0":F0, "V0":V0, "H0":H0}
     # writeResult("ModelFVH.csv", resultSimu, paramFVH, paramSimu, True)
+
+    F, V, H = 3, 5, 10
+    t0, tf = 0., 9000.
+    n = 90000
+    dt = (tf-t0)/n
+    init = np.array([t0, F, V, H])
+    listResult = []
+    listEq = []
+
+    paramBifurcation = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    paramBifurcation["muH"] = 0.01
+    paramBifurcation["lambdaFH"] = 0.1
+    
+    # paramBifurcation["lambdaVH"] = 0.33
+    # resultSimu = solveModel(equationModel, init, n, dt, paramBifurcation)
+    # print(stabilityCondition(paramBifurcation))
+    # nameEq = "FVH"
+    # print(computeEquilibria(paramBifurcation, [nameEq])[nameEq])
+    # plotResult(computeEquilibria(paramBifurcation, [nameEq])[nameEq], "EE^{FVH}", [resultSimu])
+    # paramSimu = {"t0":t0, "tf":tf,"dt":dt,"F0":F, "V0":V, "H0":H}
+    # writeResult("ModelFVH.csv", resultSimu, paramBifurcation, paramSimu, True)
+    
+    listeLambdaVH = np.concatenate([np.arange(0.315, 0.325, 0.005), np.arange(0.33, 0.333, 0.001), np.arange(0.335, 0.345, 0.005)])
+    print(listeLambdaVH)
+    for lambdaVH in listeLambdaVH:
+        paramBifurcation["lambdaVH"] = lambdaVH
+        stabEq = interpretStabilityCondition(paramBifurcation)
+        print(stabEq)
+        resultSimu = solveModel(equationModel, init, n, dt, paramBifurcation)
+        listEq.append(computeEquilibria(paramBifurcation, stabEq)[stabEq[0]])
+        listResult.append(resultSimu[-1,:])
+    
+    fig, [ax1, ax2, ax3] = plt.subplots(3,1)
+    ax1.plot(listeLambdaVH, [rslt[1] for rslt in listResult], marker='x', label='Values at the end of the simulation')
+    ax1.plot(listeLambdaVH, [rslt[0] for rslt in listEq], marker='x', color='red', linestyle='', label='Equilibrium\'s value')
+    ax1.set(ylabel='F')
+    ax1.legend()
+    ax2.plot(listeLambdaVH, [rslt[2] for rslt in listResult], marker='x')
+    ax2.plot(listeLambdaVH, [rslt[1] for rslt in listEq], marker='x', color='red', linestyle='')
+    ax2.set(ylabel='V')
+    ax3.plot(listeLambdaVH, [rslt[3] for rslt in listResult], marker='x')
+    ax3.plot(listeLambdaVH, [rslt[2] for rslt in listEq], marker='x', color='red', linestyle='')
+    ax3.set(ylabel='H', xlabel=r'$\lambda_{VH}$')
+    plt.show()
+
+
+    # ax = plt.figure().add_subplot()
+    # ax.plot(listeLambdaVH, TV, label='TV')
+    # ax.plot(listeLambdaVH, TF, label='TF')
+    # ax.plot(listeLambdaVH, np.ones_like(listeLambdaVH))
+    # ax.legend()
+    # plt.show()
 
     return
 
