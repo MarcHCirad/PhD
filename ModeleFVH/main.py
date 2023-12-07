@@ -188,15 +188,14 @@ def main():
     paramFVH["muH"] = 0.01
     paramFVH["lambdaVH"] = 0.001
     paramFVH["lambdaFH"] = 0.1
+    printStabilityCondition(stabilityCondition(paramFVH))
 
     ## Param for VH stable
     # paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
     # paramVH["muH"] = 0.01
     # paramVH["lambdaVH"] = 0.1
     # paramVH["lambdaFH"] = 0.1
-
     # print(stabilityCondition(paramVH))
-    printStabilityCondition(stabilityCondition(paramFVH))
 
     t0, tf = 0., 100.
     n = 1000
@@ -205,15 +204,14 @@ def main():
     F0, V0, H0 = F +3, V + 5, H+10
     F1, V1, H1 = 0.1, V -5, H
     
-    
     init = np.array([t0, F0, V0, H0])
     init1 = np.array([t0, F1, V1, H1])
     resultSimu = solveModel(equationModel, init, n, dt, paramFVH)
     resultSimu1 = solveModel(equationModel, init1, n, dt, paramFVH)
 
-    paramSimu = {"t0":t0, "tf":tf,"dt":dt,"F0":F0, "V0":V0, "H0":H0}
     plotResult([F,V,H], "EE^{FVH}", [resultSimu, resultSimu1])
-    writeResult("ModelFVH.csv", resultSimu, paramFVH, paramSimu, True)
+    # paramSimu = {"t0":t0, "tf":tf,"dt":dt,"F0":F0, "V0":V0, "H0":H0}
+    # writeResult("ModelFVH.csv", resultSimu, paramFVH, paramSimu, True)
 
     return
 
