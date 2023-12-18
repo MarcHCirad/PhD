@@ -3,38 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap, BoundaryNorm
 import csv
 from myScheme import rungeKutta4, nonStandardScheme
+from myModel import equationFVH
 
-def equationTest(variables, param):
-    """
-    variables is a 3 length np.array, param is a dict
-    Return the right hand side of the test model
-    """
-    dF = 1
-    dV = 2
-    dH = 3
-    return np.array([dF, dV, dH])
 
-def equationModel(variables, param):
-    """
-    variables is a 3 length np.array, param is a dict
-    Return the right hand side of the model
-    """
-    F, V, H = variables[0], variables[1], variables[2]
-    dF = param["rF"] * (1-F/param["KF"])*F - param["omega"]*param["f"]*F - param["muF"]*F - param["lambdaFH"]*F*H
-    dV = param["rV"] * (1-V/param["KV"])*V - param["alpha"]*V*F - param["muV"]*V - param["lambdaVH"]*V*H
-    dH = param["e"] * (param["lambdaFH"]*F + param["lambdaVH"]*V)*H - param["muH"]*H**2
-    return np.array([dF, dV, dH])
-
-def equationModelRV(variables, param):
-    """
-    variables is a 3 length np.array, param is a dict
-    Return the right hand side of the model
-    """
-    F, V, H = variables[0], variables[1], variables[2]
-    dF = param["rF"] * (1-F/param["KF"])*F - param["omega"]*param["f"]*F - param["muF"]*F - param["lambdaFH"]*F*H
-    dV = param["rV"] * (H/(H+param["H0"])) * (1-V/param["KV"])*V - param["alpha"]*V*F - param["muV"]*V - param["lambdaVH"]*V*H
-    dH = param["e"] * (param["lambdaFH"]*F + param["lambdaVH"]*V)*H - param["muH"]*H**2
-    return np.array([dF, dV, dH])
 
 def solveModel(equation, scheme, init, n, dt, param):
     """
@@ -144,7 +115,7 @@ def writeResult(filename, resultSimu, param, paramSimu, writeStabilityTresholds=
         for result in resultSimu:
             writer.writerow([result[0], result[1], result[2], result[3]])
 
-def plotVectorField(listEquilibrium, listNameEquilibrium, param, box, step):
+def plotVectorField(equationModel, listEquilibrium, listNameEquilibrium, param, box, step):
     """
     Plot a vector field. Dimensions of the plot are given by
     box parameters (format [Fmin, Fmax, Vmin, Vmax, Hmin, Hmax]) 
@@ -317,26 +288,30 @@ def main():
     # plotResult([eqs["VH"]], ["EE^{VH}"], [resultSimu])
 
     # ## Param for FVH stable
-    paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    paramFVH = {"rV":2, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
     paramFVH["muH"] = 0.01
     paramFVH["lambdaVH"] = 0.332
     paramFVH["lambdaFH"] = 0.1
-    paramFVH["H0"] = 100
-    eqs = computeEquilibria(paramFVH, ["FVH"])
-    print(stabilityTresholds(paramFVH))
+    paramFVH["H0"] = 20
+    eqs = computeEquilibria(paramFVH)
+
+    eq0 = computeEquilibria(paramFVH, ["FVH"])
+
     print(interpretStabilityTresholds(paramFVH))
-    t0, tf = 0., 1000.
-    n = 50000
+    t0, tf = 0., 500.
+    n = 5000
     dt = (tf-t0)/n
     print(dt)
-    F, V, H = eqs["FVH"][0], eqs["FVH"][1], eqs["FVH"][2]
+    F, V, H = eq0["FVH"][0], eq0["FVH"][1], eq0["FVH"][2]
     F0, V0, H0 = F +8, V+10, H +5
     init = np.array([t0, F0, V0, H0])
-    # resultSimu = solveModel(equationModel, rungeKutta4, init, n, dt, paramFVH)
-    # resultSimuNSS = solveModel(equationModel, nonStandardScheme, init, n, dt, paramFVH)
-    resultSimuNSSref = solveModel(equationModel, nonStandardScheme, init, 400000, 0.001, paramFVH)
-    # plotResult([eqs["FVH"]], ["EE^{FVH}"], [resultSimu, resultSimuNSS, resultSimuNSSref], ["RK4", "NSS", "NSSref"])
-    plotResult([eqs["FVH"]], ["EE^{FVH}"], [resultSimuNSSref], ["NSS"])
+
+    resultSimuFVHRK4 = solveModel("FVH", rungeKutta4, init, 100*n, dt/100, paramFVH)
+    resultSimuFVH = solveModel("FVH", nonStandardScheme, init, n, dt, paramFVH)
+    resultSimuRVRK4 = solveModel("rV", rungeKutta4, init, 10*n, dt/10, paramFVH)
+    resultSimuRV = solveModel("rV", nonStandardScheme, init, n, dt, paramFVH)
+    plotResult([eq for eq in list(eqs.values())], [nameEq for nameEq in eqs.keys()], [resultSimuFVH, resultSimuRV, resultSimuRVRK4, resultSimuFVHRK4], ["FVHNSS", "rVNSS", "rVRK4", "FVHRK4"])
+
     # writeResult("FVH.csv", resultSimuRH, paramFVH, {"dt":dt, "tf":tf, "F0:":F0, "V0": V0, "H0":H0}, True)
 
     # # ## Param for FH stable
