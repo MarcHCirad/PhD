@@ -222,18 +222,93 @@ def plotDiagramBifurcation(param, listCoordLambdaVH, listCoordLambdaFH):
 
     return
 
+def plotHistoBifurcation(param, listCoordLambdaVH, listCoordLambdaFH, step, variable):
+    """
+    Plot a diagram of bifurcation in \lambda_FH \lambda_VH plane 
+    """
+
+    dicStabilityColor = {"FVH":'r', "VH":'g', "FH":'b', "VH & FH":'k'}
+    vecHeight = np.zeros((len(listCoordLambdaVH)-1, len(listCoordLambdaFH)-1))
+    vecWidth = np.zeros((len(listCoordLambdaVH)-1, len(listCoordLambdaFH)-1))
+    vecColor = np.zeros((len(listCoordLambdaVH)-1, len(listCoordLambdaFH)-1), dtype='str')
+
+    listLambdaVH = [(listCoordLambdaVH[k+1]+listCoordLambdaVH[k])/2 for k in range(len(listCoordLambdaVH)-1)]
+    listLambdaFH = [(listCoordLambdaFH[k+1]+listCoordLambdaFH[k])/2 for k in range(len(listCoordLambdaFH)-1)]
+    x, y = np.meshgrid(listLambdaVH, listLambdaFH, indexing='ij')
+    x = x.ravel()
+    y = y.ravel()
+
+    for ind_V in range(len(listLambdaVH)):
+        for ind_F in range(len(listLambdaFH)):
+            param["lambdaFH"] = listLambdaFH[ind_F]
+            param["lambdaVH"] = listLambdaVH[ind_V]
+            stab = interpretStabilityTresholds(param)
+
+            if stab == "VH & FH":
+                eqs = computeEquilibria(param, ["VH", "FH"])
+                if variable=="H":
+                    height = min(eqs["FH"][2], eqs["VH"][2])
+                elif variable=="V":
+                    height = min(eqs["FH"][1], eqs["VH"][1])
+                elif variable=="F":
+                    height = min(eqs["FH"][0], eqs["VH"][0])
+                elif variable=="(F+V+H)":
+                    height = min(sum(eqs["FH"]), sum(eqs["VH"]))
+            else:
+                    eq = computeEquilibria(param, [stab])[stab]
+                    if variable=="H":
+                        height = eq[2]
+                    elif variable=="V":
+                        height = eq[1]
+                    elif variable=="F":
+                        height = eq[0]
+                    elif variable=="(F+V+H)":
+                        height = eq[0]+eq[1]+eq[2]
+                
+
+            vecHeight[ind_V, ind_F] = height
+            vecWidth[ind_V, ind_F] = step
+            vecColor[ind_V, ind_F] = dicStabilityColor[stab]
+
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    
+    cmap = ListedColormap(['r', 'g', 'b', 'k'])
+    BoundaryNorm([-0.5, 0.5, 1.5, 2.5, 3.5], cmap.N)
+    
+    im = ax.bar3d(y, x, 0, vecWidth.ravel(), vecWidth.ravel(), vecHeight.ravel(), color=vecColor.ravel(), cmap=cmap)
+    
+    zstring = "$" + variable + "^*$"
+    ax.set(ylabel = r'$\lambda_{VH}$', xlabel = r"$\lambda_{FH}$", zlabel=r"%s"%zstring)
+    mcolorbar = fig.colorbar(im, boundaries = [-0.5, 0.5, 1.5, 2.5, 3.5], values = [0,1,2,3])
+    mcolorbar.set_ticks([0, 1, 2, 3])
+    mcolorbar.set_ticklabels([r"$EE^{FVH}$", r"$EE^{VH}$", r"$EE^{FH}$", r"$EE^{VH} & EE^{FH}$"])
+    plt.show()
+
+    return
+
 def main():
 
     ## Param given by Yatat, 2021
     # param = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
     
     # ## Param for VH stable
-    # paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-    # paramVH["muH"] = 0.01
-    # paramVH["lambdaVH"] = 0.1
-    # paramVH["lambdaFH"] = 0.1
-    # print(stabilityTresholds(paramVH))
-    # print(interpretStabilityTresholds(paramVH))
+    paramVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":1, "f":5, "muF":0.1, "e":0.8}
+    paramVH["muH"] = 0.01
+    paramVH["lambdaVH"] = 0.1
+    paramVH["lambdaFH"] = 0.1
+    print(stabilityTresholds(paramVH))
+    print(interpretStabilityTresholds(paramVH))
+
+    t0, tf = 0., 2000.
+    n = 40000
+    dt = (tf-t0)/n
+    eqs = computeEquilibria(paramVH, ["VH"])
+    F, V, H = eqs["VH"][0], eqs["VH"][1], eqs["VH"][2]
+    F0, V0, H0 = F-F, V+10, H - H
+    init = np.array([t0, F0, V0, H0])
+    resultSimu = solveModel(equationModel, init, n, dt, paramVH)
+    plotResult([eqs["VH"]], ["EE^{VH}"], [resultSimu])
 
     # # ## Param for FVH stable
     # paramFVH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
@@ -242,6 +317,7 @@ def main():
     # paramFVH["lambdaFH"] = 0.1
     # print(stabilityTresholds(paramFVH))
     # print(interpretStabilityTresholds(paramFVH))
+    # plotVectorField(computeEquilibria(param=paramFVH, ["FVH"]))
 
     # # ## Param for FH stable
     # paramFH = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
@@ -282,15 +358,27 @@ def main():
     
     # plotResult([eqs["VH"], eqs["FH"]], ["EE^{VH}", "EE^{FH}"], [resultSimu, resultSimu1, resultSimu2, resultSimu3])
 
-
+    # param = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
+    
+    
     ### Bifurcation diagram
-    paramBifurcation = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.8}
-    paramBifurcation["muH"] = 0.01
-    paramBifurcation["lambdaFH"] = 0.1
-    paramBifurcation["lambdaVH"] = 0.33
-    listLambdaVH = np.arange(0,1, 0.005)
-    listLambdaFH = np.arange(0,0.6, 0.005)
-    plotDiagramBifurcation(paramBifurcation, listLambdaVH, listLambdaFH)
+    # paramBifurcation = {"rV":1.8, "KV":19.9, "alpha":0.01, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.1, "f":1, "muF":0.1, "e":0.9}
+    # paramBifurcation["muH"] = 0.1
+
+    # paramBifurcation = {"rV":1.8, "KV":50, "alpha":0.02, "muV":0.2, "rF":1.91, "KF":429.2, "omega":0.2, "f":0.5, "muF":0.1, "e":0.9}
+    # paramBifurcation["muH"] = 0.3
+
+    # paramBifurcation = {"rV":1.8, "KV":50, "alpha":0.02, "muV":0.1, "rF":0.71, "KF":429.2, "omega":0.5, "f":0.25, "muF":0.1, "e":0.9}
+    # paramBifurcation["muH"] = 0.3
+    
+    # listLambdaVH = np.arange(0,0.2, 0.001)
+    # listLambdaFH = np.arange(0,0.2, 0.001)
+    # plotDiagramBifurcation(paramBifurcation, listLambdaVH, listLambdaFH)
+
+    # step = 0.001
+    # listLambdaVH = np.arange(0,0.1, step)
+    # listLambdaFH = np.arange(0,0.1, step)
+    # plotHistoBifurcation(paramBifurcation, listLambdaVH, listLambdaFH, step, "(F+V+H)")
 
     return
 
