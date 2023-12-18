@@ -41,12 +41,13 @@ def nonStandardScheme(equationName, variables, dt, param):
     
     elif equationName == "rV":
         H0 = param["H0"]
+        rVH = rV*H/(H+H0)
         phiF = (np.exp(deltaF*dt) - 1)/deltaF
-        phiV = (np.exp((rV*H/(H+H0) - muV)*dt) - 1)/deltaV
+        phiV = (np.exp((rV - muV)*dt) - 1)/deltaV
         phiH = dt
         
         Fdt = Fdt = F*(1 + phiF*deltaF) / (1 + rF/KF * phiF * F + lambdaFH * phiF * H)
-        Vdt = Vdt = V*(1 + phiV*(rV*H/(H+H0) - muV)) / (1 + rV/KV * phiV * V + alpha * phiV * F + lambdaVH * phiV * H)
+        Vdt = Vdt = V*(1 + phiV*(rVH - muV)) / (1 + rVH/KV * phiV * V + alpha * phiV * F + lambdaVH * phiV * H)
         Hdt = H*(1 + phiH * e * (lambdaFH * Fdt + lambdaVH * Vdt)) / (1 + muH * phiH * H)
 
     return np.array([Fdt, Vdt, Hdt])
