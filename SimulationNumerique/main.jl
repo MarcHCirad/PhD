@@ -39,4 +39,4 @@ end
 main()
 
 end
-println(t)
+println(t, " seconds to execute the code")
