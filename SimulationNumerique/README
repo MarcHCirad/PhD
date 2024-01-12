@@ -1,6 +1,7 @@
 #### HOW TO USE THE CODE ####
 
-1- In a terminal, launch Julia
+1- In a terminal, go to directory SimulationNumerique ; launch Julia (>julia). You are now in the REPL
+
 2- Execute > include("includeFile.jl")
 	This will install the different packages required for the program, and ensure that they
 	are uptodate

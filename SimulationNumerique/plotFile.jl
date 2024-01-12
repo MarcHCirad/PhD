@@ -1,5 +1,5 @@
 
-function plotBifurcationFile(fileName::String)
+function plotBifurcationFile(fileName::String, saveFileName::String ; toPlot=false)
     myCSV = CSV.read(fileName, DataFrame)
     listLambdaFH = tryparse.(Float64, myCSV[2:end, 1])
     listLambdaVH = tryparse.(Float64, Vector(myCSV[1, 2:end]))
@@ -26,8 +26,12 @@ function plotBifurcationFile(fileName::String)
                                             (0.75, "green"), (0.75, "black"), (1, "black")],
                             zmin = -0.5,
                             zmax = 3.5)
-    plot = PlotlyJS.plot(data, layout)
-    # display(plot)
-    PlotlyJS.savefig(plot, "test.html")
+    myPlot = PlotlyJS.plot(data, layout)
+
+    PlotlyJS.savefig(myPlot, saveFileName)
+
+    if toPlot
+        display(myPlot)
+    end
 
 end

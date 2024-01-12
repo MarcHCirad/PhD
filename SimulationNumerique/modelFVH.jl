@@ -110,7 +110,7 @@ function computeEquilibria(model::modelFVH)
     return rslt
 end
 
-function bifurcationDiagram(model::modelFVH, listLambdaFH::Vector{Float64}, listLambdaVH::Vector{Float64}, nameFile::String)
+function computeBifurcationDiagram(model::modelFVH, listLambdaFH::Vector{Float64}, listLambdaVH::Vector{Float64}, nameFile::String)
     
     stability = Matrix{Any}(undef, length(listLambdaFH)+1, length(listLambdaVH)+1)
     localParam = Dict([("rV",model.rV), ("KV",model.KV), ("alpha",model.alpha), ("muV",model.muV),
