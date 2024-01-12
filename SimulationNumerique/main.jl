@@ -27,14 +27,14 @@ function main()
     ## Plot a bifurcation diagram from a csv file
     plotBifurcationFile("bifurcationDiagram.csv", "bifurcationDiagram.html"; toPlot=true)
 
-    ## Numerical parameters
-    t0, tf = 0., 500.
-    n = 50000
-    dt = (tf-t0)/n
-    numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
+    # ## Numerical parameters
+    # t0, tf = 0., 500.
+    # n = 50000
+    # dt = (tf-t0)/n
+    # numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
 
-    F0, V0, H0 = 8.,10.,5.
-    initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
+    # F0, V0, H0 = 8.,10.,5.
+    # initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
 
     # ## Create a numerical model 
     # myModel = RVNSS(paramFVH, numericalParam, initialValues)
