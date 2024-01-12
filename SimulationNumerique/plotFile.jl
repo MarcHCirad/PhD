@@ -11,19 +11,19 @@ function plotBifurcationFile(fileName::String, saveFileName::String ; toPlot=fal
 
     for ind_col in 1:length(listLambdaVH)
         for ind_row in 1:length(listLambdaFH)
-            color[ind_row, ind_col] = dicStabilityNbr[stabilityValues[ind_row, ind_col]]
+            color[ind_col, ind_row] = dicStabilityNbr[stabilityValues[ind_row, ind_col]]
         end
     end
     
     layout = PlotlyJS.Layout(xaxis_title=L"$\lambda_{FH}$", yaxis_title=L"$\lambda_{VH}$")
-    data = PlotlyJS.heatmap(x=listLambdaFH, y = listLambdaVH, z=color,
+    data = PlotlyJS.heatmap(x=listLambdaFH, y=listLambdaVH, z=color,
                             colorbar=attr(tickmode="array",
                                             tickvals=[0,1,2,3],
                                             ticktext=["EE^{FVH}", "EE^{VH}","EE^{FH}","EE^{FH} & EE^{VH}"]),
                                             # ticktext=[L"$EE^{FVH}$", L"$EE^{VH}$", L"$EE^{FH}$", L"$EE^{VH} & EE^{FH}$"]),
                             autocolorscale = false,
-                            colorscale=[(0, "red"), (0.25, "red"), (0.25, "blue"), (0.5, "blue"), (0.5, "green"), 
-                                            (0.75, "green"), (0.75, "black"), (1, "black")],
+                            colorscale=[(0, "red"), (0.25, "red"), (0.25, "green"), (0.5, "green"), (0.5, "blue"), 
+                                            (0.75, "blue"), (0.75, "black"), (1, "black")],
                             zmin = -0.5,
                             zmax = 3.5)
     myPlot = PlotlyJS.plot(data, layout)

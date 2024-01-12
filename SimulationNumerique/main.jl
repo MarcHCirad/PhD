@@ -8,14 +8,13 @@ include("plotFile.jl")
 
 function main()
     ## Model parameters
-    paramFVH = Dict([("rV",1.0), ("KV",50.9), ("alpha",0.01), ("muV",0.1), ("rF",0.71), ("KF",429.2), ("omega",0.1), ("f",0.0), ("muF",0.1), ("e",0.8)])
-    paramFVH["H0"] = 0.01
-    paramFVH["muH"] = 0.01
-    paramFVH["lambdaVH"] = 0.0332
-    paramFVH["lambdaFH"] = 0.01
+    modelParam = Dict([("rV",1.), ("KV",50.), ("alpha",0.02), ("muV",0.1), ("rF",0.71), ("KF",429.2), ("omega",0.5), ("f",0.25), ("muF",0.1), ("e",0.9)])
+    modelParam["muH"] = 0.1
+    modelParam["lambdaVH"] = 0.0332
+    modelParam["lambdaFH"] = 0.01
     
     ## Create a mathematical model
-    myMathModel = modelFVH(paramFVH)
+    myMathModel = modelFVH(modelParam)
 
     step = 0.001
     stop = 0.2
