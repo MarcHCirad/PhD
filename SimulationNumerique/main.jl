@@ -12,37 +12,48 @@ function main()
     modelParam["muH"] = 0.2
     modelParam["lambdaVH"] = 0.0332
     modelParam["lambdaFH"] = 0.01
+    modelParam["H0"] = 10
     
     ## Create a mathematical model
-    myMathModel = modelFVH(modelParam)
+    # myMathModel = modelFVH(modelParam)
 
-    start = 0.001
-    step = 0.001
-    stop = 0.2
-    listLambdaVH = Vector(range(start, stop, step=step))
-    start = 0.001
-    step = 0.001
-    stop = 0.2
-    listLambdaFH = Vector(range(start, stop, step=step))
+    # start = 0.001
+    # step = 0.001
+    # stop = 0.2
+    # listLambdaVH = Vector(range(start, stop, step=step))
+    # start = 0.001
+    # step = 0.001
+    # stop = 0.2
+    # listLambdaFH = Vector(range(start, stop, step=step))
 
     ## Compute a bifurcation diagram and write it in a csv file
-    computeBifurcationDiagram(myMathModel, listLambdaFH, listLambdaVH, "bifurcationDiagram.csv")
+    # computeBifurcationDiagram(myMathModel, listLambdaFH, listLambdaVH, "bifurcationDiagram.csv")
     ## Plot a bifurcation diagram from a csv file
-    plotBifurcationFile("bifurcationDiagram.csv", "bifurcationDiagram.html"; toPlot=true)
+    # plotBifurcationFile("bifurcationDiagram.csv", "bifurcationDiagram.html"; 
+    #         xlabel = L"$\lambda_{FH}$",
+    #         # ylabel = L"$\lambda_{VH}$",
+    #         title = "Bifurcation Diagram",    
+    #         toPlot=true)
 
     # ## Numerical parameters
-    # t0, tf = 0., 500.
-    # n = 50000
-    # dt = (tf-t0)/n
-    # numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
+    t0, tf = 0., 500.
+    n = 50000
+    dt = (tf-t0)/n
+    numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
 
-    # F0, V0, H0 = 8.,10.,5.
-    # initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
+    F0, V0, H0 = 8.,10.,5.
+    initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
 
-    # ## Create a numerical model 
-    # myModel = RVNSS(paramFVH, numericalParam, initialValues)
-    # solveModel(myModel)
-    # CSV.write("test.csv", Tables.table(transpose(myModel.result)))
+    ## Create a numerical model 
+    myModel = RVNSS(modelParam, numericalParam, initialValues)
+    solveModel(myModel)
+    CSV.write("test.csv", 
+        DataFrame(transpose(myModel.result), :auto),
+        header=["time", "F", "V", "H"])
+    plotTrajectory("test.csv", "test.html",
+                    toPlot = true,
+                    title="test",
+                    plotType="3d")
 end
 
 main()
