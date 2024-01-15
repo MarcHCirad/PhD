@@ -8,18 +8,22 @@ include("plotFile.jl")
 
 function main()
     ## Model parameters
-    modelParam = Dict([("rV",1.), ("KV",50.), ("alpha",0.02), ("muV",0.1), ("rF",0.71), ("KF",429.2), ("omega",0.5), ("f",0.25), ("muF",0.1), ("e",0.9)])
-    modelParam["muH"] = 0.1
+    modelParam = Dict([("rV",1.), ("KV",50.), ("alpha",0.02), ("muV",0.1), ("rF",0.71), ("KF",429.2), ("omega",0.25), ("f",0.25), ("muF",0.1), ("e",0.5)])
+    modelParam["muH"] = 0.2
     modelParam["lambdaVH"] = 0.0332
     modelParam["lambdaFH"] = 0.01
     
     ## Create a mathematical model
     myMathModel = modelFVH(modelParam)
 
+    start = 0.001
     step = 0.001
     stop = 0.2
-    listLambdaVH = Vector(range(step, stop, step=step))
-    listLambdaFH = Vector(range(step, stop, step=step))
+    listLambdaVH = Vector(range(start, stop, step=step))
+    start = 0.001
+    step = 0.001
+    stop = 0.2
+    listLambdaFH = Vector(range(start, stop, step=step))
 
     ## Compute a bifurcation diagram and write it in a csv file
     computeBifurcationDiagram(myMathModel, listLambdaFH, listLambdaVH, "bifurcationDiagram.csv")

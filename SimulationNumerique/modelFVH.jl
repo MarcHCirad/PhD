@@ -72,9 +72,8 @@ function interpretStabilityTresholds(model::modelFVH)
         if (TV < 1)
             return "FH"
         end
-    else
-        return ""
     end
+    return "_"
 end
 
 function computeEquilibria(model::modelFVH)

@@ -6,7 +6,7 @@ function plotBifurcationFile(fileName::String, saveFileName::String ; toPlot=fal
 
     stabilityValues = Matrix(myCSV[2:end, 2:end])
 
-    dicStabilityNbr = Dict([("FVH",0), ("VH",1), ("FH",2), ("VH & FH",3)])
+    dicStabilityNbr = Dict([("FVH",0), ("VH",1), ("FH",2), ("VH & FH",3), ("_", 4)])
     color = similar(stabilityValues, Int8)
 
     for ind_col in 1:length(listLambdaVH)
@@ -23,7 +23,7 @@ function plotBifurcationFile(fileName::String, saveFileName::String ; toPlot=fal
                                             # ticktext=[L"$EE^{FVH}$", L"$EE^{VH}$", L"$EE^{FH}$", L"$EE^{VH} & EE^{FH}$"]),
                             autocolorscale = false,
                             colorscale=[(0, "red"), (0.25, "red"), (0.25, "green"), (0.5, "green"), (0.5, "blue"), 
-                                            (0.75, "blue"), (0.75, "black"), (1, "black")],
+                                            (0.75, "blue"), (0.75, "black"), (0.99, "black"), (0.99, "white"), (1, "white")],
                             zmin = -0.5,
                             zmax = 3.5)
     myPlot = PlotlyJS.plot(data, layout)
