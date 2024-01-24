@@ -1,6 +1,6 @@
 include("modelFVH.jl")
 
-struct FVHRK4 <: Model
+struct FVHRK4 <: numericalModel
 
     mathModel::modelFVH
 

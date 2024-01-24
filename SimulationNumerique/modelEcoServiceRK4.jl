@@ -1,8 +1,8 @@
-include("modelRV.jl")
+include("modelEcoService.jl")
 
-struct RVRK4 <: numericalModel
+struct ecoServiceRK4 <: numericalModel
 
-    mathModel::modelRV
+    mathModel::modelEcoService
 
     t0::Float64
     tf::Float64
@@ -11,8 +11,8 @@ struct RVRK4 <: numericalModel
 
     result::Matrix{Float64}
 
-    function RVRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
-        mathModel = modelRV(modelParam)
+    function ecoServiceRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
+        mathModel = modelEcoService(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
         n = Int((tf-t0)/dt)
@@ -24,7 +24,7 @@ struct RVRK4 <: numericalModel
     end
 end
 
-function numericalScheme(model::RVRK4, variables::Vector{Float64})
+function numericalScheme(model::ecoServiceRK4, variables::Vector{Float64})
     k1 = equationModel(model.mathModel, variables)
     k2 = equationModel(model.mathModel, variables + model.dt/2 * k1)
     k3 = equationModel(model.mathModel, variables + model.dt/2 * k2)
@@ -33,7 +33,7 @@ function numericalScheme(model::RVRK4, variables::Vector{Float64})
     return variables + model.dt/6*(k1 + 2*k2 + 2*k3 + k4)
 end
 
-function solveModel(model::RVRK4)
+function solveModel(model::ecoServiceRK4)
     for ind in 1:model.n
         model.result[1, ind+1] = model.result[1, ind] + model.dt
         model.result[2:4, ind+1] = numericalScheme(model, model.result[2:4, ind])

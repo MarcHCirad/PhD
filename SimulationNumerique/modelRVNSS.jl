@@ -1,6 +1,6 @@
 include("modelRV.jl")
 
-struct RVNSS <: Model
+struct RVNSS <: numericalModel
 
     mathModel::modelRV
 

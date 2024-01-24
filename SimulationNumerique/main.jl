@@ -4,6 +4,7 @@ include("modelFVHRK4.jl")
 include("modelFVHNSS.jl")
 include("modelRVRK4.jl")
 include("modelRVNSS.jl")
+include("modelEcoService.jl")
 include("plotFile.jl")
 
 function main()
@@ -13,9 +14,18 @@ function main()
     modelParam["lambdaVH"] = 0.0332
     modelParam["lambdaFH"] = 0.01
     modelParam["H0"] = 10
+    modelParam["gamma"] = 0.5
+    modelParam["betaF"] = 1.
+    modelParam["betaH"] = 1.
+    modelParam["g"] = 1.
+    modelParam["a"] = 0.5
+    modelParam["b"] = 2.
+    modelParam["c"] = 3.
+    modelParam["rH"] = 2.5
     
     ## Create a mathematical model
-    # myMathModel = modelFVH(modelParam)
+    myMathModel = modelEcoService(modelParam)
+    println(myMathModel.rF)
 
     # start = 0.001
     # step = 0.001
@@ -36,24 +46,24 @@ function main()
     #         toPlot=true)
 
     # ## Numerical parameters
-    t0, tf = 0., 500.
-    n = 50000
-    dt = (tf-t0)/n
-    numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
+    # t0, tf = 0., 500.
+    # n = 50000
+    # dt = (tf-t0)/n
+    # numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
 
-    F0, V0, H0 = 8.,10.,5.
-    initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
+    # F0, V0, H0 = 8.,10.,5.
+    # initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
 
-    ## Create a numerical model 
-    myModel = RVNSS(modelParam, numericalParam, initialValues)
-    solveModel(myModel)
-    CSV.write("test.csv", 
-        DataFrame(transpose(myModel.result), :auto),
-        header=["time", "F", "V", "H"])
-    plotTrajectory("test.csv", "test.html",
-                    toPlot = true,
-                    title="test",
-                    plotType="3d")
+    # ## Create a numerical model 
+    # myModel = RVNSS(modelParam, numericalParam, initialValues)
+    # solveModel(myModel)
+    # CSV.write("test.csv", 
+    #     DataFrame(transpose(myModel.result), :auto),
+    #     header=["time", "F", "V", "H"])
+    # plotTrajectory("test.csv", "test.html",
+    #                 toPlot = true,
+    #                 title="test",
+    #                 plotType="3d")
 end
 
 main()

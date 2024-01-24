@@ -1,17 +1,19 @@
 abstract type Model end
 
 struct modelFVH <: Model
-    rV::Float64
-    KV::Float64
-    alpha::Float64
-    muV::Float64
-    lambdaVH::Float64
     rF::Float64
     KF::Float64
     omega::Float64
     f::Float64
     muF::Float64
     lambdaFH::Float64
+
+    rV::Float64
+    KV::Float64
+    alpha::Float64
+    muV::Float64
+    lambdaVH::Float64
+
     e::Float64
     muH::Float64
 
@@ -21,7 +23,7 @@ struct modelFVH <: Model
         rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"], modelParam["f"], modelParam["muF"], modelParam["lambdaFH"]
         e, muH = modelParam["e"], modelParam["muH"]
        
-        new(rV, KV, alpha, muV, lambdaVH, rF, KF, omega, f, muF, lambdaFH, e, muH)
+        new(rF, KF, omega, f, muF, lambdaFH, rV, KV, alpha, muV, lambdaVH, e, muH)
     end
 end
 
