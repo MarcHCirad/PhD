@@ -25,7 +25,7 @@ function main()
     
     ## Create a mathematical model
     myMathModel = modelEcoService(modelParam)
-    println(myMathModel.rF)
+    println(interpretExistenceTresholds(myMathModel))
 
     # start = 0.001
     # step = 0.001

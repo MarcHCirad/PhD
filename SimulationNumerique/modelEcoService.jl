@@ -43,4 +43,66 @@ function equationModel(model::modelEcoService, variables::Vector{Float64})
     dH = model.rH * (1 - H / (model.a * F + model.b * V + model.c)) * H
 
     return [dF, dV, dH]
-end   
+end
+
+function existenceTresholds(model::modelEcoService)
+    println("WARNING : the thresolds for FVH existence are not implemented")
+    N0F = model.rF / model.muF
+    N0V = model.rV * (1-model.gamma) / model.muV
+
+    F_FV = model.KF * (1-1/N0F)
+    N1V = model.rV*(1-model.gamma*exp(-model.betaF*F_FV)) / (model.alpha*F_FV + model.muV)
+
+    TFH = N0F/(1 + model.c * (model.omega*model.f + model.g*model.lambdaFH)/model.muF)
+
+    T2VH = model.rV / (model.muV + model.lambdaVH*model.g)
+    T1VH = (1-model.gamma*exp(-model.betaH*model.c))*T2VH
+
+    return Dict([("N0F", N0F), ("N0V", N0V), ("N1V", N1V), ("TFH", TFH), ("T1VH", T1VH), ("T2VH", T2VH)])
+
+end
+
+function interpretExistenceTresholds(model::modelEcoService)
+    thresolds = existenceTresholds(model)
+    N0F, N0V, N1V  = thresolds["N0F"], thresolds["N0V"], thresolds["N1V"]
+    TFH, T1VH, T2VH = thresolds["TFH"], thresolds["T1VH"], thresolds["T2VH"]
+    existence = Dict([("TE", 1), ("F", undef), ("V", undef), 
+            ("FV", undef), ("FH", undef), ("VH", undef), ("FVH", undef) ])
+
+    if N0F < 1
+        existence["F"] = 0
+        existence["FV"] = 0
+        existence["FH"] = 0
+        existence["FVH"] = 0
+    else
+        existence["F"] = 1
+        if N1V > 1
+            existence["FV"] = 1
+        else
+            existence["FV"] = 0
+        end
+        if TFH > 1
+            existence["FH"] = 1
+        else
+            existence["FH"] = 0
+        end
+    end
+
+    if N0V < 1
+        existence["V"] = 0
+    else
+        existence["V"] = 1
+    end
+
+    if T1VH < 1
+        if T2VH < 1
+            existence["VH"] = 0
+        else
+            existence["VH"] = 1
+        end
+    else
+        existence["VH"] = 1
+    end
+
+    return existence
+end
