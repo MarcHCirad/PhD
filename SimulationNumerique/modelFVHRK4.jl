@@ -13,7 +13,8 @@ struct FVHRK4 <: numericalModel
 
     result::Matrix{Float64}
 
-    function FVHRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
+    function FVHRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
+                    initialValues::Dict{String, Float64})
         mathModel = modelFVH(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]

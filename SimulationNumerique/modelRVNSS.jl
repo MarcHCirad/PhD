@@ -16,7 +16,8 @@ struct RVNSS <: numericalModel
 
     result::Matrix{Float64}
 
-    function RVNSS(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
+    function RVNSS(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
+                    initialValues::Dict{String, Float64})
         mathModel = modelRV(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]

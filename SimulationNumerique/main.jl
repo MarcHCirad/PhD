@@ -5,65 +5,58 @@ include("modelFVHNSS.jl")
 include("modelRVRK4.jl")
 include("modelRVNSS.jl")
 include("modelEcoService.jl")
+include("modelEcoServiceRK4.jl")
 include("plotFile.jl")
 
 function main()
     ## Model parameters
-    modelParam = Dict([("rV",1.), ("KV",50.), ("alpha",0.02), ("muV",0.1), ("rF",0.71), ("KF",429.2), ("omega",0.25), ("f",0.25), ("muF",0.1), ("e",0.5)])
-    modelParam["muH"] = 0.2
+    modelParam = Dict([("rV",0.2), ("KV",50.), ("alpha",0.001), ("muV",0.1), 
+        ("rF",0.91), ("KF",429.2), ("omega",0.1), ("f",0.2), ("muF",0.1)])
     modelParam["lambdaVH"] = 0.0332
-    modelParam["lambdaFH"] = 0.01
-    modelParam["H0"] = 10
-    modelParam["gamma"] = 0.5
-    modelParam["betaF"] = 1.
+    modelParam["lambdaFH"] = 0.001
+    modelParam["gamma"] = 0.9
+    modelParam["betaF"] = 5.
     modelParam["betaH"] = 1.
-    modelParam["g"] = 1.
-    modelParam["a"] = 0.5
-    modelParam["b"] = 2.
-    modelParam["c"] = 3.
-    modelParam["rH"] = 2.5
+    modelParam["g"] = 0.03
+    modelParam["a"] = 5.5
+    modelParam["b"] = 1.
+    modelParam["c"] = 10.
+    modelParam["rH"] = 0.05
     
     ## Create a mathematical model
     myMathModel = modelEcoService(modelParam)
     println(interpretExistenceTresholds(myMathModel))
 
-    # start = 0.001
-    # step = 0.001
-    # stop = 0.2
-    # listLambdaVH = Vector(range(start, stop, step=step))
-    # start = 0.001
-    # step = 0.001
-    # stop = 0.2
-    # listLambdaFH = Vector(range(start, stop, step=step))
-
-    ## Compute a bifurcation diagram and write it in a csv file
-    # computeBifurcationDiagram(myMathModel, listLambdaFH, listLambdaVH, "bifurcationDiagram.csv")
-    ## Plot a bifurcation diagram from a csv file
-    # plotBifurcationFile("bifurcationDiagram.csv", "bifurcationDiagram.html"; 
-    #         xlabel = L"$\lambda_{FH}$",
-    #         # ylabel = L"$\lambda_{VH}$",
-    #         title = "Bifurcation Diagram",    
-    #         toPlot=true)
-
     # ## Numerical parameters
-    # t0, tf = 0., 500.
-    # n = 50000
-    # dt = (tf-t0)/n
-    # numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
+    t0, tf = 0., 500.
+    n = 50000
+    dt = (tf-t0)/n
+    numericalParam = Dict([("t0", t0), ("tf", tf), ("dt", dt)])
 
-    # F0, V0, H0 = 8.,10.,5.
-    # initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
+    F0, V0, H0 = 50.2,0.1, 100.
+    initialValues = Dict([("F0", F0), ("V0", V0), ("H0", H0)])
 
-    # ## Create a numerical model 
-    # myModel = RVNSS(modelParam, numericalParam, initialValues)
-    # solveModel(myModel)
-    # CSV.write("test.csv", 
-    #     DataFrame(transpose(myModel.result), :auto),
-    #     header=["time", "F", "V", "H"])
-    # plotTrajectory("test.csv", "test.html",
-    #                 toPlot = true,
-    #                 title="test",
-    #                 plotType="3d")
+    ## Create a numerical model 
+    myModel = ecoServiceRK4(modelParam, numericalParam, initialValues)
+    solveModel(myModel)
+    CSV.write("model1.csv", 
+        DataFrame(transpose(myModel.result), :auto),
+        header=["time", "F", "V", "H"])
+
+    modelParam["rH"] = 0.02
+    myModel2 = ecoServiceRK4(modelParam, numericalParam, initialValues)
+    solveModel(myModel2)
+    CSV.write("model2.csv", 
+        DataFrame(transpose(myModel2.result), :auto),
+        header=["time", "F", "V", "H"])
+
+    
+    
+    plotTrajectory(["model1.csv", "model2.csv"], "test.html",
+                    toPlot = true,
+                    title="test",
+                    plotType="1d")
+                    # legend=["rH = 0.05", "rH=0.02"])
 end
 
 main()

@@ -25,21 +25,28 @@ struct modelEcoService <: Model
 
     
     function modelEcoService(modelParam::Dict{String, Float64})
-        rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"], modelParam["f"], modelParam["muF"], modelParam["lambdaFH"]
-        rV, KV, alpha, muV, lambdaVH = modelParam["rV"], modelParam["KV"], modelParam["alpha"], modelParam["muV"], modelParam["lambdaVH"]
+        rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"],
+                        modelParam["f"], modelParam["muF"], modelParam["lambdaFH"]
+        rV, KV, alpha, muV, lambdaVH = modelParam["rV"], modelParam["KV"], modelParam["alpha"], 
+                        modelParam["muV"], modelParam["lambdaVH"]
         gamma, betaF, betaH = modelParam["gamma"], modelParam["betaF"], modelParam["betaH"]
-        rH, a, b, c, g = modelParam["rH"], modelParam["a"], modelParam["b"], modelParam["c"], modelParam["g"]
+        rH, a, b, c, g = modelParam["rH"], modelParam["a"], modelParam["b"], modelParam["c"], 
+                        modelParam["g"]
        
-        new(rF, KF, omega, f, muF, lambdaFH, rV, KV, alpha, muV, lambdaVH, gamma, betaF, betaH, rH, a, b, c, g)
+        new(rF, KF, omega, f, muF, lambdaFH, rV, KV, alpha, muV, 
+                    lambdaVH, gamma, betaF, betaH, rH, a, b, c, g)
     end
 end
 
 function equationModel(model::modelEcoService, variables::Vector{Float64})
     F, V, H = variables[1], variables[2], variables[3]
-    dF = model.rF * (1 - F / model.KF) * F - model.omega * model.f * H * F 
-                        - model.muF * F - model.lambdaFH * model.g * F * H
-    dV = model.rV * (1 - model.gamma*exp(-model.betaF * F - model.betaH * H)) * (1 - V / model.KV) * V
-             - model.alpha * V * F - model.muV * V - model.lambdaVH * g * V * H
+    dF = (model.rF * (1 - F / model.KF) * F - model.omega * model.f * H * F )
+                - model.muF * F - model.lambdaFH * model.g * F * H
+
+    dV = (model.rV * (1 - model.gamma*exp(-model.betaF * F - model.betaH * H)) * 
+            (1 - V / model.KV) * V - model.alpha * V * F - model.muV * V 
+            - model.lambdaVH * model.g * V * H)
+
     dH = model.rH * (1 - H / (model.a * F + model.b * V + model.c)) * H
 
     return [dF, dV, dH]
@@ -58,7 +65,8 @@ function existenceTresholds(model::modelEcoService)
     T2VH = model.rV / (model.muV + model.lambdaVH*model.g)
     T1VH = (1-model.gamma*exp(-model.betaH*model.c))*T2VH
 
-    return Dict([("N0F", N0F), ("N0V", N0V), ("N1V", N1V), ("TFH", TFH), ("T1VH", T1VH), ("T2VH", T2VH)])
+    return Dict([("N0F", N0F), ("N0V", N0V), ("N1V", N1V), ("TFH", TFH), 
+                ("T1VH", T1VH), ("T2VH", T2VH)])
 
 end
 

@@ -11,7 +11,8 @@ struct ecoServiceRK4 <: numericalModel
 
     result::Matrix{Float64}
 
-    function ecoServiceRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
+    function ecoServiceRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
+                            initialValues::Dict{String, Float64})
         mathModel = modelEcoService(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]

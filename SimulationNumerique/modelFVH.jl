@@ -19,8 +19,10 @@ struct modelFVH <: Model
 
     
     function modelFVH(modelParam::Dict{String, Float64})
-        rV, KV, alpha, muV, lambdaVH = modelParam["rV"], modelParam["KV"], modelParam["alpha"], modelParam["muV"], modelParam["lambdaVH"]
-        rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"], modelParam["f"], modelParam["muF"], modelParam["lambdaFH"]
+        rV, KV, alpha, muV, lambdaVH = modelParam["rV"], modelParam["KV"], 
+                        modelParam["alpha"], modelParam["muV"], modelParam["lambdaVH"]
+        rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"], 
+                        modelParam["f"], modelParam["muF"], modelParam["lambdaFH"]
         e, muH = modelParam["e"], modelParam["muH"]
        
         new(rF, KF, omega, f, muF, lambdaFH, rV, KV, alpha, muV, lambdaVH, e, muH)
@@ -29,8 +31,10 @@ end
 
 function equationModel(model::modelFVH, variables::Vector{Float64})
     F, V, H = variables[1], variables[2], variables[3]
-    dF = model.rF * (1 - F / model.KF) * F - model.omega * model.f * F - model.muF * F - model.lambdaFH * F * H
-    dV = model.rV * (1 - V / model.KV) * V - model.alpha * V * F - model.muV * V - model.lambdaVH * V * H
+    dF = (model.rF * (1 - F / model.KF) * F - model.omega * model.f * F 
+                - model.muF * F - model.lambdaFH * F * H)
+    dV = (model.rV * (1 - V / model.KV) * V - model.alpha * V * F 
+            - model.muV * V - model.lambdaVH * V * H)
     dH = model.e * (model.lambdaFH * F + model.lambdaVH * V) * H - model.muH * H^2
     
     return [dF, dV, dH]
