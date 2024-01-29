@@ -1,38 +1,61 @@
-function plotTrajectory(inputFileName::String, saveFileName::String;
+function plotTrajectory(inputFileNames::Vector{String}, saveFileName::String;
         plotType = "1d",
         variables = [],
         title = "",
+        legend=Vector{String}(),
         toPlot = false)
-    myCSV = CSV.read(inputFileName, DataFrame)
 
+    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
+
+    if length(legend) < length(inputFileNames)
+        append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
+    end
+
+    fileName = inputFileNames[1]
+    myCSV = CSV.read(fileName, DataFrame)
     header = names(myCSV)
-    time = myCSV[1:end, 1]
+
     nameTime = header[1]
-
-    column2 = myCSV[2:end, 2]
     nameColumn2 = header[2]
-
-    column3 = myCSV[2:end, 3]
     nameColumn3 = header[3]
-
-    column4 = myCSV[2:end, 4]
     nameColumn4 = header[4]
 
+    time = myCSV[1:end, 1]
+    column2 = myCSV[2:end, 2]
+    column3 = myCSV[2:end, 3]
+    column4 = myCSV[2:end, 4]
+
     if plotType=="1d"
+        lineCSV = attr(color=listColor[1])
+        s1 = [PlotlyJS.scatter(x=time, y = column2, name=legend[1], line=lineCSV)]
+        s2 = [PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV)]
+        s3 = [PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV)]
+
+        for ind in 2:length(inputFileNames)
+            fileName = inputFileNames[ind]
+            myCSV = CSV.read(fileName, DataFrame)
+            lineCSV = attr(color=listColor[ind])
+            time = myCSV[1:end, 1]
+
+            column2 = myCSV[2:end, 2]
+            push!(s1, PlotlyJS.scatter(x=time, y = column2, name=legend[ind], line=lineCSV))
+
+            column3 = myCSV[2:end, 3]
+            push!(s2, PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV))
+
+            column4 = myCSV[2:end, 4]
+            push!(s3, PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV))
+        end
+
+
         l1 = PlotlyJS.Layout(yaxis_title = nameColumn2)
-        s1 = PlotlyJS.scatter(x=time, y = column2)
-        p1 = PlotlyJS.plot(s1, l1)
-
         l2 = PlotlyJS.Layout(yaxis_title = nameColumn3)
-        s2 = PlotlyJS.scatter(x=time, y = column3)
-        p2 = PlotlyJS.plot(s2, l2)
-
         l3 = PlotlyJS.Layout(xaxis_title = nameTime, yaxis_title = nameColumn4)
-        s3 = PlotlyJS.scatter(x=time, y = column4)
+        p1 = PlotlyJS.plot(s1, l1)
+        p2 = PlotlyJS.plot(s2, l2)
         p3 = PlotlyJS.plot(s3, l3)
 
         myPlot = [p1 ; p2 ; p3]
-        relayout!(myPlot, showlegend=false)
         if toPlot
             display(myPlot)
         end
