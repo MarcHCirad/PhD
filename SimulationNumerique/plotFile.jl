@@ -1,5 +1,4 @@
-function plotTrajectory(inputFileNames::Vector{String}, saveFileName::String;
-        plotType = "1d",
+function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
         variables = [],
         title = "",
         legend=Vector{String}(),
@@ -25,49 +24,92 @@ function plotTrajectory(inputFileNames::Vector{String}, saveFileName::String;
     column3 = myCSV[2:end, 3]
     column4 = myCSV[2:end, 4]
 
-    if plotType=="1d"
-        lineCSV = attr(color=listColor[1])
-        s1 = [PlotlyJS.scatter(x=time, y = column2, name=legend[1], line=lineCSV)]
-        s2 = [PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV)]
-        s3 = [PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV)]
+    lineCSV = attr(color=listColor[1])
+    s1 = [PlotlyJS.scatter(x=time, y = column2, name=legend[1], line=lineCSV)]
+    s2 = [PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV)]
+    s3 = [PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV)]
 
-        for ind in 2:length(inputFileNames)
-            fileName = inputFileNames[ind]
-            myCSV = CSV.read(fileName, DataFrame)
-            lineCSV = attr(color=listColor[ind])
-            time = myCSV[1:end, 1]
+    for ind in 2:length(inputFileNames)
+        fileName = inputFileNames[ind]
+        myCSV = CSV.read(fileName, DataFrame)
+        lineCSV = attr(color=listColor[ind])
+        time = myCSV[1:end, 1]
 
-            column2 = myCSV[2:end, 2]
-            push!(s1, PlotlyJS.scatter(x=time, y = column2, name=legend[ind], line=lineCSV))
+        column2 = myCSV[2:end, 2]
+        push!(s1, PlotlyJS.scatter(x=time, y = column2, name=legend[ind], line=lineCSV))
 
-            column3 = myCSV[2:end, 3]
-            push!(s2, PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV))
+        column3 = myCSV[2:end, 3]
+        push!(s2, PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV))
 
-            column4 = myCSV[2:end, 4]
-            push!(s3, PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV))
-        end
+        column4 = myCSV[2:end, 4]
+        push!(s3, PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV))
+    end
 
 
-        l1 = PlotlyJS.Layout(yaxis_title = nameColumn2)
-        l2 = PlotlyJS.Layout(yaxis_title = nameColumn3)
-        l3 = PlotlyJS.Layout(xaxis_title = nameTime, yaxis_title = nameColumn4)
-        p1 = PlotlyJS.plot(s1, l1)
-        p2 = PlotlyJS.plot(s2, l2)
-        p3 = PlotlyJS.plot(s3, l3)
+    l1 = PlotlyJS.Layout(yaxis_title = nameColumn2)
+    l2 = PlotlyJS.Layout(yaxis_title = nameColumn3)
+    l3 = PlotlyJS.Layout(xaxis_title = nameTime, yaxis_title = nameColumn4)
+    p1 = PlotlyJS.plot(s1, l1)
+    p2 = PlotlyJS.plot(s2, l2)
+    p3 = PlotlyJS.plot(s3, l3)
 
-        myPlot = [p1 ; p2 ; p3]
-        if toPlot
-            display(myPlot)
-        end
+    myPlot = [p1 ; p2 ; p3]
+    if toPlot
+        display(myPlot)
+    end
         
-    elseif plotType=="3d"
-        l3d = PlotlyJS.Layout(scene = attr(xaxis_title = nameColumn2, yaxis_title=nameColumn3, zaxis_title=nameColumn4), title=title)
-        s3d = PlotlyJS.scatter(x=column2, y=column3, z=column4, type="scatter3d", mode="lines",line=attr(color="darkblue", width=1))
-        myPlot = PlotlyJS.plot(s3d, l3d)
+    PlotlyJS.savefig(myPlot, saveFileName)
+end
 
-        if toPlot
-            display(myPlot)
-        end
+function plotTrajectory3d(inputFileNames::Vector{String}, saveFileName::String;
+    variables = [],
+    title = "",
+    legend=Vector{String}(),
+    toPlot = false)
+
+    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
+
+    if length(legend) < length(inputFileNames)
+        append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
+    end
+
+    fileName = inputFileNames[1]
+    myCSV = CSV.read(fileName, DataFrame)
+    header = names(myCSV)
+
+    nameColumn2 = header[2]
+    nameColumn3 = header[3]
+    nameColumn4 = header[4]
+
+    column2 = myCSV[2:end, 2]
+    column3 = myCSV[2:end, 3]
+    column4 = myCSV[2:end, 4]
+
+    lineCSV = attr(color=listColor[1], width=2)
+    markerCSV = attr(color=listColor[1], size=5, symbol="cross")
+    layout = PlotlyJS.Layout(scene = attr(xaxis_title = nameColumn2, yaxis_title=nameColumn3, zaxis_title=nameColumn4), title=title)
+    trajectory = [PlotlyJS.scatter(x=column2, y=column3, z=column4, type="scatter3d", name=legend[1], mode="lines", line=lineCSV)]
+    push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], z=[column4[1]], 
+                type="scatter3d", mode="markers", marker=markerCSV, showlegend=false))
+    
+
+    for ind in 2:length(inputFileNames)
+        fileName = inputFileNames[ind]
+        myCSV = CSV.read(fileName, DataFrame)
+        lineCSV = attr(color=listColor[ind], width=2)
+        markerCSV = attr(color=listColor[ind], size=5, symbol="cross")
+
+        column2 = myCSV[2:end, 2]
+        column3 = myCSV[2:end, 3]
+        column4 = myCSV[2:end, 4]
+        push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, z=column4, type="scatter3d", name=legend[ind], mode="lines", line=lineCSV))
+        push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], z=[column4[1]], 
+                                                    type="scatter3d", mode="markers", marker=markerCSV, showlegend=false))
+    end
+
+    myPlot = PlotlyJS.plot(trajectory, layout)
+    if toPlot
+        display(myPlot)
     end
 
 
