@@ -22,6 +22,16 @@ struct RVRK4 <: numericalModel
 
         new(mathModel, t0, tf, dt, n, result)
     end
+
+    function RVRK4(mathModel::modelRV, numericalParam::Dict{String, Float64}, initialValues::Dict{String, Float64})
+        t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
+        n = Int((tf-t0)/dt)
+        
+        result = Matrix{Float64}(undef, 4, n+1)
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+
+        new(mathModel, t0, tf, dt, n, result)
+    end
 end
 
 function numericalScheme(model::RVRK4, variables::Vector{Float64})

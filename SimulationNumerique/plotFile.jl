@@ -1,6 +1,5 @@
 function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
-        variables = [],
-        title = "",
+        title::String = "",
         legend=Vector{String}(),
         toPlot = false)
 
@@ -54,6 +53,7 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
     p3 = PlotlyJS.plot(s3, l3)
 
     myPlot = [p1 ; p2 ; p3]
+    PlotlyJS.relayout!(myPlot, title_text=title)
     if toPlot
         display(myPlot)
     end

@@ -23,6 +23,18 @@ struct ecoServiceRK4 <: numericalModel
 
         new(mathModel, t0, tf, dt, n, result)
     end
+
+    function ecoServiceRK4(mathModel::modelEcoService, numericalParam::Dict{String, Float64}, 
+        initialValues::Dict{String, Float64})
+
+        t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
+        n = Int((tf-t0)/dt)
+
+        result = Matrix{Float64}(undef, 4, n+1)
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+
+        new(mathModel, t0, tf, dt, n, result)
+        end
 end
 
 function numericalScheme(model::ecoServiceRK4, variables::Vector{Float64})

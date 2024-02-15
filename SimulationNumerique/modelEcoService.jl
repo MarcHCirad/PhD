@@ -1,6 +1,6 @@
-abstract type Model end
+abstract type MathematicalModel end
 
-struct modelEcoService <: Model
+struct modelEcoService <: MathematicalModel
     rF::Float64
     KF::Float64
     omega::Float64

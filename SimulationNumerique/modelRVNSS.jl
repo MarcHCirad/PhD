@@ -1,5 +1,4 @@
 include("modelRV.jl")
-
 struct RVNSS <: numericalModel
 
     mathModel::modelRV
@@ -36,6 +35,25 @@ struct RVNSS <: numericalModel
 
         new(mathModel, t0, tf, dt, n, phiF, phiV, phiH, phi, result)
     end
+
+    function RVNSS(mathModel::modelRV, numericalParam::Dict{String, Float64}, 
+                    initialValues::Dict{String, Float64})
+        t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
+        n = Int((tf-t0)/dt)
+
+        result = Matrix{Float64}(undef, 4, n+1)
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+
+        deltaF = mathModel.rF - mathModel.muF - mathModel.omega*mathModel.f
+        deltaV = mathModel.rV - mathModel.muV
+
+        phiF = (exp(deltaF * dt) - 1)/deltaF
+        phiV = (exp(deltaV * dt) - 1)/deltaV
+        phiH = dt
+        phi = max(phiF, phiV)
+
+        new(mathModel, t0, tf, dt, n, phiF, phiV, phiH, phi, result)
+        end
 end
 
 function numericalScheme(model::RVNSS, variables::Vector{Float64})

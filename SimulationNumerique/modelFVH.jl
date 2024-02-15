@@ -1,6 +1,6 @@
-abstract type Model end
+abstract type MathematicalModel end
 
-struct modelFVH <: Model
+struct modelFVH <: MathematicalModel
     rF::Float64
     KF::Float64
     omega::Float64
