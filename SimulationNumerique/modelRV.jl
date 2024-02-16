@@ -1,5 +1,5 @@
 
-struct modelRV <: MathematicalModel
+struct modelRV <: mathematicalModel
     rF::Float64
     KF::Float64
     omega::Float64

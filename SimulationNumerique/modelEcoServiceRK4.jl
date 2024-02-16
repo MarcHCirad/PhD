@@ -1,5 +1,4 @@
 include("modelEcoService.jl")
-
 struct ecoServiceRK4 <: numericalModel
 
     mathModel::modelEcoService

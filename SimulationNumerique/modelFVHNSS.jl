@@ -1,5 +1,4 @@
 include("modelFVH.jl")
-
 struct FVHNSS <: numericalModel
 
     mathModel::modelFVH

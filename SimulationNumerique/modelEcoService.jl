@@ -1,6 +1,6 @@
-abstract type MathematicalModel end
+abstract type mathematicalModel end
 
-struct modelEcoService <: MathematicalModel
+struct modelEcoService <: mathematicalModel
     rF::Float64
     KF::Float64
     omega::Float64
@@ -22,7 +22,6 @@ struct modelEcoService <: MathematicalModel
     b::Float64
     c::Float64
     g::Float64
-
     
     function modelEcoService(modelParam::Dict{String, Float64})
         rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"],

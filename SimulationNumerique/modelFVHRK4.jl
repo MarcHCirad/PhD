@@ -1,5 +1,4 @@
 include("modelFVH.jl")
-
 abstract type numericalModel end
 
 struct FVHRK4 <: numericalModel

@@ -1,56 +1,5 @@
-function writeMathematicalModel(myModel::MathematicalModel, dirName::String)
-    if !isdir(dirName)
-        mkdir(dirName)
-    end
-
-    parameterFile = dirName * "/math_parameters.txt"
-    open(parameterFile, "w") do fout
-        write(fout, string(typeof(myModel))*"\n")
-        parameters = fieldnames(typeof(myModel))
-        for ind in eachindex(parameters)
-            parameter = parameters[ind]
-            value = getfield(myModel, parameter)
-            write(fout, string(parameter)*"\t"*string(value)*"\n")
-        end
-    end
-end
-
-function writeResult(myModel::numericalModel, dirName::String)
-    if !isdir(dirName)
-        mkdir(dirName)
-    end
-    resultFile = dirName * "/result.csv"
-
-    CSV.write(resultFile, 
-        DataFrame(transpose(myModel.result), :auto),
-        header=["time", "F", "V", "H"])
-end
-
-
-function writeNumericalModel(myModel::numericalModel, dirName::String)
-    if !isdir(dirName)
-        mkdir(dirName)
-    end
-    numParamterFile = dirName * "/numerical_parameters.txt"
-    parameters = fieldnames(typeof(myModel))
-
-    mathModel = getfield(myModel, parameters[1])
-    writeMathematicalModel(mathModel, dirName)
-
-    open(numParamterFile, "w") do fout
-        write(fout, string(typeof(myModel))*"\n")
-        for ind in 2:length(parameters)-1
-            parameter = parameters[ind]
-            value = getfield(myModel, parameter)
-            write(fout, string(parameter)*"\t"*string(value)*"\n")
-        end
-    
-    end
-
-    writeResult(myModel, dirName)
-end
-
 function createMathModel(modelType::String, param::Dict{String, Float64})
+    ## Check if the math model is implemented, and if it can be created. If yes, return it.
     if modelType == "FVH"
         nbrParameters = length(fieldnames(modelFVH))
         if nbrParameters != length(param)
@@ -70,10 +19,24 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
     elseif modelType == "EcoService"
         nbrParameters = length(fieldnames(modelEcoService))
         if nbrParameters != length(param)
-            println("Number of parameter is incoherent with model")
+            println("Number of parameter is incoherent with model EcoService")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelEcoService))
             return
         end
         myModel = modelEcoService(param)
+        return myModel
+    elseif modelType == "EcoServiceFV"
+        nbrParameters = length(fieldnames(modelEcoServiceFV))
+        if nbrParameters > length(param)
+            println("Number of parameter is incoherent with model EcoServiceFV")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelEcoService))
+            return
+        end
+        myModel = modelEcoServiceFV(param)
         return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
@@ -82,9 +45,10 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
 end
 
 function createNumericalModel(numericalModelType::String, mathModelType::String, 
-        mathModel::MathematicalModel, numericalParam::Dict{String, Float64}, 
+        mathModel::mathematicalModel, numericalParam::Dict{String, Float64}, 
         initialValues::Dict{String, Float64})
-
+    ## Check if numerical model have been implemented for math model
+    ## If yes, create the numerical model
     if mathModelType == "FVH"
         if numericalModelType == "RK4"
             myModel = FVHRK4(mathModel, numericalParam, initialValues)
@@ -107,74 +71,48 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end
+    elseif mathModelType == "EcoServiceFV"
+        if numericalModelType == "RK4"
+            myModel = ecoServiceFVRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
     end
-
 end
 
 function readNumericalModel(dirName::String)
-    fileName = dirName * "test.txt"
-    myCSV = CSV.read(fileName, DataFrame, header=false, delim=",", missingstring="NA")
-    
-    ind = 1
-    myCSV[ind, 1] ## Should be ## Mathematical Parameters ##
-    ind += 1
-    mathModelType::String = myCSV[ind, 2]
-    mathParam = Dict{String, Float64}()
-    ind += 1
-    while myCSV[ind, 1] != "## Initial Values ##"
-        mathParam[myCSV[ind, 1]] = tryparse(Float64, myCSV[ind, 2])
-        ind += 1
-        println(myCSV[ind, 1])
-    end
-    mathModel = createMathModel(mathModelType, mathParam)
-
-    ind += 1
-    initialValues = Dict{String, Float64}()
-    while myCSV[ind, 1] != "## Numerical Parameters ##"
-        initialValues[myCSV[ind, 1]] = tryparse(Float64, myCSV[ind, 2])
-        ind += 1
-    end
-    ind += 1
-
-    myCSV[ind, 1] ## Should be Type
-    numericalModelType::String = myCSV[ind, 2]
-    numericalParam = Dict{String, Float64}()
-
-    ind += 1
-
-    while ind <= nrow(myCSV)
-        numericalParam[myCSV[ind, 1]] = tryparse(Float64, myCSV[ind, 2])
-        ind += 1
-    end
-    
-    numericalModel = createNumericalModel(numericalModelType, mathModelType, 
-                    mathModel, numericalParam, initialValues)
-    
-    return numericalModel
-end
-
-
-function readNumericalModelTest(dirName::String)
     fileName = dirName * "/input.txt"
     open(fileName, "r") do fin    
 
         readline(fin) ## Should be ## Mathematical Parameters ##
 
+        ## Read the math model type(s)
         line = readline(fin)
         indTab = last(findfirst("    ", line))
-        mathModelType::String = line[last(indTab)+1:end]
-        mathParam = Dict{String, Float64}()
+        mathModelTypesString::String = line[last(indTab)+1:end]
+
+        commaIndices = findall(",", mathModelTypesString)
+        firstIndices = append!([1], [last(ind)+1 for ind in commaIndices])
+        lastIndices = append!([first(ind)-1 for ind in commaIndices], [length(mathModelTypesString)])
+        mathModelTypes = [mathModelTypesString[firstIndices[k]:lastIndices[k]] for k in 1:(length(firstIndices))]
         
+        ## Read the math model parameters
+        mathParam = Dict{String, Float64}()
         line = readline(fin)
         while line != "## Initial Values ##"
             indTab = findfirst("    ", line)
             mathParam[line[1:first(indTab)-1]] = tryparse(Float64, line[last(indTab)+1:end])
             line = readline(fin)
         end
-        mathModel = createMathModel(mathModelType, mathParam)
 
+        mathModels = Dict{String, T where T<:mathematicalModel}()
+        for mathModelType in mathModelTypes
+            myModel = createMathModel(mathModelType, mathParam)
+            mathModels[mathModelType] = myModel
+        end
+        
+        ## Read the initial values
         line = readline(fin)
-
         initialValues = Dict{String, Float64}()
         while line != "## Numerical Parameters ##"
             indTab = findfirst("    ", line)
@@ -182,19 +120,24 @@ function readNumericalModelTest(dirName::String)
             line = readline(fin)
         end
         
+        ## Find the numerical model type
         line = readline(fin)
         indTab = last(findfirst("    ", line))
         numericalModelType::String = line[last(indTab)+1:end]
         numericalParam = Dict{String, Float64}()
 
+        ## Read the numerical model parameters
         for line in eachline(fin)
             indTab = findfirst("    ", line)
             numericalParam[line[1:first(indTab)-1]] = tryparse(Float64, line[last(indTab)+1:end])
         end
 
-        numericalModel = createNumericalModel(numericalModelType, mathModelType, 
-                mathModel, numericalParam, initialValues)
+        numericalModels = Dict{String, numericalModel}()
+        for mathModelType in collect(keys(mathModels))
+            numericalModels[mathModelType] = createNumericalModel(numericalModelType, mathModelType, 
+                                                    mathModels[mathModelType], numericalParam, initialValues)
+        end
 
-        return numericalModel
+        return numericalModels
     end
 end

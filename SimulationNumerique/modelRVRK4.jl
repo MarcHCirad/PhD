@@ -1,5 +1,4 @@
 include("modelRV.jl")
-
 struct RVRK4 <: numericalModel
 
     mathModel::modelRV
