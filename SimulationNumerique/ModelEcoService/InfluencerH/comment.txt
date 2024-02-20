@@ -1,0 +1,1 @@
+Faire varier rH de 0.002 à 0.01 puis 0.02
