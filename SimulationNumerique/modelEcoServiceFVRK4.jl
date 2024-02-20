@@ -19,13 +19,15 @@ struct ecoServiceFVRK4 <: numericalModel
         n = Int((tf-t0)/dt)
         
         result = Matrix{Float64}(undef, 4, n+1)
-        if initialValues["H0"] != (mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c)
-            println("In this model, H must be equal at \$H = a F + bV + c\$, even for initial values")
-            println("Initial values of H has been changed to ensure this requirement")
+        initialValuesH0 = initialValues["H0"]
+        if initialValuesH0 != (mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c)
+            initialValuesH0 = mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c
             initialValues["H0"] = mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c
+            println("In this model, H must be equal at \$H = a F + bV + c\$, even for initial values")
+            println("Initial values of H has been changed : ",initialValuesH0, " for all models to ensure this requirement")
         end
 
-        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValuesH0]
 
         new(mathModel, t0, tf, dt, n, result)
     end
@@ -37,12 +39,14 @@ struct ecoServiceFVRK4 <: numericalModel
         n = Int((tf-t0)/dt)
 
         result = Matrix{Float64}(undef, 4, n+1)
-        if initialValues["H0"] != (mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c)
-            println("In this model, H must be equal at \$H = a F + bV + c\$, even for initial values")
-            println("Initial values of H has been changed to ensure this requirement")
+        initialValuesH0 = initialValues["H0"]
+        if initialValuesH0 != (mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c)
+            initialValuesH0 = mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c
             initialValues["H0"] = mathModel.a * initialValues["F0"] + mathModel.b * initialValues["V0"] + mathModel.c
+            println("In this model, H must be equal at \$H = a F + bV + c\$, even for initial values")
+            println("Initial values of H to has been changed : ",initialValuesH0, " to ensure this requirement")
         end
-        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValuesH0]
 
         new(mathModel, t0, tf, dt, n, result)
         end
