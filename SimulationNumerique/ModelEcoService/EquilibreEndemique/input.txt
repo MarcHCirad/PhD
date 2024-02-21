@@ -5,7 +5,7 @@ KF    400
 omega    0.05
 f    0.01
 muF    0.1
-lambdaFH    0.5
+lambdaFH    0.01
 rV    0.8
 KV    70
 alpha    0.001

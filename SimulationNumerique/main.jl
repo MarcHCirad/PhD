@@ -28,8 +28,11 @@ function main()
 
     pathWD = "/home/hetier/Documents/Code/PhDCode/SimulationNumerique"
 
-    pathWDFV = pathWD * "/ModelEcoService/EquilibreEndemique"
+    pathWDFV = pathWD * "/ModelEcoService/InfluencerH"
     allModels = readNumericalModel(pathWDFV)
+    numModel = allModels["EcoService"]
+    println(interpretExistenceTresholds(numModel.mathModel))
+    println(interpretStability(numModel.mathModel))
     solveModel(allModels)
 
     resultFolder = writeNumericalModel(allModels, pathWDFV)
@@ -40,7 +43,7 @@ function main()
     
     plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
                         pathWDFV*"/plot.html",
-                        title="Comparison of two models : Eq FVH",
+                        title="Comparison of two models : Eq FH",
                         legend=["F,V, aF+bV,c", "F,V,H"],
                         toPlot=true)
 end

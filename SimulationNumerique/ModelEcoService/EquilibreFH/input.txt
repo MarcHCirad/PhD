@@ -1,11 +1,11 @@
 ## Mathematical Parameters ##
-type    EcoServiceFV,EcoService
+type    EcoService,EcoServiceFV
 rF    0.9
 KF    400
 omega    0.01
 f    0.01
 muF    0.1
-lambdaFH    0.5
+lambdaFH    0.01
 rV    0.8
 KV    70
 alpha    0.001
@@ -20,9 +20,9 @@ a    0.5
 b    0.1
 c    0.1
 ## Initial Values ##
-F0    290.0
-V0    5.0
-H0    4
+F0    297
+V0    1.0
+H0    20
 ## Numerical Parameters ##
 type    RK4
 t0    0.0

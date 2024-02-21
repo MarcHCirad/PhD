@@ -4,7 +4,8 @@ Pkg.add("Tables");
 Pkg.add("DataFrames");
 Pkg.add("PlotlyJS");
 Pkg.add("LaTeXStrings");
+Pkg.add("Roots");
 
 using CSV, Tables, DataFrames
-# using Plots
 using PlotlyJS, LaTeXStrings
+using Roots

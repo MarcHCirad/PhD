@@ -41,8 +41,8 @@ function equationModel(model::modelEcoServiceFV, variables::Vector{Float64})
     F, V = variables[1], variables[2]
     H = model.a * F + model.b * V + model.c
     
-    dF = (model.rF * (1 - F / model.KF) * F - model.omega * model.f * H * F )
-                - model.muF * F - model.lambdaFH * model.g * F * H
+    dF = (model.rF * (1 - F / model.KF) * F - model.omega * model.f * H * F
+                - model.muF * F - model.lambdaFH * model.g * F * H)
 
     dV = (model.rV * (1 - model.gamma*exp(-model.betaF * F - model.betaH * H)) * 
             (1 - V / model.KV) * V - model.alpha * V * F - model.muV * V 

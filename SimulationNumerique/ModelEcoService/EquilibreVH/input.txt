@@ -7,7 +7,7 @@ f    0.1
 muF    0.2
 lambdaFH    0.5
 rV    0.6
-KV    70
+KV    80
 alpha    0.001
 muV    0.1
 lambdaVH    0.001
