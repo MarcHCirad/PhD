@@ -5,3 +5,9 @@ RepriseLoreau
 SimulationNumerique/*/*/*/
 *Test*
 *Old*
+*.aux
+*.blg
+*.log
+*.bbl
+*.gz
+*.pdf
