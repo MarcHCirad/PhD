@@ -2,10 +2,10 @@ t = @elapsed begin
 
 include("modelFVHRK4.jl")
 include("modelFVHNSS.jl")
-include("modelRVRK4.jl")
-include("modelRVNSS.jl")
 include("modelEcoServiceRK4.jl")
 include("modelEcoServiceFVRK4.jl")
+include("modelAlleeEffect.jl")
+include("modelAlleeEffectRK4.jl")
 include("plotFile.jl")
 include("writer.jl")
 include("reader.jl")
@@ -28,11 +28,8 @@ function main()
 
     pathWD = "/home/hetier/Documents/Code/PhDCode/SimulationNumerique"
 
-    pathWDFV = pathWD * "/ModelEcoService/InfluencerH"
-    allModels = readNumericalModel(pathWDFV)
-    numModel = allModels["EcoService"]
-    println(interpretExistenceTresholds(numModel.mathModel))
-    println(interpretStability(numModel.mathModel))
+    pathWDFV = pathWD * "/Test"
+    allModels = readNumericalModel(pathWDFV)    
     solveModel(allModels)
 
     resultFolder = writeNumericalModel(allModels, pathWDFV)
@@ -44,8 +41,15 @@ function main()
     plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
                         pathWDFV*"/plot.html",
                         title="Comparison of two models : Eq FH",
-                        legend=["F,V, aF+bV,c", "F,V,H"],
+                        legend=["allee", "ecoService"],
                         toPlot=true)
+
+    # plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
+    #                     pathWDFV*"/plot.html",
+    #                     [2,3];
+    #                     title="Comparison of two models : Eq FH",
+    #                     legend=["allee", "ecoService"],
+    #                     toPlot=true)
 end
 
 main()

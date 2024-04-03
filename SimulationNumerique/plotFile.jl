@@ -158,3 +158,60 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     end
 
 end
+
+function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
+    variables::Vector{Int64};
+    title = "",
+    legend=Vector{String}(),
+    toPlot = false)
+
+    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
+
+    if length(legend) < length(inputFileNames)
+        append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
+    end
+
+    fileName = inputFileNames[1]
+    myCSV = CSV.read(fileName, DataFrame)
+    header = names(myCSV)
+
+    indColumn2 = variables[1]+1
+    indColumn3 = variables[2]+1
+
+    nameColumn2 = header[indColumn2]
+    nameColumn3 = header[indColumn3]
+
+    column2 = myCSV[2:end, indColumn2]
+    column3 = myCSV[2:end, indColumn3]
+
+    lineCSV = attr(color=listColor[1], width=2)
+    markerCSV = attr(color=listColor[1], size=5, symbol="cross")
+    layout = PlotlyJS.Layout(scene = attr(xaxis_title = nameColumn2, yaxis_title=nameColumn3), title=title)
+    trajectory = [PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", name=legend[1], mode="lines", line=lineCSV)]
+    push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
+                type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
+    
+
+    for ind in 2:length(inputFileNames)
+        fileName = inputFileNames[ind]
+        myCSV = CSV.read(fileName, DataFrame)
+        lineCSV = attr(color=listColor[ind], width=2)
+        markerCSV = attr(color=listColor[ind], size=5, symbol="cross")
+
+        column2 = myCSV[2:end, indColumn2]
+        column3 = myCSV[2:end, indColumn3]
+        push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", name=legend[ind], mode="lines", line=lineCSV))
+        push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
+                    type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
+    end
+
+    myPlot = PlotlyJS.plot(trajectory, layout)
+    if toPlot
+        display(myPlot)
+    end
+
+
+    PlotlyJS.savefig(myPlot, saveFileName)
+
+
+end

@@ -18,7 +18,7 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         return myModel
     elseif modelType == "EcoService"
         nbrParameters = length(fieldnames(modelEcoService))
-        if nbrParameters != length(param)
+        if nbrParameters > length(param)
             println("Number of parameter is incoherent with model EcoService")
             println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
                         nbrParameters)
@@ -37,6 +37,17 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
             return
         end
         myModel = modelEcoServiceFV(param)
+        return myModel
+    elseif modelType == "AlleeEffect"
+        nbrParameters = length(fieldnames(modelAlleeEffect))
+        if nbrParameters > length(param)
+            println("Number of parameter is incoherent with model AlleeEffect")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelAlleeEffect))
+            return
+        end
+        myModel = modelAlleeEffect(param)
         return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
@@ -74,6 +85,12 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
     elseif mathModelType == "EcoServiceFV"
         if numericalModelType == "RK4"
             myModel = ecoServiceFVRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "AlleeEffect"
+        if numericalModelType == "RK4"
+            myModel = alleeEffectRK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end
@@ -139,5 +156,40 @@ function readNumericalModel(dirName::String)
         end
 
         return numericalModels
+    end
+end
+
+
+function readMathModel(dirName::String)
+    fileName = dirName * "/input.txt"
+    open(fileName, "r") do fin    
+
+        readline(fin) ## Should be ## Mathematical Parameters ##
+
+        ## Read the math model type(s)
+        line = readline(fin)
+        indTab = last(findfirst("    ", line))
+        mathModelTypesString::String = line[last(indTab)+1:end]
+
+        commaIndices = findall(",", mathModelTypesString)
+        firstIndices = append!([1], [last(ind)+1 for ind in commaIndices])
+        lastIndices = append!([first(ind)-1 for ind in commaIndices], [length(mathModelTypesString)])
+        mathModelTypes = [mathModelTypesString[firstIndices[k]:lastIndices[k]] for k in 1:(length(firstIndices))]
+        
+        ## Read the math model parameters
+        mathParam = Dict{String, Float64}()
+        line = readline(fin)
+        while line != "## Initial Values ##"
+            indTab = findfirst("    ", line)
+            mathParam[line[1:first(indTab)-1]] = tryparse(Float64, line[last(indTab)+1:end])
+            line = readline(fin)
+        end
+
+        mathModels = Dict{String, T where T<:mathematicalModel}()
+        for mathModelType in mathModelTypes
+            myModel = createMathModel(mathModelType, mathParam)
+            mathModels[mathModelType] = myModel
+        end
+        return mathModels
     end
 end
