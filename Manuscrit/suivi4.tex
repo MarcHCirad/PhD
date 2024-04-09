@@ -78,100 +78,396 @@ First we can assume that $g_F = g_V = 1$ and that $s(F) = 1$. The model becomes 
 \label{model:simplified}
 \end{equation}
 
-\subsection{Equilibrium}
-Equilibrium are obtained by solving the following system :
+\subsection{Sub-model $F-H$}
+First, we can analyze the sub-model with variables $F$ and $H$ only. The model is:
+
 \begin{equation}    
 \left\{ \begin{array}{l}
-F\Big(r_{F}\big(1-\dfrac{F}{K_{F}}\big) - \mu_F -\omega f H -\lf H \Big) = 0\\
-V \Big( r_V \dfrac{H}{H + L_V} \big(1-\dfrac{V}{K_{V}}\big) -\alpha F-\mu_V -\lv H\Big) = 0\\
-\left(1-\dfrac{H}{aF + bV + c} \right)  (\dfrac{H}{\beta} - 1) H = 0
+\dfrac{dF}{dt}=r_{F}\left(1-\dfrac{F}{K_{F}}\right)F-\omega f H F - \mu_F F -\lf F H = f_{1, FH} (F,H) \\
+\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{aF + c} \right)  (\dfrac{H}{\beta} - 1) H = f_{2,FH}(F,H)
 \end{array}\right.
-\label{model:equilibrium}
+\label{model:submodelFH}
 \end{equation}
 
-We can first notice that ($H=0, F\geq 0$) implies $V=0$. Thus, an equilibria with vegetation and without human does not exist. All the existing equilibrium are listed below :
+\subsubsection{Equilibrium}
+Equilibrium are obtained when the right hand side of the previous system is equal at 0. They are :
+\begin{itemize}
+\item $TE = (0,0)$
+\item A forest equilibrium $EE^F = \Big(F^*, 0 \Big) $ where $F^* = K_F \Big(1 - \dfrac{\mu_F}{r_F}\Big)$. It exists when $\NF = \dfrac{r_F}{\mu_F} > 1$.
+\item A human equilibrium $EE^H_\beta = \Big(0,\beta \Big)$
+\item A forest-human equilibrium $EE^{FH}_\beta = \Big(F^*_\beta, \beta\Big)$ where $F^*_\beta = K_F \Big(1-\dfrac{\mu_F + \beta(\lf + \omega f)}{r_F} \Big)$.
+This equilibrium exists when $\dfrac{r_F}{\mu_F + \beta(\lf + \omega f)} > 1$.
+\item A human equilibrium $EE^H = \Big(0,c \Big)$
+\item A forest-human equilibrium $EE^{FH} = \Big(F^*_{c}, aF^*_{c} + c \Big)$ where $F^*_{c} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right)$. This equilibrium exists when $\dfrac{r_F}{\mu_F + c(\lf + \omega f)} > 1$.
+\end{itemize}
+
+\subsubsection{Stability}
+The Jacobian matrix of the system is defined by :
+\begin{equation}
+\mathcal{J}(F,H) =  \begin{bmatrix}
+r_F \Big(1-\dfrac{2F}{K_F} \Big) - \mu_F - (\lf + \omega f)H & -(\lf + \omega f)F \\
+r_H \dfrac{aH^2}{(aF+c)^2} (\dfrac{H}{\beta}-1) & r_H(1-\dfrac{H}{aF+c})(\dfrac{2H}{\beta}-1) - \dfrac{r_H H}{aF+c}(\dfrac{H}{\beta}-1)
+\end{bmatrix}
+\label{stab:jacobianFH}
+\end{equation}
+
+To assess the stability of the different equilibrium, we look at the eigenvalues of the Jacobian.
 
 \begin{itemize}
-\item $TE = (0,0,0)$
-\item A forest equilibrium $EE^F = \Big( K_F(1-1/\NF), 0, 0 \Big) $ exists when $\NF = \dfrac{r_F}{\mu_F} > 1$.
-
-\item A human equilibrium $EE^H_\beta = \Big(0,0,H^*_\beta \Big)$ where $ H^*_\beta = \beta$
-\item A forest-human equilibrium $EE^{FH}_\beta = \Big(F^*_\beta, 0, H^*_\beta\Big)$ where $F^*_\beta = K_F \Big(1-\dfrac{\mu_F + \beta(\lf + \omega f)}{r_F} \Big)$.
-This equilibrium exists when $\dfrac{r_F}{\mu_F + \beta(\lf + \omega f)} > 1$.
-\item A vegetation-human equilibrium $EE^{VH}_\beta = \Big(0, V^*_{\beta}, H^*_\beta \Big)$ where $V^*_\beta = K_V \Big(1- \dfrac{\beta + L_V}{\beta} \dfrac{\lv \beta + \mu_V}{r_V} \Big)$. This equilibrium exists when $\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\lv \beta + \mu_V} > 1$
-\item An endemic equilibrium $EE_\beta^{FVH} = \Big(F^*_\beta, V^*_{F^*_\beta, \beta}, H^*_\beta \Big)$ where $\VbetaF = K_V \Big(1- \dfrac{\beta +L_V}{\beta} \dfrac{\alpha \Fbeta + \lv \beta + \mu_V}{r_V} \Big)$. This equilibrium exists  when $\dfrac{r_F}{\mu_F + \beta(\lf + \omega f)} > 1$ and $\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\alpha \Fbeta + \lv \beta + \mu_V} > 1$
-
-
-\item A human equilibrium $EE^H = \Big(0,0,H^*_c)$ where $H^*_c = c$.
-\item A forest-human equilibrium $EE^{FH} = \Big(F^*_{H, c}, 0, H^*_{F, c} \Big)$ where $F^*_{H,c} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right)$ and $H^*_{F,c} = a F^*_{H, c} + c$. This equilibrium exists when $\dfrac{r_F}{\mu_F + c(\lf + \omega f)} > 1$.
-
-\item A vegetation-human equilibrium $EE^{VH} = \Big(0, V^*_{H, c}, H^*_{V, c} \Big)$. $V^*_{H, c}$ are given by $V^*_{H, c} = \dfrac{H^*_{V, c} - c}{b}$ and $H^*_{V, c}$ are solutions of
-
+\item At point $TE = (0,0, 0)$, the Jacobian is
 \begin{equation}
-H^2 - H \left( \dfrac{r_V(1 + \dfrac{c}{bK_V}) - \lv L_V - \mu_V}{\lv + \dfrac{r_V}{bK_V}} \right) + \dfrac{\mu_V L_V}{\lv + \dfrac{r_V}{bK_V}} = 0
-\label{eqVH:equation H}
+\mathcal{J}(0,0) = \begin{bmatrix}
+r_F - \mu_F & 0 \\
+0 & -r_H
+\end{bmatrix}
 \end{equation}
+and thus the eigenvalues are $r_F - \mu_F$ and $-r_H$. $TE$ is asymptotically stable (AS) if $\NF < 1$.
 
-Equation \eqref{eqVH:equation H} has real and positive solutions if 
+\item At point $EE^{F} = (F^*, 0)$, the Jacobian is 
+\begin{equation}
+\mathcal{J}(F^*, 0, 0)
+\begin{bmatrix}
+-r_F \dfrac{F^F}{K_F} & -(\FHterme)F^F \\
+0 & -r_H 
+\end{bmatrix}
+\end{equation}
+and thus the eigenvalues are all negative. $EE^F$ is asymptotically stable.
+
+\item At point $EE^H_\beta = \Big(0,\beta \Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(0, \beta) = \begin{bmatrix}
+r_F - \mu_F - (\FHterme) \beta & 0 \\
+0  & r_H (1 - \dfrac{\beta}{c})
+\end{bmatrix}
+\end{equation}
+$EE^H_\beta$ is AS if 
+
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
-    &\left(r_V \Big(1 + \dfrac{c}{bK_V}\Big) - \lv L_V - \mu_V \right)^2 \geq 4 \mu_V L_V \Big(\lv + \dfrac{r_V}{bK_V} \Big) \\
-    &\dfrac{r_V(1 + \dfrac{c}{bK_V})}{\mu_V + \lv L_V} > 1
+    & \dfrac{r_F}{\mu_F + \beta (\FHterme)} < 1 \\
+    & \dfrac{c}{\beta} < 1
     \end{empheq}
-    \label{eqVH:existence1}
 \end{subequations}
 
-In this case, the solutions are given by
+\item At point $EE^{FH}_\beta = \Big(F^*_\beta,\beta \Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(F^*_\beta, \beta) = \begin{bmatrix}
+-r_F \dfrac{F^*_\beta}{K_F} &  -(\FHterme) F^*_\beta \\
+0 & r_H (1 - \dfrac{H^*_\beta}{c})
+\end{bmatrix}
+\end{equation}
+$EE^{FH}_\beta$ is AS if $\dfrac{c}{\beta} < 1$
+
+\item At point $EE^{H} = \Big(0,c\Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(0,c) = \begin{bmatrix}
+r_F - \mu_F - c(\FHterme) & 0 \\
+r_H a (\dfrac{c}{\beta} - 1) & -r_H(\dfrac{c}{\beta} - 1)
+\end{bmatrix}
+\end{equation}
+$EE^{H}$ is AS if
+\begin{subequations}
+    \begin{empheq}[left={\empheqlbrace\,}]{align}
+    &\dfrac{r_F}{\mu_F + c (\FHterme)} < 1 \\
+    & 1< \dfrac{c}{\beta} 
+    \end{empheq}
+\end{subequations}
+
+\item At point $EE^{FH} = \Big(F^*_{c}, aF^*_{c}+c\Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(F^*_{c}, aF^*_{c}+c) = \begin{bmatrix}
+-r_F \dfrac{F^*_c}{K_F} & -(\FHterme) F^*_c \\
+r_H a (\dfrac{aF^*_{c}+c}{\beta} - 1) & -r_H(\dfrac{aF^*_{c}+c}{\beta} - 1)
+\end{bmatrix}
+\end{equation}
+Eigenvalues are the roots of 
+
+\begin{multline}
+\chi_{FH} = X^2 + \Big(r_F \dfrac{F^*_c}{K_F} + r_H \big(\dfrac{aF^*_{c}+c}{\beta} - 1\big) \Big)X + \\ r_F  \dfrac{F^*_c}{K_F}r_H \big(\dfrac{aF^*_{c}+c}{\beta} - 1\big) + r_H a \big(\dfrac{aF^*_{c}+c}{\beta} - 1\big) (\FHterme) F^*_c
+\end{multline}
+The two roots of $\chi_{FH}$ have negative real parts if the coefficients are both positive, which is the case if $aF^*_{c}+c > \beta$.
+So, $EE^{FH}$ is AS if
+\begin{equation}
+1 < \dfrac{a K_F}{\beta} \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right) + \dfrac{c}{\beta}
+\end{equation}
+
+\end{itemize}
+
+\subsubsection{Limit Cycle}
+We can study the existence of limit cycle for this system. We will consider two subset $\Omega_1 = \{(F,H) \in [0, +\infty) \times [\beta, +\infty)\}$ and $\Omega_2 = \{(F,H) \in [0, +\infty) \times [0, \beta])\}$ . 
+
+
+On $\Omega_1$, we will use the Bendixson-Dulac theorem (see \cite{farkas_1994_periodic}, page 137). Consider the function
+
+\begin{align}
+\phi : (0, +\infty) &\times (\beta, +\infty) \rightarrow \mathbf{R} \label{limit cylce:phiFH}
+\\
+\nonumber
+(F,H) & \mapsto \dfrac{1}{F H (H/\beta - 1)}
+\end{align}
+
+Multiplying the right hand side of system $(F,H)$ \eqref{model:submodelFH} by this function, and taking the derivative with respect to $F$ or $H$ we obtain :
 \begin{subequations}
 \begin{align}
-H^*_{V, c, i} = \dfrac{1}{2}\left( \dfrac{r_V(1 + \dfrac{c}{bK_V}) - \lv L_V - \mu_V}{\lv + \dfrac{r_V}{bK_V}} \right) \pm \dfrac{1}{2}\sqrt{\left( \dfrac{r_V(1 + \dfrac{c}{bK_V}) - \lv L_V - \mu_V}{\lv + \dfrac{r_V}{bK_V}} \right)^2 - 4\dfrac{\mu_V L_V}{\lv + \dfrac{r_V}{bK_V}} } \\
-H^*_{V, c, i} = \dfrac{1}{2}\left( \dfrac{r_V(1 + \dfrac{c}{bK_V}) - \lv L_V - \mu_V}{\lv + \dfrac{r_V}{bK_V}} \right)\left( 1  \pm \sqrt{1 - \dfrac{4\mu_V L_V \Big(\lv + \dfrac{r_V}{bK_V} \Big)}{\left(r_V \Big(1 + \dfrac{c}{bK_V}\Big) - \lv L_V - \mu_V \right)^2}} \right)
+&\dfrac{\partial f_{1,FH} \times \phi}{\partial F}(F,H) = - \dfrac{r_F}{K_F} \dfrac{1}{H \big(\dfrac{H}{\beta}-1 \big)} \\
+&\dfrac{\partial f_{2,FH} \times \phi}{\partial H}(F,H) = - \dfrac{r_H}{(aF + c) F}
 \end{align}
 \end{subequations}
 
-In order to have $V^*_{H, c} > 0$, those solutions should also be higher than $c$. So we have a last condition of existence :
+Then, for $(F, H) \in \overset{\circ}{\Omega}_1$
 \begin{equation}
-H^*_{V, c, i} > c
-\label{eqVH:existence2}
+\Big(\dfrac{\partial f_{1,FH} \times \phi}{\partial F} + \dfrac{\partial f_{2,FH} \times \phi}{\partial H}\Big) (F, H) < 0
+\end{equation}
+and, according to Bendixson-Dulac theorem, there is no limit cycle on $\Omega_1$.
+
+On $\Omega_2$, we will distinguish two cases. First, we assume that $\beta < c$ . Then, we have on $\Omega_2$:
+\begin{equation}
+f_{2,FH}(F,H) = r_H \underset{0<}{\underbrace{\Big(1 - \dfrac{H}{aF + c} \Big)}}\underset{<0}{\underbrace{\Big(\dfrac{H}{\beta} -1\Big)}} H < 0
+\end{equation}
+since $\beta \leq aF + c$. $H(t)$ is thus decreasing on $\Omega_2$, and there is no limit cycle on $\Omega_2$.
+Now, we assume that $c < \beta$. By looking the vector fields in all the different configurations, it is possible to show that there is no limit cycle either.
+
+\subsection{Sub-model $V-H$}
+Now, we can analyze the sub-model with variables $V-H$. The model is:
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dV}{dt}=r_V \dfrac{H}{H + L_V} \left(1-\dfrac{V}{K_{V}}\right)V -\mu_V V -\lv V H\\
+\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{bV + c} \right)  (\dfrac{H}{\beta} - 1) H
+\end{array}\right.
+\label{model:submodelVH}
 \end{equation}
 
-\item A endemic equilibrium $EE^{FVH} = \Big(F^*_{VH, c}, V^*_{FH, c}, H^*_{FV, c} \Big)$. The variables' values are given by 
+\subsubsection{Equilibrium}
+Equilibrium are obtained when the right hand side of the previous system is equal at 0. They are :
+\begin{itemize}
+\item $TE = (0,0)$
+\item A human equilibrium $EE^H_\beta = \Big(0,\beta \Big)$
+\item A vegetation-human equilibrium $EE^{VH}_\beta = \Big(V^*_{\beta}, \beta \Big)$ where $V^*_\beta = K_V \Big(1- \dfrac{\beta + L_V}{\beta} \dfrac{\lv \beta + \mu_V}{r_V} \Big)$. This equilibrium exists when $\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\lv \beta + \mu_V} > 1$
+\item A human equilibrium $EE^H = \Big(0,c\Big)$
+\item One or two vegetation-human equilibrium $EE^{VH}_i = \Big(0, V^*_{c, VH,i}, H^*_{c, VH,i} \Big)$. $H^*_{c, VH,i}$ are equal at $H^*_{c, VH, i} = bV^*_{c,VH, i} + c$ and $V^*_{c, VH,i}$ are solutions of
+%\begin{equation}
+%V^2 + V \left(\dfrac{\dfrac{c r_V}{K_V} + \lv b (2c+L_V) + b (\mu_V - r_V)}{b^2\lv + \dfrac{b r_V}{K_V}} \right) + \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{r_V c}{b^2 \lv(1 + \dfrac{r_V}{b K_V \lv})} = 0
+%\label{equilibreVH:equationV}
+%\end{equation}
+%
+%\begin{equation}
+%V^2\left(b^2 \lv(1 + \dfrac{r_V}{b K_V \lv}) \right) + V \left( b r_V(\dfrac{c}{bK_V} -1)(1 + \dfrac{\lv  (2c+L_V) + \mu_V}{b r_V(\dfrac{c}{bK_V} -1)}) \right) + \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)r_V c = 0
+%\label{equilibreVH:equationV}
+%\end{equation}
+%
+%\begin{equation}
+%V^2\left(b^2 \lv(1 + \dfrac{r_V}{b K_V \lv}) \right) + V \left( b r_V(\dfrac{c}{bK_V} -1) + \lv  (2c+L_V) + \mu_V \right) + \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)r_V c = 0
+%\label{equilibreVH:equationV}
+%\end{equation}
+
+\begin{equation}
+V^2 + V \left(\dfrac{r_V}{b\lv} \dfrac{\dfrac{c}{bK_V} -1}{\dfrac{r_V}{b K_V \lv} +1} \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \right) + \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{r_V}{b\lv} \dfrac{c/b}{1 + \dfrac{r_V}{b K_V \lv}} = 0
+\label{equilibreVH:equationV}
+\end{equation}
+The solutions of this equation are real only if the discriminant $\Delta_{VH}$ is positive:
+
+\begin{subequations}
+\begin{align}
+&\left( \Big(\dfrac{c}{bKV} -1 \Big) \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \right)^2 \geq  4 \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{b\lv}{r_V} \dfrac{c}{b}(1 + \dfrac{r_V}{b K_V \lv}) \\
+& \Big(\dfrac{c}{bK_V} -1\Big)^2\left(1 + \dfrac{\lv  (2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1)} \right)^2 \geq 4 \dfrac{\lv c}{r_V} \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1 \Big)  (1 + \dfrac{r_V}{b K_V \lv}) \\
+& \Big(\dfrac{c}{bK_V} -1\Big)^2\left(1 + \dfrac{\lv  (2c+L_V) + \mu_V}{ r_V(\dfrac{c}{bK_V} -1)} \right)^2 \geq \dfrac{4c}{bK_V} \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)  \Big(1 + \dfrac{\lv b K_V}{r_V}\Big)
+\label{equilibreVH:disciminant}
+\end{align}
+\end{subequations}
+
+If $\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} < 1$, then the discriminant $\Delta_{VH}$ is positive, and the constant coefficient of \eqref{equilibreVH:equationV} is negative. Thus, there is always one positive roots (and the other is negative).
+
+When $\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} > 1$, the solutions have the same sign, which is positive if the coefficient in $V$ is negative. Thus, in addition of inequality \eqref{equilibreVH:disciminant}, the parameters must verify
+\begin{equation}
+\dfrac{r_V(1 - \dfrac{c}{bK_V})}{\lv  (2c+L_V) + \mu_V} > 1
+\end{equation}
+in order to have positive solutions.
+\end{itemize}
+
+Finally, if
+\begin{equation}
+1 < \dfrac{c}{c+L_V} \dfrac{r_V}{\mu_V + \lv c}
+\label{equilibreVH:conditionExistence1}
+\end{equation}
+there is one equilibrium, noted $EE^{VH}_2$ ; and if 
+\begin{subequations}
+    \begin{empheq}[left={\empheqlbrace\,}]{align}
+&\dfrac{c}{c+L_V} \dfrac{r_V}{\mu_V + \lv c} < 1 \\
+&\Big(\dfrac{c}{bK_V} -1\Big)^2\left(1 + \dfrac{\lv  (2c+L_V) + \mu_V}{ r_V(\dfrac{c}{bK_V} -1)} \right)^2 \geq  \dfrac{4 c}{bK_V} \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\Big(1 + \dfrac{\lv b K_V}{r_V}\Big) \\
+& \dfrac{r_V(1 - \dfrac{c}{bK_V})}{\lv  (2c+L_V) + \mu_V} > 1
+    \end{empheq}
+    \label{equilibreVH:conditionExistence2}
+\end{subequations}
+there are two equilibrium $EE^{VH}_1 \leq EE^{VH}_2$.
+
+$V^{*}_{VH,i}$ are equal at:
+\begin{equation}
+V^{*}_{VH,i} = -\dfrac{1}{2}\dfrac{r_V}{b\lv} \dfrac{\dfrac{c}{bK_V} -1}{\dfrac{r_V}{b K_V \lv} +1} \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \pm \dfrac{1}{2} \sqrt{\Delta}
+\label{equilibreVH:V}
+\end{equation}
+with $\Delta_{VH} = \left(\dfrac{r_V}{b\lv} \dfrac{\dfrac{c}{bK_V} -1}{\dfrac{r_V}{b K_V \lv} +1} \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \right)^2 - 4\Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{r_V}{b\lv} \dfrac{c/b}{1 + \dfrac{r_V}{b K_V \lv}} $
+
+and $H^*_{VH,i}$ are equal at
+\begin{equation}
+H^*_{VH,i} = b V^*_{VH,i} + c
+\label{equilibreVH:H}
+\end{equation}
+
+\subsubsection{Stability}
+The Jacobian matrix of the system is defined by :
+\begin{equation}
+\mathcal{J}(V,H) =  \begin{bmatrix}
+r_V \dfrac{H}{H+L_V}(1-\dfrac{2V}{K_V}) - \lv H - \mu_V & r_V \dfrac{L_V}{(H+L_V)^2}(1-\dfrac{V}{K_V})V  - \lv V\\
+r_H \dfrac{bH^2}{(bV+c)^2} (\dfrac{H}{\beta}-1) & r_H(1-\dfrac{H}{bV+c})(\dfrac{2H}{\beta}-1) - \dfrac{r_H H}{bV+c}(\dfrac{H}{\beta}-1)
+\end{bmatrix}
+\label{stabilityVH:jacobianVH}
+\end{equation}
+
+To assess the stability of the different equilibrium, we look at the eigenvalues of the Jacobian.
+
+\begin{itemize}
+\item At point $TE = (0, 0)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(0,0) = \begin{bmatrix}
+-\mu_V & 0 \\
+0 & -r_H
+\end{bmatrix}
+\end{equation}
+and thus the eigenvalues are $-\mu_V$ and $-r_H$. $TE$ is asymptotically stable (AS).
+
+\item At point $EE^H_\beta = \Big(0,\beta \Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(0, \beta) = \begin{bmatrix}
+r_V\dfrac{\beta}{\beta+L_V} - \lv \beta - \mu_V & 0 \\
+0 & r_H (1 - \dfrac{\beta}{c})
+\end{bmatrix}
+\end{equation}
+$EE^H_\beta$ is AS if 
 
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
-    &F^*_{VH, c} = F^*_{H, c} -  \dfrac{bK_F \dfrac{\FHterme}{r_F} }{1 + aK_F \dfrac{\FHterme}{r_F}} V^*_{FH, c} :=  F^*_{H, c} - c_1^F V^*_{FH, c}\\
-    &H^*_{FV,c} = a F^*_{H, c} + c + (b-ac^F_1) V^*_{FH, c}
+    & \dfrac{r_V}{\mu_V + \lv \beta} \dfrac{\beta}{\beta + L_V} < 1  \\
+    & \dfrac{c}{\beta} < 1
     \end{empheq}
-    \label{eqFVH:values}
 \end{subequations}
+
+\item At point $EE^{VH}_\beta = \Big(V^*_\beta,\beta \Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(V^*_\beta, \beta) = \begin{bmatrix}
+- r_V\dfrac{\beta}{\beta+L_V} V^*_\beta & \_ \\
+0 & r_H (1 - \dfrac{\beta}{c})
+\end{bmatrix}
+\end{equation}
+Eigenvalues appear on the diagonal. $EE^{VH}_\beta$ is AS if
+\begin{equation}
+\dfrac{c}{\beta} <1
+\end{equation}
+
+\item At point $EE^{H} = \Big(0,c \Big)$, the Jacobian is
+\begin{equation}
+\mathcal{J}(0,c) = \begin{bmatrix}
+r_V \dfrac{c}{L_V +c} - \lv c - \mu_V & 0 \\
+r_H b (\dfrac{c}{\beta} - 1) & -r_H(\dfrac{c}{\beta} - 1)
+\end{bmatrix}
+\end{equation}
+$EE^{H}$ is AS if
+\begin{subequations}
+    \begin{empheq}[left={\empheqlbrace\,}]{align}
+    & \dfrac{r_V}{\mu_V + c \lv} \dfrac{c}{c + L_V} < 1  \\
+    & 1< \dfrac{c}{\beta} 
+    \end{empheq}
+\end{subequations}
+
+\item At point(s) $EE^{VH} = \Big(0, V^*_{H, c}, H^*_{V, c})$, the Jacobian is
+\begin{equation}
+\mathcal{J}(V^*_{H, c}, H^*_{V, c}) = \begin{bmatrix}
+-r_V\dfrac{H^*_{V, c}}{H^*_{V, c} + L_V} \dfrac{V^*_{H, c}}{K_V} & \Big(\dfrac{L_V\mu_V}{H^*_{V, c}} - \lv H^*_{V, c}) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \\
+r_H b (\dfrac{H^*_{V, c}}{\beta} - 1) & -r_H(\dfrac{H^*_{V, c}}{\beta} - 1)
+\end{bmatrix}
+\label{stabilityVH:jacobianVH}
+\end{equation}
+We used $H^*_{V, c} = b V^*_{H, c} + c$ several times. Eigenvalues are the roots of 
+\begin{multline}
+\chi = X^2 + \Big(r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} + r_H(\dfrac{H^*_{V, c}}{\beta} - 1)\Big)X + \\
+ (\dfrac{H^*_{V, c}}{\beta} - 1) \left(r_V  \dfrac{H^*_{V, c}}{K_V}  + b \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) \right) r_H\dfrac{V^*_{H, c}}{H^*_{V, c} + L_V}
+ \label{stabilityVH:chi VH}
+\end{multline}
+
+The eigenvalues of \eqref{stabilityVH:jacobianVH} have negative real parts if the coefficients of \eqref{stabilityVH:chi VH} are both positive.
+
+The constant coefficient of $\chi$ can be re-written as :
+\begin{subequations}
+\begin{align}
+\chi_0 &= (\dfrac{H^*_{V, c}}{\beta} - 1) \left(r_V  \dfrac{H^*_{V, c}}{K_V}  + b \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) \right) r_H\dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \\
+&= (\dfrac{H^*_{V, c}}{\beta} - 1) \left( \Big(\dfrac{r_V}{K_V} + b\lv\Big) (H^*_{V, c})^2 - b L_V \mu_V \right) r_H\dfrac{V^*_{H, c}}{H^*_{V, c}(H^*_{V, c} + L_V)}
+\end{align}
+\end{subequations}
+and using equation \eqref{equilibreVH:equationV}, we can show that $H^*_{V, c}$ are solutions of
+\begin{equation}
+H^2 - H \left( \dfrac{r_V(1 + \dfrac{c}{bK_V}) - \lv L_V - \mu_V}{\lv(1 + \dfrac{r_V}{\lv bK_V})} \right) + \dfrac{\mu_V L_V}{\lv(1 + \dfrac{r_V}{bK_V\lv})} = 0
+\label{equilibreVH:equation H}
+\end{equation}
+
+By using appendix \ref{appendice:ineq2nd}, we can show that the term $\left( \Big(\dfrac{r_V}{K_V} + b\lv\Big) (H^*_{V, c})^2 - b L_V \mu_V \right)$ is always positive for $H^*_{V, c, 2}$ and negative for $H^*_{V, c,1}$.
+
+So, the constant coefficient of $\chi$ is positive for $H^*_{V, c, 2}$ if $H^*_{V, c, 2} > \beta$, and this condition also ensures that the other coefficient of $\chi$ is positive.
+
+On the other hand, the constant coefficient of $\chi$ is positive for $H^*_{V, c, 1}$ if $H^*_{V, c, 1} < \beta$.
+Moreover, equilibrium $EE^{VH}_1$ is characterized by the fact that 
+\begin{equation}
+f_3(H^*_{V, c, 1},V^*_{H, c, 1}) =  H^*_{V, c, 1} \times \Big(1 - \dfrac{H^*_{V, c, 1}}{bV^*_{H, c, 1} + c} \Big) \times \Big(\dfrac{H^*_{V, c, 1}}{\beta} - 1 \Big) = 0
+\end{equation}
+Let $H^*_{V, c, 1} < \beta$, and $V = V^*_{H, c, 1}$ being constant. Starting from $H = H^*_{V, c, 1}$ a small variation of $H$  will induce a variation in the same sense for $f_3(H, V^*_{H, c, 1})$.
+This lead to the assumption that $EE^{VH}_1$ is not stable.
+
+Finally, we assumed that $EE^{VH}_1$ is never stable, while $EE^{VH}_2$ is AS if
+
+\begin{equation}
+1 < \dfrac{bV^*_{H,c,2} + c}{\beta}
+\end{equation}
+\end{itemize}
+
+\subsubsection{Limit cycle}
+We will study the existence of limit cycle for system $V-H$ in the same way we did for system $F-H$. Considering again $\Omega_1 = \{(V,H) \in [0, +\infty) \times [\beta, +\infty)\}$ and $\Omega_2 = \{(V,H) \in [0, +\infty) \times [0, \beta])\}$, we can use the function \eqref{limit cylce:phiFH} and the Bendixson-Dulac theorem to show that there is no limit cycle on $\Omega_1$.
+
+
+
+\subsection{Overall model}
+\subsubsection{Equilibrium}
+The equilibrium of the overall model are obtained from the equilibrium of the sub-models, to which we add the endemic equilibrium. We obtain the following list (see above for the existence and values)
+
+\begin{itemize}
+\item $TE = (0,0,0)$
+\item A forest equilibrium $EE^F = \Big(F^*, 0, 0 \Big) $.
+\item A human equilibrium $EE^H_\beta = \Big(0,0,\beta \Big)$
+\item A forest-human equilibrium $EE^{FH}_\beta = \Big(F^*_\beta, 0, \beta\Big)$. 
+\item A vegetation-human equilibrium $EE^{VH}_\beta = \Big(0, V^*_{\beta}, \beta \Big)$.
+\item An endemic equilibrium $EE_\beta^{FVH} = \Big(F^*_\beta, V^*_{F^*_\beta, \beta}, \beta \Big)$ where $\VbetaF = K_V \Big(1- \dfrac{\beta +L_V}{\beta} \dfrac{\alpha \Fbeta + \lv \beta + \mu_V}{r_V} \Big)$. This equilibrium exists  when $\dfrac{r_F}{\mu_F + \beta(\lf + \omega f)} > 1$ and $\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\alpha \Fbeta + \lv \beta + \mu_V} > 1$.
+
+
+\item A human equilibrium $EE^H = \Big(0,0,c\Big)$.
+\item A forest-human equilibrium $EE^{FH} = \Big(F^*_c, 0, a F^*_c + c \Big)$.
+\item One or two vegetation-human equilibrium $EE^{VH}_i = \Big(0, V^*_{VH, i}, bV^*_{VH, i}+c \Big)$.
+\item A endemic equilibrium $EE^{FVH} = \Big(F^*_c - c_1^FV^*_{FVH}, V^*_{FVH}, aF^*_c+(b-ac_1^F)V^*_{FVH}+c \Big)$ where $c^F_1 = \dfrac{bK_F \dfrac{\FHterme}{r_F} }{1 + aK_F \dfrac{\FHterme}{r_F}}$.
 
 NB : $c_1^F> 0$, $b-ac^F_1 > 0$
 
 and $V^*_{FH, c}$ are solutions of 
+\end{itemize}
 
 \newpage
 \begin{landscape}
 
-\begin{subequations}
-\begin{align}
-& r_V \Big(1 - \dfrac{V}{K_V}) (a F^*_{H, c} + c + (b-ac^F_1) V) - \alpha (F^*_{H, c} - c_1^F V)(a F^*_{H, c} + c +L_V + (b-ac^F_1) V) - \mu_V (a F^*_{H, c} + c +L_V + (b-ac^F_1) V) - \lv (a F^*_{H, c} + c + (b-ac^F_1) V) (a F^*_{H, c} + c + L_V + (b-ac^F_1) V) = 0\\
-&\begin{multlined}[t][8cm]
-V^2 \Big(-\dfrac{r_V}{K_V} (b-ac^F_1) + \alpha c_1(b-ac^F_1) - \lv (b-ac^F_1)^2 \Big) + \\
-V \Big(r_V(b-ac^F_1) - \dfrac{r_V}{K_V} (a F^*_{H, c} + c) + \alpha c_1^F (a F^*_{H, c} + c + L_V) - \alpha (b-ac^F_1)F^*_{H, c} - \mu_V(b-ac^F_1) - \lv (b-ac^F_1)(a F^*_{H, c} + c) - \lv (a F^*_{H, c} + c + L_V)(b-ac^F_1) \Big)+ \\
-r_V (a F^*_{H, c} + c) - \alpha F^*_{H, c}(a F^*_{H, c} + c+L_V) - \mu_V (a F^*_{H, c} + c+L_V) - \lv (a F^*_{H, c} + c)(a F^*_{H, c} + c + L_V) = 0
-\end{multlined} \\
-&\begin{multlined}[t][1cm]
-V^2 \Big(-\dfrac{r_V}{K_V} + \alpha c_1^F - \lv (b-ac^F_1) \Big) + \\
-V \Big(r_V - \mu_V - \lv (2 a F^*_{H, c} + 2c + L_V) - \alpha F^*_{H, c} - \dfrac{r_V}{K_V} \dfrac{a F^*_{H, c} + c}{b-ac_1^F} - \alpha \dfrac{c1^F(a F^*_{H, c} + c + L_V)}{b-ac_1^F} \Big) +  \\
-\dfrac{(a F^*_{H, c} + c + L_V)}{(b-ac^F_1)} \Big(- \alpha F^*_{H, c} - \mu_V - \lv (a F^*_{H, c} + c)\Big) + r_V \dfrac{(a F^*_{H, c} + c)}{(b-ac^F_1)} = 0
-\end{multlined}
-\end{align}
-\end{subequations}
+\begin{multline}
+V^2 + V \left( \dfrac{r_V}{\lv (b-ac_1^F) - \alpha c_1^F} \dfrac{\dfrac{aF^*_c + c}{K_V(b-ac_1^F)} - 1}{\dfrac{r_V}{K_V(\lv(b-ac_1^F) - \alpha c_1^F)} + 1} \Big(1 + \dfrac{\mu_V + \lv(2aF^*_c + 2c + L_V) + \alpha \Big(2F^*_c - \dfrac{bF^*_c + c_1^F (c+L_V)}{b-ac_1^F}\Big)}{r_V\Big(\dfrac{aF^*_c + c}{K_V(b-ac_1^F)} - 1 \Big)} \right)  + \\
+\Big(\dfrac{aF^*_c + c + L_V}{aF^*_c + c} \dfrac{\mu_V + \alpha F^*_c + \lv (aF^*_c + c)}{r_V} - 1\Big) \dfrac{r_V}{\lv(b-ac_1^F) - \alpha c_1^F} \dfrac{(aF_c^* + c)/(b-ac_1^F)}{1 + \dfrac{r_V}{K_V(\lv(b-ac_1^F) - \alpha c_1^F)}} = 0
+\end{multline}
+
+This equation has the same shape than \eqref{equilibreVH:equationV}.
 
 \end{landscape}
-\end{itemize}
 
-\section{Stability}
+\subsubsection{Stability}
 
 The Jacobian matrix of the system is defined by :
 {\footnotesize
@@ -179,45 +475,41 @@ The Jacobian matrix of the system is defined by :
 \mathcal{J}(F,V,H) = \\ \begin{bmatrix}
 r_F \Big(1-\dfrac{2F}{K_F} \Big) - \mu_F - (\lf + \omega f)H & 0 & -(\lf + \omega f)F \\
 -\alpha V & r_V \dfrac{H}{H+L_V}(1-\dfrac{2V}{K_V}) - \alpha F - \lv H - \mu_V & r_V \dfrac{L_V}{(H+L_V)^2}(1-\dfrac{V}{K_V})V  - \lv V\\
-r_H \dfrac{aH^2}{(aF+bV+c)^2} (\dfrac{H}{\beta}-1) &r_H \dfrac{bH^2}{(aF+bV+c)^2} (\dfrac{H}{\beta}-1) & r_H(1-\dfrac{H}{aF+bV+c})(\dfrac{2H}{\beta}-1) - \dfrac{r_H H}{aF+bV+c}(\dfrac{H}{\beta}-1)
+r_H \dfrac{aH^2}{(aF+bV+c)^2} (\dfrac{H}{\beta}-1) &r_H \dfrac{bH^2}{(aF+bV+c)^2} (\dfrac{H}{\beta}-1) & r_H(1-\dfrac{H}{aF+bV+c})(\dfrac{2H}{\beta}-1) - \dfrac{r_H H (\dfrac{H}{\beta}-1)}{aF+bV+c}
 \end{bmatrix}
 \label{stab:jacobian}
 \end{multline}
 }
 
-To assess the stability of the equilibrium we look at the eigenvalues of the Jacobian.
+To assess the stability of the equilibrium we look at the eigenvalues of the Jacobian. Eigenvalues for all the equilibrium, except for the endemic ones, can be easily computed using previous parts.
 
 \begin{itemize}
-\item At point $TE = (0,0, 0)$, the Jacobian is
-\begin{equation}
-\mathcal{J}(0,0,0) = \begin{bmatrix}
-r_F - \mu_F & 0 \\
-0 & -\mu_V & 0 \\
-0 & 0 & -r_H
-\end{bmatrix}
-\end{equation}
-and thus the eigenvalues are $r_F - \mu_F$, $-\mu_V$ and $-r_H$. $TE$ is asymptotically stable (AS) if $\NF < 1$.
+\item At point $TE = (0,0, 0)$, the eigenvalues are $r_F - \mu_F$, $-\mu_V$ and $-r_H$. $TE$ is asymptotically stable (AS) if $\NF < 1$.
 
-\item At point $EE^{F} = (F^F, 0, 0)$, the Jacobian is 
-\begin{equation}
-\mathcal{J}(F^F, 0, 0)
-\begin{bmatrix}
--r_F \dfrac{F^F}{K_F}  & 0 & -(\FHterme)F^F \\
-0 & -\alpha F^F - \mu_V & 0 \\
-0 & 0 & -r_H 
-\end{bmatrix}
-\end{equation}
-and thus the eigenvalues are all negative. $EE^F$ is asymptotically stable.
+\item At point $EE^{F} = (F^*, 0, 0)$, 
+%the Jacobian is 
+%\begin{equation}
+%\mathcal{J}(F^F, 0, 0)
+%\begin{bmatrix}
+%-r_F \dfrac{F^F}{K_F}  & 0 & -(\FHterme)F^F \\
+%0 & -\alpha F^F - \mu_V & 0 \\
+%0 & 0 & -r_H 
+%\end{bmatrix}
+%\end{equation}
+%and thus 
+the eigenvalues are all negative. $EE^F$ is asymptotically stable.
 
-\item At point $EE^H_\beta = \Big(0,0,H^*_\beta \Big)$, the Jacobian is
-\begin{equation}
-\mathcal{J}(0, 0, H^*_\beta) = \begin{bmatrix}
-r_F - \mu_F - (\FHterme) H^*_\beta & 0 & 0 \\
-0 & r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} - \lv H^*_\beta - \mu_V & 0 \\
-0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
-\end{bmatrix}
-\end{equation}
-We used $H^*_\beta = \beta$ several times. $EE^H_\beta$ is AS if 
+\item $EE^H_\beta = \Big(0,0,\beta \Big)$, 
+%the Jacobian is
+%\begin{equation}
+%\mathcal{J}(0, 0, H^*_\beta) = \begin{bmatrix}
+%r_F - \mu_F - (\FHterme) H^*_\beta & 0 & 0 \\
+%0 & r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} - \lv H^*_\beta - \mu_V & 0 \\
+%0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_\beta = \beta$ several times. $EE^H_\beta$ is AS if
+is AS if
 
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
@@ -227,32 +519,36 @@ We used $H^*_\beta = \beta$ several times. $EE^H_\beta$ is AS if
     \end{empheq}
 \end{subequations}
 
-\item At point $EE^{FH}_\beta = \Big(F^*_\beta,0,H^*_\beta \Big)$, the Jacobian is
-\begin{equation}
-\mathcal{J}(F^*_\beta, 0, H^*_\beta) = \begin{bmatrix}
--r_F \dfrac{F^*_\beta}{K_F} & 0 & -(\FHterme) F^*_\beta \\
-0 & r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} - \lv H^*_\beta - \alpha F^*_\beta - \mu_V & 0 \\
-0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
-\end{bmatrix}
-\end{equation}
-We used $H^*_\beta = \beta$ several times.  $EE^{FH}_\beta$ is AS if 
+\item Point $EE^{FH}_\beta = \Big(F^*_\beta,0,\beta \Big)$,
+% the Jacobian is
+%\begin{equation}
+%\mathcal{J}(F^*_\beta, 0, H^*_\beta) = \begin{bmatrix}
+%-r_F \dfrac{F^*_\beta}{K_F} & 0 & -(\FHterme) F^*_\beta \\
+%0 & r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} - \lv H^*_\beta - \alpha F^*_\beta - \mu_V & 0 \\
+%0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_\beta = \beta$ several times.  $EE^{FH}_\beta$ is AS if
+is AS if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
-    &r_V \dfrac{\beta}{\beta + L_V} < \mu_V + \lv \beta -\alpha K_F\Big(1- \dfrac{\mu_F + \beta(\FHterme)}{r_F} \Big) \\
-    & c < \beta
+    &\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\mu_V + \lv \beta + \alpha F^*_\beta}  < 1 \\
+    & \dfrac{c}{\beta} < 1
     \end{empheq}
 \end{subequations}
 
 
-\item At point $EE^{VH}_\beta = \Big(0,V^*_\beta,H^*_\beta \Big)$, the Jacobian is
-\begin{equation}
-\mathcal{J}(0, V^*_\beta, H^*_\beta) = \begin{bmatrix}
-r_F - \mu_F - (\FHterme) H^*_\beta & 0 & 0 \\
--\alpha V^*_\beta & - r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} V^*_\beta & \_ \\
-0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
-\end{bmatrix}
-\end{equation}
-We used $H^*_\beta = \beta$ several times. Eigenvalues appear on the diagonal. $EE^{VH}_\beta$ is AS if
+\item Point $EE^{VH}_\beta = \Big(0,V^*_\beta,\beta \Big)$,
+% the Jacobian is
+%\begin{equation}
+%\mathcal{J}(0, V^*_\beta, H^*_\beta) = \begin{bmatrix}
+%r_F - \mu_F - (\FHterme) H^*_\beta & 0 & 0 \\
+%-\alpha V^*_\beta & - r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} V^*_\beta & \_ \\
+%0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_\beta = \beta$ several times. Eigenvalues appear on the diagonal. $EE^{VH}_\beta$
+ is AS if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
     & \dfrac{r_F}{\mu_F + \beta (\FHterme)} < 1 \\
@@ -260,28 +556,30 @@ We used $H^*_\beta = \beta$ several times. Eigenvalues appear on the diagonal. $
     \end{empheq}
 \end{subequations}
 
-\item At point $EE^{FVH}_\beta = \Big(\Fbeta,\VbetaF, \Hbeta \Big)$, the Jacobian is
+\item At point $EE^{FVH}_\beta = \Big(\Fbeta,\VbetaF, \beta \Big)$, the Jacobian is
 \begin{equation}
 \mathcal{J}(\Fbeta, \VbetaF, \Hbeta) = \begin{bmatrix}
 -r_F \dfrac{\Fbeta}{K_F} & 0 & -(\FHterme)\Fbeta \\
--\alpha \VbetaF & - r_V\dfrac{H^*_\beta}{H^*_\beta+L_V} \VbetaF & \_ \\
-0 & 0 & r_H (1 - \dfrac{H^*_\beta}{c})
+-\alpha \VbetaF & - r_V\dfrac{\beta}{\beta+L_V} \VbetaF & \_ \\
+0 & 0 & r_H (1 - \dfrac{\beta}{c})
 \end{bmatrix}
 \end{equation}
-We used $H^*_\beta = \beta$ several times. Eigenvalues appear on the diagonal. $EE^{FVH}_\beta$ is AS if
+Eigenvalues appear on the diagonal. $EE^{FVH}_\beta$ is AS if
 \begin{equation}
 \dfrac{c}{\beta} < 1
 \end{equation}
 
-\item At point $EE^{H} = \Big(0,0,H^*_c \Big)$, the Jacobian is
-\begin{equation}
-\mathcal{J}(0,0,H^*_c) = \begin{bmatrix}
-r_F - \mu_F - H^*_c(\FHterme) & 0 & 0 \\
-0 & r_V \dfrac{H^*_c}{L_V + H^*_c} - \lv H^*_c - \mu_V & 0 \\
-r_H a (\dfrac{H^*_c}{\beta} - 1) & r_H b (\dfrac{H^*_c}{\beta} - 1) & -r_H(\dfrac{H^*_c}{\beta} - 1)
-\end{bmatrix}
-\end{equation}
-We used $H^*_c = c$ several times. $EE^{H}$ is AS if
+\item Point $EE^{H} = \Big(0,0,c \Big)$
+%the Jacobian is
+%\begin{equation}
+%\mathcal{J}(0,0,H^*_c) = \begin{bmatrix}
+%r_F - \mu_F - H^*_c(\FHterme) & 0 & 0 \\
+%0 & r_V \dfrac{H^*_c}{L_V + H^*_c} - \lv H^*_c - \mu_V & 0 \\
+%r_H a (\dfrac{H^*_c}{\beta} - 1) & r_H b (\dfrac{H^*_c}{\beta} - 1) & -r_H(\dfrac{H^*_c}{\beta} - 1)
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_c = c$ several times. $EE^{H}$
+ is AS if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
     &\dfrac{r_F}{\mu_F + c (\FHterme)} < 1 \\
@@ -290,79 +588,60 @@ We used $H^*_c = c$ several times. $EE^{H}$ is AS if
     \end{empheq}
 \end{subequations}
 
-\item At point $EE^{FH} = \Big(F^*_{H, c}, 0, H^*_{F, c})$, the Jacobian is
-\begin{equation}
-\mathcal{J}(F^*_{H, c}, 0, H^*_{F, c}) = \begin{bmatrix}
--r_F \dfrac{F^*_{H, c}}{K_F} & 0 & -(\FHterme) F^*_{H, c} \\
-0 & r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} - \lv H^*_{F, c} -\alpha F^*_{H, c} - \mu_V & 0 \\
-r_H a (\dfrac{H^*_{F, c}}{\beta} - 1) & r_H b (\dfrac{H^*_{F, c}}{\beta} - 1) & -r_H(\dfrac{H^*_{F, c}}{\beta} - 1)
-\end{bmatrix}
-\end{equation}
-We used $H^*_{F, c} = a F^*_{H, c} c$ several times. Eigenvalues are the roots of 
-
-\begin{multline}
-\chi = \Big(X - r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} + \lv H^*_{F, c} +\alpha F^*_{H, c} + \mu_V \Big) \times \\
-\left(X^2 + \Big(r_F \dfrac{F^*_{H, c}}{K_F} + r_H \big(\dfrac{H^*_{F, c}}{\beta} - 1\big) \Big)X + r_f \dfrac{F^*_{H, c}}{K_F}r_H \big(\dfrac{H^*_{F, c}}{\beta} - 1)\big) + r_H a \big(\dfrac{H^*_{F, c}}{\beta} - 1\big) (\FHterme) F^*_{H, c} \right)
-\end{multline}
-
-One root is $r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} - \lv H^*_{F, c} -\alpha F^*_{H, c} -  \mu_V$. The two others have negative real parts if the coefficients of the second degree polynomial are both positive, which is the case if $H^*_{F, c} > \beta$.
-Finally, $EE^{FH}$ is AS if
+\item Point $EE^{FH} = \Big(F^*_c, 0, aF^*_c + c)$
+%, the Jacobian is
+%\begin{equation}
+%\mathcal{J}(F^*_{H, c}, 0, H^*_{F, c}) = \begin{bmatrix}
+%-r_F \dfrac{F^*_{H, c}}{K_F} & 0 & -(\FHterme) F^*_{H, c} \\
+%0 & r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} - \lv H^*_{F, c} -\alpha F^*_{H, c} - \mu_V & 0 \\
+%r_H a (\dfrac{H^*_{F, c}}{\beta} - 1) & r_H b (\dfrac{H^*_{F, c}}{\beta} - 1) & -r_H(\dfrac{H^*_{F, c}}{\beta} - 1)
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_{F, c} = a F^*_{H, c} c$ several times. Eigenvalues are the roots of 
+%
+%\begin{multline}
+%\chi = \Big(X - r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} + \lv H^*_{F, c} +\alpha F^*_{H, c} + \mu_V \Big) \times \\
+%\left(X^2 + \Big(r_F \dfrac{F^*_{H, c}}{K_F} + r_H \big(\dfrac{H^*_{F, c}}{\beta} - 1\big) \Big)X + r_f \dfrac{F^*_{H, c}}{K_F}r_H \big(\dfrac{H^*_{F, c}}{\beta} - 1)\big) + r_H a \big(\dfrac{H^*_{F, c}}{\beta} - 1\big) (\FHterme) F^*_{H, c} \right)
+%\end{multline}
+%
+%One root is $r_V \dfrac{H^*_{F, c}}{L_V + H^*_{F, c}} - \lv H^*_{F, c} -\alpha F^*_{H, c} -  \mu_V$. The two others have negative real parts if the coefficients of the second degree polynomial are both positive, which is the case if $H^*_{F, c} > \beta$.
+%Finally, $EE^{FH}$ 
+is AS if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
-    & \dfrac{r_V}{\mu_V + H^*_{F, c} \lv +\alpha F^*_{H, c}} \dfrac{H^*_{F, c}}{H^*_{F, c} + L_V} < 1 \\
-    &1 < \dfrac{H^*_{F, c}}{\beta}
+    & \dfrac{r_V}{\mu_V + H^*_{F} \lv +\alpha F^*_{c}} \dfrac{H^*_{F}}{H^*_{F} + L_V} < 1 \\
+    &1 < \dfrac{a H^*_{F} + c}{\beta}
     \end{empheq}
 \end{subequations}
-with $F^*_{H, c} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right)$ and $H^*_{F, c} = a F^*_{H, c} + c$.
+with $F^*_{c} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right)$ and $H^*_{F} = a F^*_{c} + c$.
 
 
-\item At point $EE^{VH} = \Big(0, V^*_{H, c}, H^*_{V, c})$, the Jacobian is
-\begin{equation}
-\mathcal{J}(0, V^*_{H, c}, H^*_{V, c}) = \begin{bmatrix}
-r_F - \mu_F - (\FHterme)H^*_{V, c}  & 0 & 0 \\
--\alpha V^*_{H, c} & -r_V\dfrac{H^*_{V, c}}{H^*_{V, c} + L_V} \dfrac{V^*_{H, c}}{K_V} & \Big(\dfrac{L_V\mu_V}{H^*_{V, c}} - \lv H^*_{V, c}) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \\
-r_H a (\dfrac{H^*_{V, c}}{\beta} - 1) & r_H b (\dfrac{H^*_{V, c}}{\beta} - 1) & -r_H(\dfrac{H^*_{V, c}}{\beta} - 1)
-\end{bmatrix}
-\end{equation}
-We used $H^*_{V, c} = b V^*_{H, c} + c$ several times. Eigenvalues are the roots of 
-\begin{multline}
-\chi = \Big(X - r_F + \mu_F + (\FHterme)H^*_{V, c} \Big) \times \\
-\left(X^2 + \Big(r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} + r_H(\dfrac{H^*_{V, c}}{\beta} - 1)\Big)X + \right.\\ \left.
- r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} r_H(\dfrac{H^*_{V, c}}{\beta} - 1) + r_Hb(\dfrac{H^*_{V, c}}{\beta} - 1) \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \right)
- \label{stab:chi VH}
-\end{multline}
-
-One root is $r_F - \mu_F - (\FHterme)H^*_{V, c}$. The two others have negative real parts if the coefficients of the second degree polynomial are both positive. The constant coefficient is positive if 
-\begin{subequations}
-\begin{align}
-&r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} r_H(\dfrac{H^*_{V, c}}{\beta} - 1) + r_Hb(\dfrac{H^*_{V, c}}{\beta} - 1) \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} > 0 \\
-& r_V  \dfrac{H^*_{V, c}}{K_V}(\dfrac{H^*_{V, c}}{\beta} - 1) + b (\dfrac{H^*_{V, c}}{\beta} - 1) \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) > 0 \\
-&(\dfrac{H^*_{V, c}}{\beta} - 1) \Big(r_V  \dfrac{H^*_{V, c}}{K_V} + b\Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big)\Big) > 0 \\
-&\Big(\dfrac{H^*_{V, c}}{\beta} - 1 \Big) \times \Big( (H^*_{V, c})^2 \big(\dfrac{r_V }{K_V} + b\lv\big) -  b L_V \mu_V \Big) > 0
-\end{align}
-\end{subequations}
-Using appendix \ref{appendice:ineq2nd} for $H^*_{V, c, i}$, we obtain that the second factor is positive for $H^*_{V, c, 2}$ and negative for $H^*_{V, c, 1}$. We can distinguish those two cases.
-\\
-Concerning  $H^*_{V, c, 2}$, the constant coefficient is positive when $H^*_{V, c, 2} > \beta$ and this condition also ensures that the coefficient in $X$ in \eqref{stab:chi VH} is also positive. 
-\\
-Concerning  $H^*_{V, c, 1}$, the constant coefficient is positive if $H^*_{V, c, 1} < \beta$. Equilibrium $EE^{VH}_1$ is characterized by the fact that 
-\begin{equation}
-f_3(H^*_{V, c, 1},V^*_{H, c, 1}) =  H^*_{V, c, 1} \times \Big(1 - \dfrac{H^*_{V, c, 1}}{bV^*_{H, c, 1} + c} \Big) \times \Big(\dfrac{H^*_{V, c, 1}}{\beta} - 1 \Big) = 0
-\end{equation}
-Let $H^*_{V, c, 1} < \beta$, and $V = V^*_{H, c, 1}$ being constant. Starting from $H = H^*_{V, c, 1}$ a small variation of $H$  will induce a variation in the same sense for $f_3(H, V^*_{H, c, 1})$.
-This lead to the assumption that $EE^{VH}_1$ is not stable.
-
-Finally, $EE^{VH}_2$ is AS if
-
+\item Point $EE^{VH}_1 = \Big(0, V^*_{VH, 1}, H^*_{VH, 1})$ is never stable.
+\item Point $EE^{VH}_2 = \Big(0, V^*_{VH, 2}, H^*_{VH, 2})$
+%the Jacobian is
+%\begin{equation}
+%\mathcal{J}(0, V^*_{H, c}, H^*_{V, c}) = \begin{bmatrix}
+%r_F - \mu_F - (\FHterme)H^*_{V, c}  & 0 & 0 \\
+%-\alpha V^*_{H, c} & -r_V\dfrac{H^*_{V, c}}{H^*_{V, c} + L_V} \dfrac{V^*_{H, c}}{K_V} & \Big(\dfrac{L_V\mu_V}{H^*_{V, c}} - \lv H^*_{V, c}) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \\
+%r_H a (\dfrac{H^*_{V, c}}{\beta} - 1) & r_H b (\dfrac{H^*_{V, c}}{\beta} - 1) & -r_H(\dfrac{H^*_{V, c}}{\beta} - 1)
+%\end{bmatrix}
+%\end{equation}
+%We used $H^*_{V, c} = b V^*_{H, c} + c$ several times. Eigenvalues are the roots of 
+%\begin{multline}
+%\chi = \Big(X - r_F + \mu_F + (\FHterme)H^*_{V, c} \Big) \times \\
+%\left(X^2 + \Big(r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} + r_H(\dfrac{H^*_{V, c}}{\beta} - 1)\Big)X + \right.\\ \left.
+% r_V  \dfrac{H^*_{V, c}}{H^*_{V, c}+L_V}\dfrac{V^*_{H, c}}{K_V} r_H(\dfrac{H^*_{V, c}}{\beta} - 1) + r_Hb(\dfrac{H^*_{V, c}}{\beta} - 1) \Big(\lv H^*_{V, c} - \dfrac{L_V \mu_V}{H^*_{V, c}} \Big) \dfrac{V^*_{H, c}}{H^*_{V, c} + L_V} \right)
+% \label{stab:chi VH}
+%\end{multline}
+%
+is AS if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
-&r_F < \mu_F + (\FHterme)H^*_{V, c, 2} \\
-&\beta < H^*_{V,C,2}
+&\dfrac{r_F}{ \mu_F + (\FHterme)H^*_{VH, 2}} < 1 \\
+&1 < \dfrac{H^*_{VH,2}}{\beta}
     \end{empheq}
 \end{subequations}
-
-and $EE^{VH}_1$ is assumed to be never stable.
-
+where $V^*_{VH, 2}$ is given by equation \eqref{equilibreVH:V} and $H^*_{VH, 2} =  bV^*_{VH, 2} + c$.
 \end{itemize}
 
 
@@ -430,46 +709,6 @@ $T_H(0)$ & $T_F(0)$ &$T_F(\beta) $ & $T_V(\beta, 0)$ &$T_V(\beta, F^*_\beta)$& $
 
 \section{Sub-models}
 Let consider the sub-models of \eqref{model:simplified} with variables $(F,H)$ 
-
-\begin{equation}    
-\left\{ \begin{array}{l}
-\dfrac{dF}{dt}=r_{F}\left(1-\dfrac{F}{K_{F}}\right)F-\omega f H F - \mu_F F -\lf F H = f_{1, FH} (F,H) \\
-\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{aF + c} \right)  (\dfrac{H}{\beta} - 1) H = f_{2,FH}(F,H)
-\end{array}\right.
-\label{model:submodelFH}
-\end{equation}
-
-and $(V,H)$ :
-
-\begin{equation}    
-\left\{ \begin{array}{l}
-\dfrac{dV}{dt}=r_V \dfrac{H}{H + L_V} \left(1-\dfrac{V}{K_{V}}\right)V -\mu_V V -\lv V H\\
-\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{bV + c} \right)  (\dfrac{H}{\beta} - 1) H
-\end{array}\right.
-\label{model:submodelVH}
-\end{equation}
-
-We can study the existence of limit cycle for those system, using the Bendixson-Dulac theorem. Consider the function
-
-\begin{align}
-\phi : (0, +\infty) &\times (\beta, +\infty) \rightarrow \mathbf{R} \\
-\nonumber
-(F,H) & \mapsto \dfrac{1}{F H (H/\beta - 1)}
-\end{align}
-
-Multiplying the right hand side of system $(F,H)$ \eqref{model:submodelFH} by this function, and taking the derivative with respect to $F$ or $H$ we obtain :
-\begin{subequations}
-\begin{align}
-&\dfrac{\partial f_{1,FH} \times \phi}{\partial F}(F,H) = - \dfrac{r_F}{K_F} \dfrac{1}{H \big(\dfrac{H}{\beta}-1 \big)} \\
-&\dfrac{\partial f_{2,FH} \times \phi}{\partial H}(F,H) = - \dfrac{r_H}{(aF + c) F}
-\end{align}
-\end{subequations}
-
-Then, for $(F, H) \in (0, +\infty) \times (\beta, +\infty)$
-\begin{equation}
-\Big(\dfrac{\partial f_{1,FH} \times \phi}{\partial F} + \dfrac{\partial f_{2,FH} \times \phi}{\partial H}\Big) (F, H) < 0
-\end{equation}
-and, according to Bendixson-Dulac theorem, there is no limit cycle on this interval.
 
 The same function can be used to show that the system $(V,H)$ \eqref{model:submodelVH} does not admit a limit cycle on $(0, +\infty) \times (\beta, +\infty)$.
 
