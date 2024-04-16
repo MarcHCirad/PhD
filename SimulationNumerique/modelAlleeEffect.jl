@@ -20,6 +20,8 @@ struct modelAlleeEffect <: mathematicalModel
     b::Float64
     c::Float64
     beta::Float64
+
+    thresholdsName::Vector{String}
     
     function modelAlleeEffect(modelParam::Dict{String, Float64})
         rF, KF, omega, f, muF, lambdaFH = modelParam["rF"], modelParam["KF"], modelParam["omega"],
@@ -29,9 +31,23 @@ struct modelAlleeEffect <: mathematicalModel
         LV = modelParam["LV"]
         rH, a, b, c = modelParam["rH"], modelParam["a"], modelParam["b"], modelParam["c"]
         beta = modelParam["beta"]
+
+        thresholdsName = ["TH0",
+            "THFc",
+            "THVVH",
+            "TF0",
+            "TFBeta",
+            "TFHVH2",
+            "TVBeta0",
+            "TVBetaFBeta",
+            "TFc",
+            "TVc0",
+            "TVcFc",
+            "DeltaVH",
+            "Tbizarre"]
        
         new(rF, KF, omega, f, muF, lambdaFH, rV, KV, LV, alpha, muV, 
-                    lambdaVH, rH, a, b, c, beta)
+                    lambdaVH, rH, a, b, c, beta, thresholdsName)
     end
 end
 
@@ -48,6 +64,10 @@ function equationModel(model::modelAlleeEffect, variables::Vector{Float64})
     return [dF, dV, dH]
 end
 
+function thresholdH(model::modelAlleeEffect ; F = 0, V =0)
+    return (model.a * F + model.b * V + c) / model.beta
+end
+
 function NF(model::modelAlleeEffect ; H = 0)
     return model.rF / (model.muF + H * (model.omega * model.f + model.lambdaFH))
 end
@@ -58,26 +78,16 @@ function thresholdV(model::modelAlleeEffect, H::Float64 ; F = 0)
     return fact1 * fact2
 end
 
-function thresholdVH1(model::modelAlleeEffect)
-    fact1 = (model.b * model.KV + model.c) / (model.b * model.KV)
-    fact2 = model.rV / (model.lambdaVH * model.LV + model.muV)
-    return fact1 * fact2
-end
-
-function thresholdVH2(model::modelAlleeEffect)
-    A = model.lambdaVH + model.rV / model.KV * model.b
-    B = model.rV * (1 + model.c / (model.KV * model.b)) - model.lambdaVH * model.LV - model.muV
-    C = model.muV * model.LV
-
-    return B^2 / (4 * C * A)
-end
-
 function eqTrivial(modelAlleeEffect)
-    return (0,0,0)
+    return (0, 0, 0)
 end
 
 function eqHBeta(model::modelAlleeEffect)
-    return (0,0, model.beta)
+    return (0, 0, model.beta)
+end
+
+function eqH(model::modelAlleeEffect)
+    return (0, 0, model.c)
 end
 
 function eqF(model::modelAlleeEffect)
@@ -88,28 +98,7 @@ end
 function eqFHBeta(model::modelAlleeEffect)
     Feq = model.KF * (1 - 
         (model.muF + model.beta*(model.omega*model.f + model.lambdaFH) / model.rF))
-
     return (Feq, 0, model.beta)
-end
-
-function eqVHBeta(model::modelAlleeEffect)
-    Veq = model.KV * (1 - 
-        (model.beta + model.LV)/model.beta * (model.muV + model.beta*model.LV)/model.rV)
-
-    return (0, Veq, model.beta)
-end
-
-function eqFVHBeta(model::modelAlleeEffect)
-    Feq = model.KF * (1 - 
-    (model.muF + model.beta*(model.omega*model.f + model.lambdaFH) / model.rF))
-    Veq = model.KV * (1 - (model.beta + model.LV)/model.beta *
-     (model.muV + model.beta*model.LV + model.alpha * Feq)/model.rV)
-
-    return (Feq, Veq, model.beta)
-end
-
-function eqH(model::modelAlleeEffect)
-    return (0,0,model.c)
 end
 
 function eqFH(model::modelAlleeEffect)
@@ -119,30 +108,128 @@ function eqFH(model::modelAlleeEffect)
     return (Feq, 0, model.a * Feq + model.c)
 end
 
+function eqVHBeta(model::modelAlleeEffect)
+    Veq = model.KV * (1 - 
+        (model.beta + model.LV)/model.beta * (model.muV + model.beta * model.lambdaVH) / model.rV)
+    return (0, Veq, model.beta)
+end
+
 function eqVH1(model::modelAlleeEffect)
-    A = model.lambdaVH + model.rV / (model.KV * model.b)
-    B = model.rV * (1 + model.c / (model.KV * model.b)) - model.lambdaVH * model.LV - model.muV
-    C = model.muV * model.LV
+    A = 1 + model.b * model.KV * model.lambdaVH / model.rV
+    B = (model.b * model.KV - model.c) / model.b * 
+            (model.b * model.KV / (model.b * model.KV - model.c) * 
+            (model.lambdaVH * (2*model.c + model.LV) + model.muV) / model.rV - 1)
+    B = B / A 
+    C = model.KV * model.c / model.b *
+        ((model.c + model.LV) / model.c * (model.lambdaVH * model.c + model.muV) / model.rV - 1)
+    C = C / A
 
-    B = B/A
-    C = C/A
-
-    Heq = 1/2 * B - 1/2 * sqrt(B^2 - 4*C)
-    Veq = (Heq - model.c) / model.b
+    Veq = -1/2 * B - 1/2 * sqrt(B^2 - 4*C)
+    Heq = model.b * Veq + model.c
 
     return (0, Veq, Heq)
 end
 
 function eqVH2(model::modelAlleeEffect)
-    A = model.lambdaVH + model.rV / (model.KV * model.b)
-    B = model.rV * (1 + model.c / (model.KV * model.b)) - model.lambdaVH * model.LV - model.muV
-    C = model.muV * model.LV
+    A = 1 + model.b * model.KV * model.lambdaVH / model.rV
+    B = (model.b * model.KV - model.c) / model.b * 
+            (model.b * model.KV / (model.b * model.KV - model.c) * 
+            (model.lambdaVH * (2*model.c + model.LV) + model.muV) / model.rV - 1)
+    B = B / A 
+    C = model.KV * model.c / model.b *
+        ((model.c + model.LV) / model.c * (model.lambdaVH * model.c + model.muV) / model.rV - 1)
+    C = C / A
 
-    B = B/A
-    C = C/A
-
-    Heq = 1/2 * B + 1/2 * sqrt(B^2 - 4*C)
-    Veq = (Heq - model.c) / model.b
+    Veq = -1/2 * B + 1/2 * sqrt(B^2 - 4*C)
+    Heq = model.b * Veq + model.c
 
     return (0, Veq, Heq)
+end
+
+function eqFVHBeta(model::modelAlleeEffect)
+    Feq = model.KF * (1 - 
+        (model.muF + model.beta * (model.omega * model.f + model.lambdaFH) / model.rF))
+    Veq = model.KV * (1 - (model.beta + model.LV)/model.beta *
+        (model.muV + model.beta * model.LV + model.alpha * Feq) / model.rV)
+    return (Feq, Veq, model.beta)
+end
+
+function interpretTresholds(model::modelAlleeEffect, tresholdsValues)
+    listEq = ""
+    if tresholdsValues["TF0"] < 1
+        listEq = listEq * "(TE)"
+    else
+        listEq = listEq * "(F)"
+    end
+    if tresholdsValues["TH0"] < 1 && tresholdsValues["TFBeta"] < 1 && tresholdsValues["TVBeta0"] < 1
+        listEq = listEq * "(H_β)"
+    end
+    if tresholdsValues["TH0"] < 1 && tresholdsValues["TFBeta"] > 1 && tresholdsValues["TVBetaFBeta"] < 1
+        listEq = listEq * "(FH_β)"
+    end
+    if tresholdsValues["TH0"] < 1 && tresholdsValues["TFBeta"] < 1 && tresholdsValues["TVBeta0"] > 1
+        listEq = listEq * "(VH_β)"
+    end
+    if tresholdsValues["TH0"] < 1 && tresholdsValues["TFBeta"] > 1 && tresholdsValues["TVBetaFBeta"] > 1
+        listEq = listEq * "(FVH_β)"
+    end
+    if tresholdsValues["TH0"] > 1 && tresholdsValues["TFc"] < 1 && tresholdsValues["TVc0"] < 1
+        listEq = listEq * "(H)"
+    end
+    if tresholdsValues["THFc"] > 1 && tresholdsValues["TFc"] > 1 && tresholdsValues["TVcFc"] < 1
+        listEq = listEq * "(FH)"
+    end
+    if tresholdsValues["THVVH"] > 1 && tresholdsValues["TFHVH2"] < 1 && tresholdsValues["TVc0"] > 1
+        listEq = listEq * "(VH_2)"
+    end
+    if (tresholdsValues["THVVH"] > 1 && tresholdsValues["TFHVH2"] < 1 && tresholdsValues["TVc0"] < 1 &&  
+            tresholdsValues["DeltaVH"] > 1 && tresholdsValues["Tbizarre"] > 1)
+        listEq = listEq * "(VH_2)"
+    end
+    return listEq
+end
+
+
+function createTable(tresholdsName::Vector{String})
+    table = DataFrame([[] for _ = tresholdsName], tresholdsName)
+    for line in (2^length(tresholdsName)-1):-1:0
+    # for line in (2^4):-1:0
+        newRow = digits(line, base =2)
+        completeNewRow = [0 for _ in 1:(length(tresholdsName)-length(newRow))]
+        append!(newRow, completeNewRow)
+        push!(table, 2 .*newRow)
+    end
+    return table
+end
+
+function modelTable(model::modelAlleeEffect)
+
+    table = createTable(model.thresholdsName)
+    function implication(TH0, THFc, THVVH, TF0, TFBeta, TFHVH2, TVBeta0, TVBetaFBeta, TFc, TVc0, TVcFc)::Bool
+        
+        cond1 = (TF0 >= TFBeta) && (TF0 >= TFc) && (TF0 >= TFHVH2) && (TFc >= TFHVH2)#TF is decreasing
+        cond2 = !((TH0 < 1) && !(TFBeta <= TFc))   #If TH(0) < 1, TF(Beta) < TF(c)
+        cond3 = !((1 < TH0) && !(TFc <= TFBeta))   #If 1 < TH(0), TF(c) < TF(Beta)
+        cond4 = (TH0 <= THFc) && (TH0 <= THFc) && (TH0 <= THVVH)      #TH is increasing
+        cond5 = (TVBetaFBeta <= TVBeta0) && (TVcFc <= TVc0) #TV(H, F) is decreasing wrt F
+        cond6 = !((TH0 < 1) && !(TVBeta0 <= TVc0))    #If TH(0) < 1, TV(Beta, 0) < TV(c, 0)
+        cond7 = !((1 < TH0) && !(TVc0 <= TVBeta0))    #If 1 < TH(0), TV(c) < TV(Beta)
+
+        return cond1 && cond2 && cond3 && cond4 && cond5 && cond6 && cond7
+    end
+    modelTable = filter([:TH0, :THFc, :THVVH, :TF0, :TFBeta, :TFHVH2, 
+            :TVBeta0, :TVBetaFBeta, :TFc, :TVc0, :TVcFc] => implication, table)
+
+    modelTable[!, :Equilibrium] .= ""
+    for row in eachrow(modelTable)
+        row[:Equilibrium] = interpretTresholds(model, row)
+    end
+    names = propertynames(modelTable)
+    for ind in 1:length(names)-1
+        columnSelected = names[1:end .!= ind]
+        unique!(modelTable, columnSelected)
+    end
+
+    return modelTable
+
 end

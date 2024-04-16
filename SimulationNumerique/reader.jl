@@ -40,7 +40,7 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         return myModel
     elseif modelType == "AlleeEffect"
         nbrParameters = length(fieldnames(modelAlleeEffect))
-        if nbrParameters > length(param)
+        if nbrParameters - 1 > length(param)
             println("Number of parameter is incoherent with model AlleeEffect")
             println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
                         nbrParameters)
