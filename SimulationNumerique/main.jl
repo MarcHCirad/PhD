@@ -38,24 +38,32 @@ function main()
     # output = pathWDFV * "/"*string(typeof(model))*"/TableV5.csv"
     # CSV.write(output, table2)
     dictThresholds = computeThresholds(math)
-    println("Equilibrium : ", interpretTresholds(math, dictThresholds))
-    println(eqF(math))
-    println(eqFHBeta(math))
-    println(eqVH2(math))
-
-    solveModel(allModels)
-
-    resultFolder = writeNumericalModel(allModels, pathWDFV)
-    println("Results have been writting in the following folders :")
-    for dir in resultFolder
-        println(dir)
-    end
     
-    plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
-                        pathWDFV*"/plot.html",
-                        title="Comparison of two models : Eq FH",
-                        legend=["allee", "ecoService"],
-                        toPlot=true)
+    println("Equilibrium : ", interpretThresholds(math, dictThresholds))
+    listLambdaFH = [k for k = 0.001:0.001:0.5]
+    listLambdaVH = [k for k = 0.001:0.001:0.5]
+    bifurcationMatrix = computeBifurcationDiagram(math, "lambdaFH", listLambdaFH, "lambdaVH", listLambdaVH)
+    dirName = writeBifurcationDiagram(model, bifurcationMatrix, pathWDFV)
+    plotBifurcationFile(dirName * "/bifurcationDiagram.csv", 
+                        pathWDFV*"/bifurcation.html" ;
+                        xlabel = "lambda_FH",
+                        ylabel = "lambda_VH",
+                        toPlot = true)
+    
+
+    # solveModel(allModels)
+
+    # resultFolder = writeNumericalModel(allModels, pathWDFV)
+    # println("Results have been writting in the following folders :")
+    # for dir in resultFolder
+    #     println(dir)
+    # end
+    
+    # plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
+    #                     pathWDFV*"/plot.html",
+    #                     title="Comparison of two models : Eq FH",
+    #                     legend=["allee", "ecoService"],
+    #                     toPlot=true)
 
     # plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
     #                     pathWDFV*"/plot.html",

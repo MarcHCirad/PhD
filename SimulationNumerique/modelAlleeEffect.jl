@@ -137,9 +137,7 @@ function computeThresholds(model::modelAlleeEffect)
     return dictThresholds
 end
 
-
-
-function interpretTresholds(model::modelAlleeEffect, thresholdsValues)
+function interpretThresholds(model::modelAlleeEffect, thresholdsValues)
     listEq = ""
     if thresholdsValues["TF0"] < 1
         listEq = listEq * "(TE)"
@@ -164,7 +162,6 @@ function interpretTresholds(model::modelAlleeEffect, thresholdsValues)
     if thresholdsValues["THFH"] > 1 && thresholdsValues["TFc"] > 1 && thresholdsValues["TVcFFH"] < 1
         listEq = listEq * "(FH)"
     end
-    println(thresholdsValues)
     if thresholdsValues["THVVH2"] > 1 && thresholdsValues["TFHVH2"] < 1 && thresholdsValues["TVc0"] > 1
         listEq = listEq * "(VH_2)"
     end
@@ -283,7 +280,7 @@ function modelTable(model::modelAlleeEffect)
 
     modelTable[!, :Equilibrium] .= ""
     for row in eachrow(modelTable)
-        row[:Equilibrium] = interpretTresholds(model, row)
+        row[:Equilibrium] = interpretThresholds(model, row)
     end
     names = propertynames(modelTable)
     for ind in 1:length(names)-1
@@ -293,4 +290,33 @@ function modelTable(model::modelAlleeEffect)
 
     return modelTable
 
+end
+
+function computeBifurcationDiagram(model::modelAlleeEffect, 
+        nameParam1::String, listParam1::Vector{Float64}, 
+        nameParam2::String, listParam2::Vector{Float64})
+    
+    bifurcationMatrix = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
+    
+    localParam = Dict([
+                ("rF",model.rF), ("KF",model.KF), ("omega",model.omega), ("f",model.f), ("muF",model.muF), ("lambdaFH", model.lambdaFH),
+                ("rV",model.rV), ("KV",model.KV), ("LV", model.LV), ("alpha",model.alpha), ("muV",model.muV), ("lambdaVH", model.lambdaVH),
+                ("rH",model.rH), ("a", model.a), ("b", model.b), ("c", model.c), ("beta", model.beta)
+                ])
+
+    bifurcationMatrix[2:end,1] = listParam1
+
+    for ind_col in 2:length(listParam2)+1
+        bifurcationMatrix[1, ind_col] = listParam2[ind_col-1]
+        localParam[nameParam2] = listParam2[ind_col-1]
+
+        for ind_row in 2:length(listParam1)+1
+            localParam[nameParam1] = listParam1[ind_row-1]
+            localModel = modelAlleeEffect(localParam)
+            thresholdsValues = computeThresholds(localModel)
+            bifurcationMatrix[ind_row, ind_col] = interpretThresholds(localModel, thresholdsValues)
+        end
+    end
+    bifurcationMatrix[1,1] = nameParam1 * "\\" * nameParam2
+    return bifurcationMatrix
 end

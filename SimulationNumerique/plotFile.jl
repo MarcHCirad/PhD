@@ -126,28 +126,47 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     listParamX = tryparse.(Float64, myCSV[2:end, 1])
     listParamY = tryparse.(Float64, Vector(myCSV[1, 2:end]))
 
-    stabilityValues = Matrix(myCSV[2:end, 2:end])
+    eqNames = Matrix(myCSV[2:end, 2:end])
 
-    dicStabilityNbr = Dict([("FVH",0), ("VH",1), ("FH",2), ("VH & FH",3), ("_", 4)])
-    color = similar(stabilityValues, Int8)
+    eqNamesUnique = sort(unique(eqNames))
+    legendSize = length(eqNamesUnique)
+
+    dicEqNamesNbr = Dict([eqNamesUnique[i+1]=>i for i in 0:legendSize-1])
+    color = similar(eqNames, Int8)
 
     for ind_col in 1:length(listParamY)
         for ind_row in 1:length(listParamX)
-            color[ind_col, ind_row] = dicStabilityNbr[stabilityValues[ind_row, ind_col]]
+            color[ind_col, ind_row] = dicEqNamesNbr[eqNames[ind_row, ind_col]]
         end
     end
+
+    myTickvals = [k for k = 0:legendSize]
+    myTicktext = sort(collect(keys(dicEqNamesNbr)))
+    colorStep = 1/legendSize
+    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
+    myColorScale = []
+
+    for k in 1:legendSize
+        push!(myColorScale, ((k-1)*colorStep, listColor[k]))
+        push!(myColorScale, ((k)*colorStep, listColor[k]))
+    end
+    println(dicEqNamesNbr)
+    println(myColorScale)
+    println(myTickvals)
+    println(myTicktext)
+    myzmin = -colorStep
+    myzmax = legendSize - colorStep
+    
     
     layout = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=title)
-    data = PlotlyJS.heatmap(x=listParamX, y=listParamY, z=color,
+    data = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = color,
                             colorbar=attr(tickmode="array",
-                                            tickvals=[0,1,2,3],
-                                            ticktext=["EE^{FVH}", "EE^{VH}","EE^{FH}","EE^{FH} & EE^{VH}"]),
-                                            # ticktext=[L"$EE^{FVH}$", L"$EE^{VH}$", L"$EE^{FH}$", L"$EE^{VH} & EE^{FH}$"]),
+                                            tickvals=myTickvals,
+                                            ticktext=myTicktext),
                             autocolorscale = false,
-                            colorscale=[(0, "red"), (0.25, "red"), (0.25, "green"), (0.5, "green"), (0.5, "blue"), 
-                                            (0.75, "blue"), (0.75, "black"), (0.99, "black"), (0.99, "white"), (1, "white")],
-                            zmin = -0.5,
-                            zmax = 3.5)
+                            colorscale = myColorScale,
+                            zmin = myzmin,
+                            zmax = myzmax)
 
     myPlot = PlotlyJS.plot(data, layout)
 
@@ -215,6 +234,4 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
 
 
     PlotlyJS.savefig(myPlot, saveFileName)
-
-
 end

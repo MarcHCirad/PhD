@@ -52,3 +52,13 @@ function writeNumericalModel(myModel::numericalModel, dirPrefix::String)
     writeResult(myModel, dirName)
     return dirName
 end
+
+function writeBifurcationDiagram(myModel::numericalModel, bifurcationDiagram::Matrix{Any}, dirPrefix::String)
+    if !isdir(dirPrefix)
+        mkdir(dirPrefix)
+    end
+    dirName = dirPrefix * "/" * string(typeof(myModel))
+    fileName = dirName * "/" * "bifurcationDiagram.csv"
+    CSV.write(fileName, DataFrame(bifurcationDiagram, :auto))
+    return dirName
+end
