@@ -186,7 +186,9 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
 
     lineCSV = attr(color=listColor[1], width=2)
     markerCSV = attr(color=listColor[1], size=5, symbol="cross")
-    layout = PlotlyJS.Layout(scene = attr(xaxis_title = nameColumn2, yaxis_title=nameColumn3), title=title)
+    
+    
+    
     trajectory = [PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", name=legend[1], mode="lines", line=lineCSV)]
     push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
                 type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
@@ -205,6 +207,7 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
                     type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
     end
 
+    layout = PlotlyJS.Layout(xaxis_title = nameColumn2, yaxis_title = nameColumn3, title=title)
     myPlot = PlotlyJS.plot(trajectory, layout)
     if toPlot
         display(myPlot)

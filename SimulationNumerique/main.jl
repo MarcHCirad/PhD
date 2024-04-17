@@ -32,24 +32,30 @@ function main()
     allModels = readNumericalModel(pathWDFV)
     model = allModels["AlleeEffect"]
     math = model.mathModel
-    table2 = modelTable(math)
-    sort!(table2)
-    output = pathWDFV * "/"*string(typeof(model))*"/TableV5.csv"
-    CSV.write(output, table2)
-    # println(table2)
-    # solveModel(allModels)
-
-    # resultFolder = writeNumericalModel(allModels, pathWDFV)
-    # println("Results have been writting in the following folders :")
-    # for dir in resultFolder
-    #     println(dir)
-    # end
     
-    # plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
-    #                     pathWDFV*"/plot.html",
-    #                     title="Comparison of two models : Eq FH",
-    #                     legend=["allee", "ecoService"],
-    #                     toPlot=true)
+    # table2 = modelTable(math)
+    # sort!(table2)
+    # output = pathWDFV * "/"*string(typeof(model))*"/TableV5.csv"
+    # CSV.write(output, table2)
+    dictThresholds = computeThresholds(math)
+    println("Equilibrium : ", interpretTresholds(math, dictThresholds))
+    println(eqF(math))
+    println(eqFHBeta(math))
+    println(eqVH2(math))
+
+    solveModel(allModels)
+
+    resultFolder = writeNumericalModel(allModels, pathWDFV)
+    println("Results have been writting in the following folders :")
+    for dir in resultFolder
+        println(dir)
+    end
+    
+    plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
+                        pathWDFV*"/plot.html",
+                        title="Comparison of two models : Eq FH",
+                        legend=["allee", "ecoService"],
+                        toPlot=true)
 
     # plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
     #                     pathWDFV*"/plot.html",
