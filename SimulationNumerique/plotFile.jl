@@ -143,7 +143,7 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     myTickvals = [k for k = 0:legendSize]
     myTicktext = sort(collect(keys(dicEqNamesNbr)))
     colorStep = 1/legendSize
-    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
+    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black", "darkgreen", "teal", "plum"]
     myColorScale = []
 
     for k in 1:legendSize

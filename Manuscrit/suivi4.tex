@@ -261,23 +261,28 @@ Equilibrium are obtained when the right hand side of the previous system is equa
 %\end{equation}
 
 \begin{equation}
-V^2 + V \left(\dfrac{bK_V-c}{b} \dfrac{\Big( \dfrac{bK_V}{bK_V-c}\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}}  \right) + \dfrac{K_Vc}{b} \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}} = 0
+V^2 + V \left(\dfrac{1}{b} \dfrac{ bK_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + c}{1 + \dfrac{b K_V \lv}{r_V}}  \right) + \dfrac{K_Vc}{b} \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}} = 0
 \label{equilibreVH:equationV}
 \end{equation}
 The solutions of this equation are real if the discriminant $\Delta_{VH}$ is positive. We have
 
 \begin{multline}
 \Delta_{VH} \geq 0 \Leftrightarrow \\
-\dfrac{(bK_V - c)^2}{bcK_V}\left( \dfrac{bK_V}{bK_V - c}\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1 \right)^2 \geq  4 \Big(1 + \dfrac{b K_V \lv}{r_V}\Big) \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)
+\left( bK_V \Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + c \right)^2 \geq  4 K_V b \Big(1 + \dfrac{b K_V \lv}{r_V}\Big) \Big((c+L_V) \dfrac{\mu_V + \lv c}{r_V} - c\Big)
 \label{equilibreVH:discriminant}
 \end{multline}
 
-If $\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} < 1$, then the discriminant $\Delta_{VH}$ is positive, and the constant coefficient of \eqref{equilibreVH:equationV} is negative. Thus, there is always one positive roots (and the other is negative).
+If the right hand side is negative, \textit{ie} if $1< \dfrac{c}{c+L_V} \dfrac{r_V}{\mu_V + \lv c}$, then the discriminant $\Delta_{VH}$ is positive, and the constant coefficient of \eqref{equilibreVH:equationV} is negative. Thus, there is always one positive roots (and the other is negative).
 
-When $\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} > 1$, the solutions have the same sign, which is positive if the coefficient in $V$ is negative. Thus, in addition of inequality \eqref{equilibreVH:discriminant}, the parameters must verify
-\begin{equation}
-\dfrac{bK_V - c}{bK_V}\dfrac{r_V}{\lv  (2c+L_V) + \mu_V} > 1
-\end{equation}
+Otherwise, if $\dfrac{c}{c+L_V} \dfrac{r_V}{\mu_V + \lv c} < 1$ and if the discriminant is positive, the solutions are real and have the same sign, which is positive if the coefficient in $V$ is negative. Thus, in addition of inequality \eqref{equilibreVH:discriminant}, the parameters must verify
+\begin{subequations}
+\begin{align}
+& bK_V \Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V}-1\Big) + c < 0 \\
+& \Leftrightarrow c \Big(1 + \dfrac{2 \lv bK_V}{r_V} \Big) < bK_V \Big(1 - \dfrac{\mu_V + \lv L_V}{r_V} \Big) \\
+& \Leftrightarrow 1 < \dfrac{bK_V}{c} \dfrac{1 - \dfrac{\mu_V + \lv L_V}{r_V}}{1 + \dfrac{2 \lv bK_V}{r_V}}
+\end{align}
+\end{subequations}
+
 in order to have positive solutions.
 \end{itemize}
 
@@ -291,8 +296,8 @@ there is one equilibrium, noted $EE^{VH}_2$ ; and if
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
 &\dfrac{c}{c+L_V} \dfrac{r_V}{\mu_V + \lv c} < 1 \\
-&1 \leq \Big(1 + \dfrac{b K_V \lv}{r_V}\Big)^{-1}\Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)^{-1} \dfrac{(bK_V - c)^2}{4bcK_V}\left( \dfrac{bK_V}{bK_V - c}\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1 \right)^2 \\
-& 1 < \dfrac{bK_V - c}{bK_V}\dfrac{r_V}{\lv  (2c+L_V) + \mu_V} 
+&1 \leq \dfrac{1}{4K_Vb}\Big(1 + \dfrac{b K_V \lv}{r_V}\Big)^{-1}\Big((c+L_V) \dfrac{\mu_V + \lv c}{r_V} - c\Big)^{-1} \left( bK_V \Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big)-1 \right)^2 \\
+& 1 < \dfrac{bK_V}{c} \dfrac{1 - \dfrac{\mu_V + \lv L_V}{r_V}}{1 + \dfrac{2 \lv bK_V}{r_V}}
     \end{empheq}
     \label{equilibreVH:conditionExistence2}
 \end{subequations}
@@ -301,10 +306,10 @@ there are two equilibrium $EE^{VH}_1 \leq EE^{VH}_2$.
 
 $V^{*}_{VH,i}$ are equal at:
 \begin{equation}
-V^{*}_{VH,i} = -\dfrac{1}{2}\dfrac{r_V}{b\lv} \dfrac{\dfrac{c}{bK_V} -1}{\dfrac{r_V}{b K_V \lv} +1} \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \pm \dfrac{1}{2} \sqrt{\Delta}
+V^{*}_{VH,i} = -\dfrac{1}{2b} \dfrac{ bK_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + c}{1 + \dfrac{b K_V \lv}{r_V}}  \pm \dfrac{1}{2} \sqrt{\Delta_{VH}}
 \label{equilibreVH:V}
 \end{equation}
-with $\Delta_{VH} = \left(\dfrac{r_V}{b\lv} \dfrac{\dfrac{c}{bK_V} -1}{\dfrac{r_V}{b K_V \lv} +1} \Big(1+ \dfrac{\lv(2c+L_V) + \mu_V}{r_V(\dfrac{c}{bK_V} -1) } \Big) \right)^2 - 4\Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{r_V}{b\lv} \dfrac{c/b}{1 + \dfrac{r_V}{b K_V \lv}} $
+with $\Delta_{VH} = \left(\dfrac{1}{b} \dfrac{ bK_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + c}{1 + \dfrac{b K_V \lv}{r_V}}\right)^2 - 4 \dfrac{K_Vc}{b} \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}} $
 
 and $H^*_{VH,i}$ are equal at
 \begin{equation}
@@ -508,7 +513,7 @@ there is one endemic equilibria. And if
 & 0 < (1  +\dfrac{K_V(\lv(b-ac_1^F) - \alpha c_1^F)}{r_V})
 \Big(\dfrac{aF^*_{FH} + c + L_V}{aF^*_{FH} + c} \dfrac{\mu_V + \alpha F^*_{FH} + \lv (aF^*_{FH} + c)}{r_V} - 1\Big) \\
 & 0 \leq \Delta_{FVH} \text{ (see equation \eqref{equilibreFVH:discriminant})} \\
-& 1 < \dfrac{(b-ac_1^F)K_V - (aF^*_{FH} + c)}{(b-ac_1^F)K_V}\dfrac{r_V}{\mu_V + \lv(2(aF^*_{FH} + c) + L_V) + \alpha \Big(F^*_{FH} - \dfrac{c_1^F (aF^*_{FH} + c + L_V)}{b-ac_1^F}\Big)} \\
+& 1 < \dfrac{\dfrac{(b-ac_1^F)K_V - (aF^*_{FH} + c)}{(b-ac_1^F)K_V} r_V}{\mu_V + \lv(2(aF^*_{FH} + c) + L_V) + \alpha \Big(F^*_{FH} - \dfrac{c_1^F (aF^*_{FH} + c + L_V)}{b-ac_1^F}\Big)} \\
 &1 < \dfrac{r_F}{\mu_F + (\FHterme)(bV^*_{FVH} + c)} 
     \end{empheq}
 \end{subequations}
@@ -777,65 +782,47 @@ We also define
 }
 \end{subequations}
 
+Some equilibrium values are also recall:
+\begin{subequations}
+\begin{align*}
+& F^*_{FH} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right) \\
+& H^*_{VH,2} = b V^*_{VH, 2} + c
+\end{align*}
+\end{subequations}
+
+The existence and stability condition are summarized in the following table:
+
 \newpage
 \begin{landscape}
-
 \begin{table}
 \centering
-\caption{•}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
-\hline
-\multicolumn{11}{c|}{Thresholds} & \multirow{2}{*}{Equilibrium} \\
-$T_H(0)$ & $T_F(0)$ &$T_F(\beta) $ & $T_V(\beta, 0)$ &$T_V(\beta, F^*_\beta)$& $T_H(F^*_{H, c})$ & $T_F(c)$ & $T_V(c, 0)$ & $T_F(H^*_{V, c, 2})$ &$T_V(H^*_{F,c}, F^*_{H,c})$ &Pour VH \\
-\hline
-\multirow{12}{*}{$< 1 $} & \multirow{3}{*}{$<1$} & $(<1)$ & & & &$(<1)$ & &$(<1)$ & & &$TE$ \\ 
- & & $(<1)$ & $<1$ & & &$(<1)$ & &$(<1)$ & & & $TE, EE^H_\beta$ \\ 
- & & $(<1)$ & $1<$ & & &$(<1)$ & &$(<1)$ & & & $TE, EE^{VH}_\beta$ \\
-\cline{2-11}
- & \multirow{9}{*}{$1 < $} & & & & & & & & & & $EE^F$ \\
- \cline{3-11}
- & & \multirow{4}{*}{$<1$} & \multirow{2}{*}{$<1$} & & & & & & & & $EE^F$, $EE^{H}_\beta$ \\
-  & & & & &$1<$ &$1<$ & & & $<1$ & & $EE^F$, $EE^{H}_\beta$, $EE^{FH}$ \\
-\cline{4-11}
- & & & \multirow{2}{*}{$1<$} & & & & & & & & $EE^F$, $EE^{VH}_\beta$ \\
-   &  & & & &$1<$ &$1<$ & & &$<1$ & & $EE^F$, $EE^{VH}_\beta$, $EE^{FH}$ \\
-\cline{3-11}
- & & \multirow{4}{*}{$1<$} & & \multirow{2}{*}{$<1$} & & $(1<)$& & & & & $EE^F$, $EE^{FH}_\beta$ \\
-  & &  & &  & $1<$ & $(1<)$& & &$<1$ & & $EE^F$, $EE^{FH}_\beta$, $EE^{FH}$ \\
-  \cline{4-11}
-   & & & & \multirow{2}{*}{$1<$} & & $(1<)$& & & & & $EE^F$, $EE^{FVH}_\beta$ \\
-  & &  & &  & $1<$ & $(1<)$& & &$<1$ & & $EE^F$, $EE^{FVH}_\beta$, $EE^{FH}$ \\
-  \hline
-\multirow{8}{*}{$1 < $} & \multirow{3}{*}{$<1$} & $(<1)$ & & &$(1<)$ &$(<1)$ & & $(<1)$ & & & $TE$ \\
- &  & $(<1)$ & & &$(1<)$ &$(<1)$ &$<1$ &$(<1)$ & & & $TE$, $EE^H$ \\ 
- &  & $(<1)$ & & &$(1<)$ &$(<1)$ &  &$(<1)$ & $1<$ & & $TE$, $EE^{VH}$ \\
- \cline{2-11}
- & \multirow{3}{*}{$1<$} & & & &$(1<)$ & & & & & & $EE^F$ \\
- & & & & &$(1<)$ &$<1$ & $1<$ & & & & $EE^F$, $EE^H$ \\
- & & & & &$(1<)$ &$1<$ & & & $<1$ & & $EE^F$, $EE^{FH}$ \\
-% & \multirow{2}{*}{$1 < $} & & & & & & $< 1 $ & & $TE$, $EE^H$ \\
-%\cline{3-10}
-% & &  & & &  $1<$&$1<$& & & $TE$, $EE^{VH}$ \\
-% \hline
-% \multirow{8}{*}{$1 <$} & \multirow{8}{*}{$<1$} &\multirow{4}{*}{$<1$} &\multirow{2}{*}{$<1$} & & $1 < $ & $1<$ & $1<$ & & $EE^F$, $EE^H_\beta$ \\
-% & & & & & $1<$& & & & $EE^F$, $EE^{VH}_\beta$ \\ 
-% \cline{4-10}
-% & & &\multirow{2}{*}{$1<$} & & & $<1$ & & &$EE^F$, $EE^{FH}_\beta$ \\
-% & & & & & & $1<$ & & &$EE^F$, $EE^{FVH}_\beta$ \\
-% \cline{3-10}
-% & & $1< $& &
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+Equilibrium & $T_H(0)$ & $T_H(F^*_{FH})$ & $T_H^*(V^*_{VH,2})$ & $T_F(0)$ & $T_F(\beta)$ & $T_F(c)$& $T_F(H^*_{VH, 2})$ & $T_V(\beta)$ & $T_V(\beta, F^*_\beta)$ & $T_V(c, 0)$ & $T_V(c, F^*_{FH})$ & $T_{\Delta_{VH}}$ & $T_{V?}$ \\ \hline
+$TE$ & & & & $<1$ & & & & & & & & \\ \hline
+$EE^H_\beta$& $<1$ & & & & $<1$ & & & $<1$ & & & & \\ \hline
+$EE^F$ & & & & $1<$ & & & & & & & & \\ \hline
+$EE^{FH}_\beta$ & $<1$ & & & & $1<$ & & & & $<1$ & & & \\ \hline
+$EE^{VH}_\beta$ & $<1$ & & & & $<1$ & & & $1<$ & & & & \\ \hline
+$EE^{FVH}_\beta$ & $<1$ & & & & $1<$ & & & & $1<$ & & & \\ \hline
+$EE^H $ & $1<$  & & & & & $<1$ & & & & $<1$ & & \\ \hline
+$EE^{FH} $ & & $1<$  & & & & $1<$ & & & & & $<1$ & \\ \hline
+$EE^{VH}_2 $ & & & $1<$ & & & & $<1$ & & & $1<$ & & & \\ \hline
+$EE^{VH}_2 $ & & & $1<$ & & & & $<1$ & & & $<1$ & &$1<$& $1<$ \\ \hline
 \end{tabular}
 \end{table}
-
 \end{landscape}
 
-\section{Sub-models}
-Let consider the sub-models of \eqref{model:simplified} with variables $(F,H)$ 
 
-The same function can be used to show that the system $(V,H)$ \eqref{model:submodelVH} does not admit a limit cycle on $(0, +\infty) \times (\beta, +\infty)$.
-
-Now, let consider the case $\beta < c$, $ H \in (0,\beta)$ and $F \in (0, +\infty)$. In this case, function $f_{2,FH}$  is decreasing and there is also no limit cycle.
-
+\section{Model with human preferences for forest or vegetation}
+Let introduce $\tau \in [0,1]$ which represents the fraction of the human population interested in forest resources. The model becomes
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dF}{dt}=r_{F}\left(1-\dfrac{F}{K_{F}}\right)F-\omega f (1-\tau) H F - \mu_F F -\lambda_{FH} F (\tau H) \\
+\dfrac{dV}{dt}=r_V \dfrac{(1-\tau)H}{(1-\tau)H + L_V} s(F) \left(1-\dfrac{V}{K_{V}}\right)V -\alpha FV-\mu_V V -\lambda_{VH} (1-\tau) V H\\
+\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{a\tau F + b(1-\tau)V + c} \right) (\dfrac{H}{\beta} - 1) H
+\end{array}\right.
+\label{model}
+\end{equation}
 
 \begin{appendices}
 \section{Inequality on second degree polynomial \label{appendice:ineq2nd}}

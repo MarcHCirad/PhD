@@ -44,7 +44,8 @@ struct modelAlleeEffect <: mathematicalModel
             "TVc0", #
             "TVcFFH", #
             "DeltaVH", #
-            "TVi"] #
+            "TVi"
+            ] #
        
         new(rF, KF, omega, f, muF, lambdaFH, rV, KV, LV, alpha, muV, 
                     lambdaVH, rH, a, b, c, beta, thresholdsName)
@@ -265,6 +266,7 @@ function modelTable(model::modelAlleeEffect)
     table = createTable(model.thresholdsName)
     function implication(TH0, THFH, THVVH2, TF0, TFBeta, TFHVH2, TVBeta0, TVBetaFBeta, TFc, TVc0, TVcFFH)::Bool
         
+        condOpt = (TFBeta > 1)
         cond1 = (TF0 >= TFBeta) && (TF0 >= TFc) && (TF0 >= TFHVH2) && (TFc >= TFHVH2)#TF is decreasing
         cond2 = !((TH0 < 1) && !(TFBeta <= TFc))   #If TH(0) < 1, TF(Beta) < TF(c)
         cond3 = !((1 < TH0) && !(TFc <= TFBeta))   #If 1 < TH(0), TF(c) < TF(Beta)
