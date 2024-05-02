@@ -117,10 +117,14 @@ function plotTrajectory3d(inputFileNames::Vector{String}, saveFileName::String;
 end
 
 function plotBifurcationFile(inputFileName::String, saveFileName::String;
+        dicEqColor = Dict{String, String}(),
         xlabel = "",
         ylabel = "",
         title = "",    
         toPlot=false)
+    """
+    Take a CSV bifurcation file as input and produce the corresponding plot
+    """
     myCSV = CSV.read(inputFileName, DataFrame)
     
     listParamX = tryparse.(Float64, myCSV[2:end, 1])
@@ -128,34 +132,41 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
 
     eqNames = Matrix(myCSV[2:end, 2:end])
 
-    eqNamesUnique = sort(unique(eqNames))
-    legendSize = length(eqNamesUnique)
+    eqNamesUnique = sort(unique(eqNames)) # Names of the different stability
+    legendSize = length(eqNamesUnique)  # Number of the different stability
 
-    dicEqNamesNbr = Dict([eqNamesUnique[i+1]=>i for i in 0:legendSize-1])
-    color = similar(eqNames, Int8)
+    dicEqNbr = Dict([eqNamesUnique[i+1]=>i for i in 0:legendSize-1])
+    dicNbrEq = Dict([i => eqNamesUnique[i+1] for i in 0:legendSize-1])
+    color = transpose(similar(eqNames, Float64))   # Matrix of color
 
     for ind_col in 1:length(listParamY)
         for ind_row in 1:length(listParamX)
-            color[ind_col, ind_row] = dicEqNamesNbr[eqNames[ind_row, ind_col]]
+            color[ind_col, ind_row] = dicEqNbr[eqNames[ind_row, ind_col]] # Fill the matrix
         end
     end
 
-    myTickvals = [k for k = 0:legendSize]
-    myTicktext = sort(collect(keys(dicEqNamesNbr)))
+    ## Plot configuration
     colorStep = 1/legendSize
-    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black", "darkgreen", "teal", "plum"]
+    myTickvals = [(2*k-1) / 2 for k = 1:legendSize]
+    myTicktext = sort(collect(keys(dicEqNbr)))
+    listColor = ["seashell", "darkred", "seagreen"]
+    
     myColorScale = []
-
+    counter = 1
     for k in 1:legendSize
-        push!(myColorScale, ((k-1)*colorStep, listColor[k]))
-        push!(myColorScale, ((k)*colorStep, listColor[k]))
+        if dicNbrEq[k-1] in keys(dicEqColor)
+            push!(myColorScale, ((k-1)*colorStep, dicEqColor[dicNbrEq[k-1]]))
+            push!(myColorScale, ((k)*colorStep, dicEqColor[dicNbrEq[k-1]]))
+        else
+            push!(myColorScale, ((k-1)*colorStep, listColor[counter]))
+            push!(myColorScale, ((k)*colorStep, listColor[counter]))
+            counter += 1
+        end
+
     end
-    println(dicEqNamesNbr)
-    println(myColorScale)
-    println(myTickvals)
-    println(myTicktext)
-    myzmin = -colorStep
-    myzmax = legendSize - colorStep
+    println(values(dicEqNbr))
+    myzmin = -0.001
+    myzmax = legendSize
     
     
     layout = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=title)
@@ -165,6 +176,7 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
                                             ticktext=myTicktext),
                             autocolorscale = false,
                             colorscale = myColorScale,
+                            zauto = false,
                             zmin = myzmin,
                             zmax = myzmax)
 
