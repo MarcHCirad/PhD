@@ -1063,18 +1063,20 @@ $EE^{VH}_2 $ & & & $1<$ & & $<1$ & & $<1$ & &$1\leq$& $1<$ \\ \hline
 }
 \end{table}
 
-
+\newpage
 
 \section{Model with human preferences for forest or vegetation}
 Let introduce $\tau \in [0,1]$ which represents the fraction of the human population interested in forest resources. The model becomes
 \begin{equation}    
 \left\{ \begin{array}{l}
-\dfrac{dF}{dt}=r_{F}\left(1-\dfrac{F}{K_{F}}\right)F-\omega f (1-\tau) H F - \mu_F F -\lambda_{FH} \tau F H \\
-\dfrac{dV}{dt}=r_V \dfrac{(1-\tau)H}{(1-\tau)H + L_V} s(F) \left(1-\dfrac{V}{K_{V}}\right)V -\alpha FV-\mu_V V -\lambda_{VH} (1-\tau) V H\\
+\dfrac{dF}{dt}=r_{F}\left(1-\dfrac{F}{K_{F}}\right)F-\omega f (1-\tau) H F - \mu_F F -\lambda_{FH} \tau H F  \\
+\dfrac{dV}{dt}=r_V \dfrac{(1-\tau)H}{(1-\tau)H + L_V} s(F) \left(1-\dfrac{V}{K_{V}}\right)V -\alpha FV-\mu_V V -\lambda_{VH} (1-\tau) H V\\
 \dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{aF + bV + c} \right) (\dfrac{H}{\beta} - 1) H
 \end{array}\right.
 \label{modelPreferences}
 \end{equation}
+
+\newpage
 
 \begin{appendices}
 \section{Inequality on second degree polynomial \label{appendice:ineq2nd}}

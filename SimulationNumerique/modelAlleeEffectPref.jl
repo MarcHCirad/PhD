@@ -88,7 +88,7 @@ function computeBetaMax(model::modelAlleeEffectPref)
     return (model.rF - model.muF) / (model.lambdaFH + model.omega * model.f)
 end
 
-function thresholdHVH1(model::modelAlleeEffectPref, H::Float64)
+function thresholdHMin(model::modelAlleeEffectPref, H::Float64)
     A = model.rV / model.rH * model.beta / (model.KV * model.b) + 1
     B = model.LV - model.beta - model.c * model.rV / model.rH * model.beta / (model.KV * model.b)
     C = - model.beta * model.LV
@@ -173,7 +173,7 @@ function computeThresholds(model::modelAlleeEffectPref)
             _, VVH1, HVH1 = eqVH1(model)
             dictThresholds["TFHVH1"] = thresholdF(model; H = HVH1)
             dictThresholds["THVVH1"] = thresholdH(model; V = VVH1)
-            dictThresholds["THVH1"] = thresholdHVH1(model, HVH1)
+            dictThresholds["THVH1"] = thresholdHMin(model, HVH1)
         end
     end
 

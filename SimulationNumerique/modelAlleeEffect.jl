@@ -84,7 +84,7 @@ function computeBetaMax(model::modelAlleeEffect)
     return (model.rF - model.muF) / (model.lambdaFH + model.omega * model.f)
 end
 
-function thresholdHVH1(model::modelAlleeEffect, H::Float64)
+function thresholdHMin(model::modelAlleeEffect, H::Float64)
     A = model.rV / model.rH * model.beta / (model.KV * model.b) + 1
     B = model.LV - model.beta - model.c * model.rV / model.rH * model.beta / (model.KV * model.b)
     C = - model.beta * model.LV
@@ -116,6 +116,44 @@ function thresholdDeltaVH(model::modelAlleeEffect)
     frac3 = (model.c + model.LV) * (model.muV + model.lambdaVH * model.c) / model.rV - model.c
     frac4 = model.KV * ((model.lambdaVH * (2 * model.c + model.LV) + model.muV) / model.rV -1) + model.c / model.b
     return frac1 * frac2^(-1) * frac3^(-1) * frac4^2
+end
+
+function thresholdFVH1(model::modelAlleeEffect)
+    FHterm = model.KF * (model.omega * model.f + model.lambdaFH) / model.rF
+    frac1 = (1 - model.alpha / model.lambdaFH * FHterm) / (1 + model.a * FHterm)
+    frac2 = model.b * model.KV * model.lambdaVH / model.rV
+
+    return -frac2 * frac1
+end
+
+function thresholdDeltaFVH(model::modelAlleeEffect)
+    FFH, _, HFH = eqFH(model)
+    F = model.KF * (1 - model.muF / model.rF)
+    H = model.a * F + model.c
+    FHterm = model.KF * (model.omega * model.f + model.lambdaFH) / model.rF
+
+    term1 = 4 * model.KV * H / model.b
+    term2 = 1 + model.b * model.KV * model.lambdaVH / model.rV * 
+            (1 - model.alpha / model.lambdaFH * FHterm) / (1 + model.a * FHterm)
+    term3 = (HFH + model.LV) / HFH * (model.muV + model.alpha * FFH + model.lambdaVH * HFH) / rV - 1
+
+    term4 = H / model.b
+    term5 = model.KV / model.rV * ((model.lambdaVH - model.alpha * FHterm) * (2 * HFH + model.LV) + 
+                model.muV + model.alpha * F) - model.KV
+    
+    term5 += term4
+    return term5^2 / term1 / term2 / term3 
+end
+function thresholdFVHi(model::modelAlleeEffect)
+    _, _, HFH = eqFH(model)
+    F = model.KF * (1 - model.muF / model.rF)
+    H = model.a * F + model.c
+    FHterm = model.KF * (model.omega * model.f + model.lambdaFH) / model.rF
+
+    num = model.b * model.KV - model.b * model.KV / model.rV * ((model.lambdaVH - model.alpha * FHterm) * (2 * HFH + model.LV) + 
+                model.muV + model.alpha * F)
+    
+    return num / H
 end
 
 function computeThresholds(model::modelAlleeEffect)
@@ -169,7 +207,46 @@ function computeThresholds(model::modelAlleeEffect)
             _, VVH1, HVH1 = eqVH1(model)
             dictThresholds["TFHVH1"] = thresholdF(model; H = HVH1)
             dictThresholds["THVVH1"] = thresholdH(model; V = VVH1)
-            dictThresholds["THVH1"] = thresholdHVH1(model, HVH1)
+            dictThresholds["THVH1"] = thresholdHMin(model, HVH1)
+        end
+    end
+
+    TFVH1 = thresholdFVH1(model)
+    dictThresholds["TFVH1"] = TFVH1
+    FFH, _, HFH = eqFH(model)
+    TVFFHHFH = thresholdV(model, HFH ; F = FFH)
+    dictThresholds["TVFFHHFH"] = TVFFHHFH
+    DeltaFVH = thresholdDeltaFVH(model)
+    dictThresholds["DeltaFVH"] = DeltaFVH
+    if TFVH1 < 1  ### Cas 0 < 1 + ..(1-alpha t)/(1+at)
+        if 1 < TVFFHHFH
+            VFVH2 = eqFVH2(model)[2]
+            dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+        else
+            if DeltaFVH < 1
+                dictThresholds["TFFVH2"] = 0
+                dictThresholds["TFFVH1"] = 0
+            else
+                VFVH2 = eqFVH2(model)[2]
+                dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+                VFVH1 = eqFVH1(model)[2]
+                dictThresholds["TFFVH1"] = thresholdF(model; H = model.b * VFVH1 + model.c)
+            end
+        end
+    else ### Cas 1 + ..(1-alpha t)/(1+at) < 0
+        if TVFFHHFH < 1
+            VFVH2 = eqFVH2(model)[2]
+            dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+        else
+            if DeltaFVH < 1
+                dictThresholds["TFFVH2"] = 0
+                dictThresholds["TFFVH1"] = 0
+            else
+                VFVH2 = eqFVH2(model)[2]
+                dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+                VFVH1 = eqFVH1(model)[2]
+                dictThresholds["TFFVH1"] = thresholdF(model; H = model.b * VFVH1 + model.c)
+            end
         end
     end
 
