@@ -1,5 +1,6 @@
 function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
         title::String = "",
+        plotLegend = false,
         legend=Vector{String}(),
         toPlot = false)
 
@@ -19,12 +20,12 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
     nameColumn4 = header[4]
 
     time = myCSV[1:end, 1]
-    column2 = myCSV[2:end, 2]
-    column3 = myCSV[2:end, 3]
-    column4 = myCSV[2:end, 4]
+    column2 = myCSV[1:end, 2]
+    column3 = myCSV[1:end, 3]
+    column4 = myCSV[1:end, 4]
 
     lineCSV = attr(color=listColor[1])
-    s1 = [PlotlyJS.scatter(x=time, y = column2, name=legend[1], line=lineCSV)]
+    s1 = [PlotlyJS.scatter(x=time, y = column2, showlegend = plotLegend, name=legend[1], line=lineCSV)]
     s2 = [PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV)]
     s3 = [PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV)]
 
@@ -35,7 +36,7 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
         time = myCSV[1:end, 1]
 
         column2 = myCSV[2:end, 2]
-        push!(s1, PlotlyJS.scatter(x=time, y = column2, name=legend[ind], line=lineCSV))
+        push!(s1, PlotlyJS.scatter(x=time, y = column2, showlegend = plotLegend, name=legend[ind], line=lineCSV))
 
         column3 = myCSV[2:end, 3]
         push!(s2, PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV))
@@ -121,16 +122,20 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
         xlabel = "",
         ylabel = "",
         title = "",    
-        toPlot=false)
+        toPlot=false,
+        eqVals = false,
+        titleEqVals="",
+        fontsize = 12)
     """
-    Take a CSV bifurcation file as input and produce the corresponding plot
+    Take a CSV bifurcation filename as input and produce the corresponding plot
     """
-    myCSV = CSV.read(inputFileName, DataFrame)
-    
-    listParamX = tryparse.(Float64, myCSV[2:end, 1])
-    listParamY = tryparse.(Float64, Vector(myCSV[1, 2:end]))
+    println(inputFileName)
+    CSVBifurcation = CSV.read(inputFileName, DataFrame)
+   
+    listParamX = tryparse.(Float64, CSVBifurcation[2:end, 1])
+    listParamY = tryparse.(Float64, Vector(CSVBifurcation[1, 2:end]))
 
-    eqNames = Matrix(myCSV[2:end, 2:end])
+    eqNames = Matrix(CSVBifurcation[2:end, 2:end])
 
     eqNamesUnique = sort(unique(eqNames)) # Names of the different stability
     legendSize = length(eqNamesUnique)  # Number of the different stability
@@ -149,7 +154,9 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     colorStep = 1/legendSize
     myTickvals = [(2*k-1) / 2 for k = 1:legendSize]
     myTicktext = sort(collect(keys(dicEqNbr)))
-    listColor = ["seashell", "darkred", "seagreen"]
+    myTicktext = [replace(text, "\beta"=>"β") for text in myTicktext]
+    # myTicktext = [latexstring(text) for text in myTicktext]
+    listColor = ["teal", "cyan", "red", "black"]
     
     myColorScale = []
     counter = 1
@@ -161,50 +168,66 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
             push!(myColorScale, ((k-1)*colorStep, listColor[counter]))
             push!(myColorScale, ((k)*colorStep, listColor[counter]))
             counter += 1
+            println(dicNbrEq[k-1], " has no colour")
         end
 
     end
+    println(counter-1, " colors were not defined")
     myzmin = -0.001
     myzmax = legendSize
     
     
-    layout = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=title)
+    layout = PlotlyJS.Layout(font=attr(size=fontsize), xaxis=attr(title_text=xlabel, title_font_size=fontsize),
+                            yaxis=attr(title_text=ylabel, title_font_size=fontsize), title=attr(text=title, x=0.5, font=attr(size=fontsize), color="red"))
+
     data = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = color,
                             colorbar=attr(tickmode="array",
                                             tickvals=myTickvals,
-                                            ticktext=myTicktext),
+                                            ticktext=myTicktext,
+                                            title=attr(text="Existing and AS equilibrium")),
                             autocolorscale = false,
                             colorscale = myColorScale,
                             zauto = false,
                             zmin = myzmin,
                             zmax = myzmax)
-
-
+    
     myPlot = PlotlyJS.plot(data, layout)
-
     PlotlyJS.savefig(myPlot, saveFileName)
+
+    if eqVals
+        FFileName = inputFileName[1:end-4] * "F.csv"
+        VFileName = inputFileName[1:end-4] * "V.csv"
+        HFileName = inputFileName[1:end-4] * "H.csv"
+        CSVF = CSV.read(FFileName, DataFrame)
+        FMatrix = transpose(Matrix(CSVF[2:end, 2:end]))
+        CSVV = CSV.read(VFileName, DataFrame)
+        VMatrix = transpose(Matrix(CSVV[2:end, 2:end]))
+        CSVH = CSV.read(HFileName, DataFrame)
+        HMatrix = transpose(Matrix(CSVH[2:end, 2:end]))
+
+        dataF = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = FMatrix)
+        dataV = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = VMatrix)
+        dataH = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = HMatrix)
+
+        layoutF = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title= latexstring("F" * titleEqVals))
+        myPlotF = PlotlyJS.plot(dataF, layoutF)
+        PlotlyJS.savefig(myPlotF, saveFileName[1:end-5]*"F.html")
+        layoutV = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("V" * titleEqVals))
+        myPlotV = PlotlyJS.plot(dataV, layoutV)
+        PlotlyJS.savefig(myPlotV, saveFileName[1:end-5]*"V.html")
+        layoutH = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("H" * titleEqVals))
+        myPlotH = PlotlyJS.plot(dataH, layoutH)
+        PlotlyJS.savefig(myPlotH, saveFileName[1:end-5]*"H.html")
+    end
 
     if toPlot
         display(myPlot)
+        if eqVals
+            display(myPlotF)
+            display(myPlotV)
+            display(myPlotH)
+        end
     end
-
-    t = range(0, stop=20, length=100)
-
-
-display(plot(scatter(
-    x=cos.(t),
-    y=sin.(t),
-    z=t,
-    mode="markers",
-    marker=attr(
-        size=12,
-        color=t,                # set color to an array/list of desired values
-        colorscale="Viridis",   # choose a colorscale
-        opacity=0.8
-    ),
-    type="scatter3d"
-), Layout(margin=attr(l=0, r=0, b=0, t=0))))
-
 end
 
 function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
