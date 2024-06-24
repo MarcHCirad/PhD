@@ -68,6 +68,48 @@ function equationModel(model::modelAlleeEffect, variables::Vector{Float64})
     return [dF, dV, dH]
 end
 
+function findEqNames(myString::String)
+    openBracket = findall("(", myString)
+    eqNames = []
+    for ind in 1:length(openBracket) - 1
+        beg = openBracket[ind][1] + 1
+        en = openBracket[ind+1][1] - 2
+        push!(eqNames, myString[beg:en])
+    end
+    en = openBracket[end][1] + 1
+    push!(eqNames, myString[en:end-1])
+    return eqNames
+end
+
+function computeEq(model::modelAlleeEffect, eqName::String)
+    F, V, H = 0, 0, 0
+    if eqName == "F"
+        F, V, H = eqF(model)
+    elseif eqName == "H_\beta"
+        F, V, H = eqHBeta(model)
+    elseif eqName == "FH_\beta"
+        F, V, H = eqFHBeta(model)
+    elseif eqName == "VH_\beta"
+        F, V, H = eqVHBeta(model)
+    elseif eqName == "FVH_\beta"
+        F, V, H = eqFVHBeta(model)
+    elseif eqName == "H"
+        F, V, H = eqH(model)
+    elseif eqName == "FH"
+        F, V, H = eqFH(model)
+    elseif eqName == "VH_2"
+        F, V, H = eqVH2(model)
+    elseif eqName == "VH1"
+        F, V, H = eqVH1(model)
+    elseif eqName == "FVH2"
+        F, V, H = eqFVH2(model)
+    elseif eqName == "FVH1"
+        F, V, H = eqFVH1(model)
+    end
+
+    return F, V, H
+end
+
 function thresholdH(model::modelAlleeEffect ; F = 0, V =0)
     return (model.a * F + model.b * V + model.c) / model.beta
 end
@@ -118,7 +160,7 @@ function thresholdDeltaVH(model::modelAlleeEffect)
     return frac1 * frac2^(-1) * frac3^(-1) * frac4^2
 end
 
-function thresholdFVH1(model::modelAlleeEffect)
+function thresholdFVHAlpha(model::modelAlleeEffect)
     FHterm = model.KF * (model.omega * model.f + model.lambdaFH) / model.rF
     frac1 = (1 - model.alpha / model.lambdaFH * FHterm) / (1 + model.a * FHterm)
     frac2 = model.b * model.KV * model.lambdaVH / model.rV
@@ -135,7 +177,7 @@ function thresholdDeltaFVH(model::modelAlleeEffect)
     term1 = 4 * model.KV * H / model.b
     term2 = 1 + model.b * model.KV * model.lambdaVH / model.rV * 
             (1 - model.alpha / model.lambdaFH * FHterm) / (1 + model.a * FHterm)
-    term3 = (HFH + model.LV) / HFH * (model.muV + model.alpha * FFH + model.lambdaVH * HFH) / rV - 1
+    term3 = (HFH + model.LV) / HFH * (model.muV + model.alpha * FFH + model.lambdaVH * HFH) / model.rV - 1
 
     term4 = H / model.b
     term5 = model.KV / model.rV * ((model.lambdaVH - model.alpha * FHterm) * (2 * HFH + model.LV) + 
@@ -156,6 +198,40 @@ function thresholdFVHi(model::modelAlleeEffect)
     return num / H
 end
 
+function thresholdFVHq2(model::modelAlleeEffect, numberEq::Int)
+    F,V,H = 0,0,0
+    if numberEq == 2
+        F, V, H = eqFVH2(model)
+    elseif numberEq == 1
+        F, V, H = eqFVH1(model)
+    end
+    rslt = model.rF * F / model.KF + model.rV * H / (H + model.LV) * V / model.KV + model.rH * (H / model.beta - 1)
+    return rslt
+end
+
+function thresholdFVH2ndCompound(model::modelAlleeEffect, numberEq::Int)
+    F,V,H = 0,0,0
+    if numberEq == 2
+        F, V, H = eqFVH2(model)
+    elseif numberEq == 1
+        F, V, H = eqFVH1(model)
+    end
+
+    FHterm = model.omega * model.f + model.lambdaFH
+    HBeta = (H / model.beta - 1)
+
+    term1 = (model.rF * F / model.KF + model.rV * H / (H + model.LV) * V / model.KV) * 
+            (model.rF * F / model.KF + model.rH * HBeta) * 
+            ( model.rV * H / (H + model.LV) * V / model.KV + model.rH * HBeta)
+    term2 = model.alpha * FHterm * model.b * model.rH * HBeta * F * V
+    term3 = FHterm * model.a * model.rH * F * HBeta * (model.rF * F / model.KF + model.rH * HBeta)
+    term4 = model.b * model.rH * HBeta * (model.rH * HBeta + model.rV * H / (H + model.LV) * V / model.KV) * 
+            ((model.alpha * F + model.muV)*model.LV - model.lambdaVH * H^2) * V / (H * (H + model.LV))
+
+    return -term1 - term2 - term3 + term4
+
+end
+
 function computeThresholds(model::modelAlleeEffect)
     dictThresholds = Dict{String, Float64}()
     
@@ -163,6 +239,7 @@ function computeThresholds(model::modelAlleeEffect)
     dictThresholds["TF0"] = thresholdF(model)
     dictThresholds["TVBeta0"] = thresholdV(model, model.beta)
     dictThresholds["TVi"] = thresholdVi(model)
+    dictThresholds["TFVHi"] = thresholdFVHi(model)
     
     
     TFc = thresholdF(model ; H = model.c)
@@ -193,6 +270,9 @@ function computeThresholds(model::modelAlleeEffect)
         _, VVH2, HVH2 = eqVH2(model)
         dictThresholds["TFHVH2"] = thresholdF(model; H = HVH2)
         dictThresholds["THVVH2"] = thresholdH(model; V = VVH2)
+        dictThresholds["TFHVH1"] = 0
+        dictThresholds["THVVH1"] = 0
+        dictThresholds["THHVH1"] = 0
     else
         if TDeltaVH < 1
         dictThresholds["TFHVH2"] = 0
@@ -211,41 +291,79 @@ function computeThresholds(model::modelAlleeEffect)
         end
     end
 
-    TFVH1 = thresholdFVH1(model)
-    dictThresholds["TFVH1"] = TFVH1
+    TFVHAlpha = thresholdFVHAlpha(model)
+    dictThresholds["TFVHAlpha"] = TFVHAlpha
     FFH, _, HFH = eqFH(model)
     TVFFHHFH = thresholdV(model, HFH ; F = FFH)
     dictThresholds["TVFFHHFH"] = TVFFHHFH
     DeltaFVH = thresholdDeltaFVH(model)
     dictThresholds["DeltaFVH"] = DeltaFVH
-    if TFVH1 < 1  ### Cas 0 < 1 + ..(1-alpha t)/(1+at)
-        if 1 < TVFFHHFH
-            VFVH2 = eqFVH2(model)[2]
+    if TFVHAlpha < 1  ### Cas 0 < 1 + ..(1-alpha t)/(1+at)
+        if 1 < TVFFHHFH ##Seulement FVH2 existe
+            FFVH2, VFVH2, _ = eqFVH2(model)
             dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+            dictThresholds["q22"] = thresholdFVHq2(model, 2)
+            dictThresholds["2ndCompound2"] = thresholdFVH2ndCompound(model, 2)
+            dictThresholds["THFVH2"] = thresholdH(model; F = FFVH2, V = VFVH2)
+            dictThresholds["TFFVH1"] = 0
+            dictThresholds["q21"] = -1
+            dictThresholds["2ndCompound1"] = 1
+            dictThresholds["THFVH1"] = 0
         else
-            if DeltaFVH < 1
+            if DeltaFVH < 1 ##Aucun des deux n'existe
                 dictThresholds["TFFVH2"] = 0
+                dictThresholds["q22"] = -1
+                dictThresholds["2ndCompound2"] = 1
+                dictThresholds["THFVH2"] = 0
                 dictThresholds["TFFVH1"] = 0
-            else
-                VFVH2 = eqFVH2(model)[2]
+                dictThresholds["q21"] = -1
+                dictThresholds["2ndCompound1"] = 1
+                dictThresholds["THFVH1"] = 0
+            else  ## FVH1,2 existent
+                FFVH2, VFVH2, _ = eqFVH2(model)                
                 dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
-                VFVH1 = eqFVH1(model)[2]
+                dictThresholds["q22"] = thresholdFVHq2(model, 2)
+                dictThresholds["2ndCompound2"] = thresholdFVH2ndCompound(model, 2)
+                dictThresholds["THFVH2"] = thresholdH(model; F = FFVH2, V = VFVH2)
+                FFVH1, VFVH1, _ = eqFVH1(model)               
                 dictThresholds["TFFVH1"] = thresholdF(model; H = model.b * VFVH1 + model.c)
+                dictThresholds["q21"] = thresholdFVHq2(model, 1)
+                dictThresholds["2ndCompound1"] = thresholdFVH2ndCompound(model, 1)
+                dictThresholds["THFVH1"] = thresholdH(model; F = FFVH1, V = VFVH1)
             end
         end
     else ### Cas 1 + ..(1-alpha t)/(1+at) < 0
-        if TVFFHHFH < 1
-            VFVH2 = eqFVH2(model)[2]
+        if TVFFHHFH < 1 ##Seulement FVH2 existe
+            FFVH2, VFVH2, _ = eqFVH2(model)
             dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
+            dictThresholds["q22"] = thresholdFVHq2(model, 2)
+            dictThresholds["2ndCompound2"] = thresholdFVH2ndCompound(model, 2)
+            dictThresholds["THFVH2"] = thresholdH(model; F = FFVH2, V = VFVH2)
+            dictThresholds["TFFVH1"] = 0
+            dictThresholds["q21"] = -1
+            dictThresholds["2ndCompound1"] = 1
+            dictThresholds["THFVH1"] = 0
         else
-            if DeltaFVH < 1
+            if DeltaFVH < 1 ##Aucun des deux n'existe
                 dictThresholds["TFFVH2"] = 0
+                dictThresholds["q22"] = -1
+                dictThresholds["2ndCompound2"] = 1
+                dictThresholds["THFVH2"] = 0
                 dictThresholds["TFFVH1"] = 0
-            else
-                VFVH2 = eqFVH2(model)[2]
+                dictThresholds["q21"] = -1
+                dictThresholds["2ndCompound1"] = 1
+                dictThresholds["THFVH1"] = 0
+            else ## FVH1,2 existent
+                FFVH2, VFVH2, _ = eqFVH2(model)
                 dictThresholds["TFFVH2"] = thresholdF(model; H = model.b * VFVH2 + model.c)
-                VFVH1 = eqFVH1(model)[2]
+                dictThresholds["q22"] = thresholdFVHq2(model, 2)
+                dictThresholds["2ndCompound2"] = thresholdFVH2ndCompound(model, 2)
+                dictThresholds["THFVH2"] = thresholdH(model; F = FFVH2, V = VFVH2)
+                FFVH1, VFVH1, _ = eqFVH1(model)
                 dictThresholds["TFFVH1"] = thresholdF(model; H = model.b * VFVH1 + model.c)
+                dictThresholds["q21"] = thresholdFVHq2(model, 1)
+                dictThresholds["2ndCompound1"] = thresholdFVH2ndCompound(model, 1)
+                dictThresholds["THFVH1"] = thresholdH(model; F = FFVH1, V = VFVH1)
             end
         end
     end
@@ -261,16 +379,16 @@ function interpretThresholds(model::modelAlleeEffect, thresholdsValues)
         listEq = listEq * "(F)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] < 1 && thresholdsValues["TVBeta0"] < 1
-        listEq = listEq * "(H_β)"
+        listEq = listEq * "(H_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] > 1 && thresholdsValues["TVBetaFBeta"] < 1
-        listEq = listEq * "(FH_β)"
+        listEq = listEq * "(FH_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] < 1 && thresholdsValues["TVBeta0"] > 1
-        listEq = listEq * "(VH_β)"
+        listEq = listEq * "(VH_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] > 1 && thresholdsValues["TVBetaFBeta"] > 1
-        listEq = listEq * "(FVH_β)"
+        listEq = listEq * "(FVH_\beta)"
     end
     if thresholdsValues["TH0"] > 1 && thresholdsValues["TFc"] < 1 && thresholdsValues["TVc0"] < 1
         listEq = listEq * "(H)"
@@ -287,8 +405,39 @@ function interpretThresholds(model::modelAlleeEffect, thresholdsValues)
     end
     if (thresholdsValues["TVc0"] < 1 && thresholdsValues["DeltaVH"] >= 1 && thresholdsValues["TVi"] > 1 &&
         thresholdsValues["THVVH1"] < 1 && thresholdsValues["TFHVH1"] < 1 && thresholdsValues["THVH1"] > 1)
-    listEq = listEq * "(VH_1)"
-end
+        listEq = listEq * "(VH_1)"
+    end
+    if (thresholdsValues["TFVHAlpha"] < 1 && thresholdsValues["TVFFHHFH"] > 1 && thresholdsValues["TFFVH2"] > 1
+        && thresholdsValues["2ndCompound2"] < 0 && thresholdsValues["q22"] > 0 && thresholdsValues["THFVH2"] > 1)
+        listEq = listEq * "(FVH_2)"
+    end
+    if (thresholdsValues["TFVHAlpha"] < 1 && thresholdsValues["TVFFHHFH"] < 1 && thresholdsValues["DeltaFVH"] >= 1 && 
+        thresholdsValues["TFVHi"] > 1 && thresholdsValues["TFFVH2"] > 1 && 
+        thresholdsValues["2ndCompound2"] < 0 && thresholdsValues["q22"] > 0 && thresholdsValues["THFVH2"] > 1)
+        listEq = listEq * "(FVH_2)"
+    end
+    if (thresholdsValues["TFVHAlpha"] < 1 && thresholdsValues["TVFFHHFH"] < 1 && thresholdsValues["DeltaFVH"] >= 1 && 
+        thresholdsValues["TFVHi"] > 1 && thresholdsValues["TFFVH1"] > 1 && 
+        thresholdsValues["2ndCompound1"] < 0 && thresholdsValues["q21"] > 0 && thresholdsValues["THFVH1"] < 1)
+        listEq = listEq * "(FVH_1)"
+    end
+    if (thresholdsValues["TFVHAlpha"] > 1 && thresholdsValues["TVFFHHFH"] < 1 && thresholdsValues["TFFVH2"] > 1
+        && thresholdsValues["2ndCompound2"] > 0 && thresholdsValues["q22"] > 0 && thresholdsValues["THFVH2"] < 1)
+        listEq = listEq * "(FVH_2)"
+    end
+    if (thresholdsValues["TFVHAlpha"] > 1 && thresholdsValues["TVFFHHFH"] > 1 && thresholdsValues["DeltaFVH"] >= 1 && 
+        thresholdsValues["TFVHi"] < 1 && thresholdsValues["TFFVH2"] > 1 && 
+        thresholdsValues["2ndCompound2"] < 0 && thresholdsValues["q22"] > 0 && thresholdsValues["THFVH2"] < 1)
+        listEq = listEq * "(FVH_2)"
+    end
+    if (thresholdsValues["TFVHAlpha"] > 1 && thresholdsValues["TVFFHHFH"] > 1 && thresholdsValues["DeltaFVH"] >= 1 && 
+        thresholdsValues["TFVHi"] < 1 && thresholdsValues["TFFVH1"] > 1 && 
+        thresholdsValues["2ndCompound1"] < 0 && thresholdsValues["q21"] > 0 && thresholdsValues["THFVH1"] > 1)
+        listEq = listEq * "(FVH_1)"
+    end
+
+    listEq = replace(listEq, ")("=>"), (")
+
     return listEq
 end
 
@@ -311,7 +460,7 @@ end
 
 function eqFHBeta(model::modelAlleeEffect)
     Feq = model.KF * (1 - 
-        (model.muF + model.beta*(model.omega*model.f + model.lambdaFH) / model.rF))
+        (model.muF + model.beta*(model.omega*model.f + model.lambdaFH)) / model.rF)
     return (Feq, 0, model.beta)
 end
 
@@ -344,8 +493,7 @@ function eqVH1(model::modelAlleeEffect)
     if B^2 - 4*C > 0
         Veq = -B / 2 - 1/2 * sqrt(B^2 - 4*C)
         Heq = model.b * Veq + model.c
-    end 
-
+    end
     return (0, Veq, Heq)
 end
 
@@ -372,9 +520,9 @@ end
 
 function eqFVHBeta(model::modelAlleeEffect)
     Feq = model.KF * (1 - 
-        (model.muF + model.beta * (model.omega * model.f + model.lambdaFH) / model.rF))
+        (model.muF + model.beta * (model.omega * model.f + model.lambdaFH)) / model.rF)
     Veq = model.KV * (1 - (model.beta + model.LV)/model.beta *
-        (model.muV + model.beta * model.LV + model.alpha * Feq) / model.rV)
+        (model.muV + model.beta * model.lambdaVH + model.alpha * Feq) / model.rV)
     return (Feq, Veq, model.beta)
 end
 
@@ -418,10 +566,9 @@ function eqFVH2(model::modelAlleeEffect)
     C = model.KV * (model.a * model.KF * (1 - model.muF / model.rF) + model.c) / model.b * 
                 ((HFH + model.LV) / HFH * (model.muV + model.lambdaVH * HFH + model.alpha * FFH) / model.rV - 1)
 
+    Veq = -Inf
     if B^2 - 4 * A * C >= 0
         Veq = -B / (2 * A) + sqrt(B^2 - 4 * A * C) / (2 * A)
-    else
-        Veq = -Inf
     end    
     Feq = FFH - model.b * FHterm / (1 + model.a * FHterm) * Veq
     Heq = HFH + model.b / (1 + model.a * FHterm) * Veq
@@ -492,9 +639,16 @@ end
 
 function computeBifurcationDiagram(model::modelAlleeEffect, 
         nameParam1::String, listParam1::Vector{Float64}, 
-        nameParam2::String, listParam2::Vector{Float64})
+        nameParam2::String, listParam2::Vector{Float64} ;
+        eqValues = false,
+        Values = "max")
     
     bifurcationMatrix = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
+    if eqValues
+        Fval = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
+        Vval = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
+        Hval = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
+    end
     
     localParam = Dict([
                 ("rF",model.rF), ("KF",model.KF), ("omega",model.omega), ("f",model.f), ("muF",model.muF), ("lambdaFH", model.lambdaFH),
@@ -503,18 +657,49 @@ function computeBifurcationDiagram(model::modelAlleeEffect,
                 ])
 
     bifurcationMatrix[2:end,1] = listParam1
+    if eqValues
+        Fval[2:end,1] = listParam1
+        Vval[2:end,1] = listParam1
+        Hval[2:end,1] = listParam1
+    end
 
     for ind_col in 2:length(listParam2)+1
         bifurcationMatrix[1, ind_col] = listParam2[ind_col-1]
+        if eqValues
+            Fval[1, ind_col] = listParam2[ind_col-1]
+            Vval[1, ind_col] = listParam2[ind_col-1]
+            Hval[1, ind_col] = listParam2[ind_col-1]
+        end
+
         localParam[nameParam2] = listParam2[ind_col-1]
 
         for ind_row in 2:length(listParam1)+1
             localParam[nameParam1] = listParam1[ind_row-1]
             localModel = modelAlleeEffect(localParam)
             thresholdsValues = computeThresholds(localModel)
-            bifurcationMatrix[ind_row, ind_col] = interpretThresholds(localModel, thresholdsValues)
+            eqNames = interpretThresholds(localModel, thresholdsValues)
+            bifurcationMatrix[ind_row, ind_col] = eqNames
+
+            if eqValues
+                Feq, _, _ = eqF(localModel)
+                listEq = findEqNames(eqNames)
+                allEqs = [computeEq(localModel, eq) for eq in listEq]
+                # Fval[ind_row, ind_col] = (sum([eq[1] for eq in allEqs]) - Feq) / (length(allEqs)-1)
+                Fval[ind_row, ind_col] = sum([eq[1] for eq in allEqs]) / length(allEqs)
+                Vval[ind_row, ind_col] = sum([eq[2] for eq in allEqs]) / length(allEqs)
+                Hval[ind_row, ind_col] = sum([eq[3] for eq in allEqs]) / length(allEqs)
+            end
+
         end
     end
     bifurcationMatrix[1,1] = nameParam1 * "\\" * nameParam2
+    if eqValues
+        Fval[1,1] = nameParam1 * "\\" * nameParam2
+        Vval[1,1] = nameParam1 * "\\" * nameParam2
+        Hval[1,1] = nameParam1 * "\\" * nameParam2
+        return bifurcationMatrix, Fval, Vval, Hval
+    end
+    
     return bifurcationMatrix
+
 end

@@ -60,6 +60,17 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         end
         myModel = modelAlleeEffectPref(param)
         return myModel
+    elseif modelType == "WildV2"
+        nbrParameters = length(fieldnames(modelWildV2))
+        if nbrParameters > length(param)
+            println("Number of parameter is incoherent with model WildV2")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelWildV2))
+            return
+        end
+        myModel = modelWildV2(param)
+        return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
         return
@@ -108,6 +119,12 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
     elseif mathModelType == "AlleeEffectPref"
         if numericalModelType == "RK4"
             myModel = alleeEffectPrefRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "WildV2"
+        if numericalModelType == "RK4"
+            myModel = wildV2RK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end

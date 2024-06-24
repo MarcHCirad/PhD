@@ -8,6 +8,8 @@ include("modelAlleeEffect.jl")
 include("modelAlleeEffectRK4.jl")
 include("modelAlleeEffectPref.jl")
 include("modelAlleeEffectPrefRK4.jl")
+include("modelWildV2.jl")
+include("modelWildVRK4.jl")
 include("plotFile.jl")
 include("writer.jl")
 include("reader.jl")
@@ -26,75 +28,112 @@ function writeNumericalModel(allModels::Dict{String, numericalModel}, dirPrefix:
     return listFolderNames
 end
 
-function main()
+function mainBifurcation()
 
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
 
-    pathWDFV = pathWD * "/Test"
-    allModels = readNumericalModel(pathWDFV)
-    # model = allModels["AlleeEffect"]
-    # math = model.mathModel
+    pathWD = pathWD * "/Test2"
+    allModels = readNumericalModel(pathWD)
+    model = allModels["AlleeEffect"]
+    math = model.mathModel   
     
-    # table2 = modelTable(math; biologicalModel = true)
-    # sort!(table2)
-    # possibleeq = (unique(table2[!,:Equilibrium]))
-    # println(size(possibleeq))
-    # println(sort(possibleeq))
-    # output = pathWDFV * "/"*string(typeof(model))*"/TableBio.csv"
-    # CSV.write(output, table2)
+    ## color ##
+    dicEqNamesColor = Dict(["(F)" => "powderblue",
+                        "(F), (FH)" => "firebrick",
+                        "(F), (FH), (FVH_2)" => "turquoise",
+                        "(F), (FH), (VH_2)" => "darkorange",
+                        "(F), (FH), (VH_2), (FVH_2)" => "gold",
+                        "(F), (FH_\beta)" => "green",
+                        "(F), (FH_\beta), (FH)" => "khaki",
+                        "(F), (FH_\beta), (FH), (FVH_2)" => "skyblue",
+                        "(F), (FH_\beta), (FH), (VH_2)" => "tan",
+                        "(F), (FH_\beta), (FH), (VH_2), (FVH_2)" => "chocolate",
+                        "(F), (FH_\beta), (VH_2)" => "olivedrab",
+                        "(F), (FVH_\beta)" => "silver",
+                        "(F), (FVH_\beta), (FH)" => "indianred",
+                        "(F), (FVH_\beta), (FH), (FVH_2)" => "black",
+                        "(F), (FVH_\beta), (FH), (VH_2)" => "navy",
+                        "(F), (FVH_\beta), (FH), (VH_2), (FVH_2)" => "sienna",
+                        "(F), (FVH_\beta), (FVH_2)" => "royalblue",
+                        "(F), (FVH_\beta), (VH_2)" => "goldenrod",
+                        "(F), (FVH_\beta), (VH_2), (FVH_2)" => "seashell",
+                        "(F), (H)" => "gold",
+                        "(F), (H), (VH_2)" => "bisque",
+                        "(F), (H_\beta)" => "darkgreen",
+                        "(F), (VH_\beta)" => "seagreen",
+                        "(F), (VH_\beta), (VH_2)" => "purple",
+                        "(F), (VH_2)" => "lightgreen"
+                    ])
+                
 
-
-    # listLambdaFH = [k for k = 0.001:0.01:0.5]
-    # listLambdaVH = [k for k = 0.001:0.001:1]
-    # listLV = [k for k = 20:0.1:70]
-    # listbeta = [k for k = 0.01:0.01:7]
-
-    dicEqNamesNbr = Dict(["(F)" =>"royalblue",
-                        "(F)(FH)"=>"firebrick", 
-                        "(F)(FH)(VH_2)"=>"darkorange",
-                        "(F)(FH_β)"=>"green", "(F)(FH_β)(FH)"=>"orchid", "(F)(FH_β)(FH)(VH_2)"=>"black",
-                        "(F)(FH_β)(VH_2)"=>"darkgreen", "(F)(FVH_β)"=>"silver", "(F)(FVH_β)(FH)"=>"chocolate",
-                        "(F)(FVH_β)(FH)(VH_2)"=>"plum", "(F)(FVH_β)(VH_2)"=>"goldenrod", "(F)(H)"=>"gold",
-                        "(F)(H)(VH_2)"=>"bisque", "(F)(VH_2)"=>"turquoise",
-                        "(F)(VH_β)"=>"peru", "(F)(VH_β)(VH_2)"=>"chartreuse"])
-
-    # bifurcationMatrix = computeBifurcationDiagram(math, "beta", listbeta, "LV", listLV)
-    # dirName = writeBifurcationDiagram(model, bifurcationMatrix, pathWDFV)
-    dirName = "/home/hetier/Documents/PhD/SimulationNumerique/Test/alleeEffectRK4"
-    plotBifurcationFile(dirName * "/bifurcationDiagram.csv", 
-                        pathWDFV*"/bifurcation.html" ;
-                        dicEqColor = dicEqNamesNbr,
-                        xlabel = "Beta",
-                        ylabel = "L_V",
-                        toPlot = true)
     
-
-    # solveModel(allModels)
-    # # F1, V1, H1 = eqFVH1(math)
-    # # F2, V2, H2 = eqFVH2(math)
-    # # println("F1 : ", F1, " V1 : ", V1, " H1 : ", H1)
-    # # println("F2 : ", F2, " V2 : ", V2, " H2 : ", H2)
-    # resultFolder = writeNumericalModel(allModels, pathWDFV)
-    # println("Results have been writting in the following folders :")
-    # for dir in resultFolder
-    #     println(dir)
-    # end
     
-    # plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
-    #                     pathWDFV*"/plot.html",
-    #                     title="Comparison of two models : Eq FH",
-    #                     legend=["allee", "ecoService"],
-    #                     toPlot=true)
+    ## parameter list ##
+    listLambdaFH = [k for k = 0.001:0.01:0.5]
+    listLambdaVH = [k for k = 0.001:0.001:1]
+    listLV = [k for k = 0.1:0.1:70]
+    listbeta = [k for k = 0.1:0.01:12]
+    lista = [k for k = 0.01:0.05:15]
+    listb = [k for k = 0.01:0.05:15]
+    listc = [k for k = 0.01:0.05:15]
 
-    # plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
-    #                     pathWDFV*"/plot.html",
-    #                     [2,3];
-    #                     title="Comparison of two models : Eq FH",
-    #                     legend=["allee", "ecoService"],
-    #                     toPlot=true)
+    ## dir and file name ##
+    dirName = pathWD * "/bifurcationAlleeEffect/CLV_test/"
+    nameSuffix = "bifurcationDiagramCLV"
+    filePrefix = dirName * "/" * nameSuffix
+
+    ## computation ##
+    bifurcationMatrix, bifF, bifV, bifH = computeBifurcationDiagram(math, "c", listc, "LV", listLV ; eqValues=true)
+    filePrefix = writeBifurcationDiagram(math, bifurcationMatrix, dirName; 
+                                        nameSuffix = nameSuffix,
+                                        eqVals = true, bifF = bifF, bifV = bifV, bifH = bifH)
+
+    ## plot ##
+    plotBifurcationFile(filePrefix * ".csv", 
+                        filePrefix * ".html" ;
+                        # title = latexstring("\\text{Bifurcation Diagram in } (c, L_V) \\text{ plane}"),
+                        title = "",
+                        xlabel = latexstring("\\LARGE{c}"),
+                        ylabel = latexstring("\\LARGE{L_V}"),
+                        dicEqColor = dicEqNamesColor,
+                        toPlot = true,
+                        eqVals = false,
+                        titleEqVals = "\\text{: average of equilibrium values}",
+                        fontsize = 30)
 end
 
-main()
+function mainSolveModel()
+    pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
+    pathWDFV = pathWD * "/Wild"
+    allModels = readNumericalModel(pathWDFV)
+    resultFolder = ["/home/hetier/Documents/PhD/SimulationNumerique/Wild/RK4"]
+    nameFile = pathWDFV*"/plotLVd.html"
+
+    ## Solving ##
+    solveModel(allModels)
+    resultFolder = writeNumericalModel(allModels, pathWDFV)
+    println("Results have been writting in the following folders :")
+    for dir in resultFolder
+        println(dir)
+    end
+
+    ## Plotting ##
+    # plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
+    #                     nameFile,
+    #                     title="Perturbation from equilibrium FVH : L_V decreased",
+    #                     plotLegend = false,
+    #                     legend=[latexstring("a_\\alpha")],
+    #                     toPlot=true)
+
+    plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
+                        pathWDFV*"/plot.html",
+                        [1,2];
+                        title="Comparison of two models : Eq FH",
+                        legend=[latexstring("allee"), "ecoService"],
+                        toPlot=true)
+end
+
+mainSolveModel()
 
 end
 println(t, " seconds to execute the code")

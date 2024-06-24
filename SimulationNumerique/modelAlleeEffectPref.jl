@@ -188,16 +188,16 @@ function interpretThresholds(model::modelAlleeEffectPref, thresholdsValues)
         listEq = listEq * "(F)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] < 1 && thresholdsValues["TVBeta0"] < 1
-        listEq = listEq * "(H_β)"
+        listEq = listEq * "(H_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] > 1 && thresholdsValues["TVBetaFBeta"] < 1
-        listEq = listEq * "(FH_β)"
+        listEq = listEq * "(FH_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] < 1 && thresholdsValues["TVBeta0"] > 1
-        listEq = listEq * "(VH_β)"
+        listEq = listEq * "(VH_\beta)"
     end
     if thresholdsValues["TH0"] < 1 && thresholdsValues["TFBeta"] > 1 && thresholdsValues["TVBetaFBeta"] > 1
-        listEq = listEq * "(FVH_β)"
+        listEq = listEq * "(FVH_\beta)"
     end
     if thresholdsValues["TH0"] > 1 && thresholdsValues["TFc"] < 1 && thresholdsValues["TVc0"] < 1
         listEq = listEq * "(H)"
