@@ -24,7 +24,7 @@ function writeResult(myModel::numericalModel, dirName::String)
 
     CSV.write(resultFile, 
         DataFrame(transpose(myModel.result), :auto),
-        header=["time", "F", "V", "H"])
+        header = myModel.variablesNames)
 end
 
 
@@ -36,7 +36,7 @@ function writeNumericalModel(myModel::numericalModel, dirPrefix::String)
     numParamterFile =  dirName * "/numerical_parameters.txt"
     parameters = fieldnames(typeof(myModel))
 
-    mathModel = getfield(myModel, parameters[1])
+    mathModel = getfield(myModel, parameters[2])
     writeMathematicalModel(mathModel, dirName)
 
     open(numParamterFile, "w") do fout
@@ -53,12 +53,19 @@ function writeNumericalModel(myModel::numericalModel, dirPrefix::String)
     return dirName
 end
 
-function writeBifurcationDiagram(myModel::numericalModel, bifurcationDiagram::Matrix{Any}, dirPrefix::String)
+function writeBifurcationDiagram(myModel::mathematicalModel, bifurcationDiagram::Matrix{Any}, dirPrefix::String ;
+            nameSuffix = "bifurcationDiagram",
+            bifF = Matrix{Any}(), bifV = Matrix{Any}(), bifH = Matrix{Any}(), eqVals = false)
+    
     if !isdir(dirPrefix)
-        mkdir(dirPrefix)
+        mkpath(dirPrefix)
     end
-    dirName = dirPrefix * "/" * string(typeof(myModel))
-    fileName = dirName * "/" * "bifurcationDiagram.csv"
+    fileName = dirPrefix * "/" * nameSuffix * ".csv"
     CSV.write(fileName, DataFrame(bifurcationDiagram, :auto))
-    return dirName
+    if eqVals
+        CSV.write(fileName[1:end-4]*"F.csv", DataFrame(bifF, :auto))
+        CSV.write(fileName[1:end-4]*"V.csv", DataFrame(bifV, :auto))
+        CSV.write(fileName[1:end-4]*"H.csv", DataFrame(bifH, :auto))
+    end
+    return fileName[1:end-4]
 end

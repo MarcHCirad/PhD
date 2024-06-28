@@ -2,6 +2,7 @@ include("modelWildV2.jl")
 
 struct wildV2RK4 <: numericalModel
 
+    variablesNames::Vector{String}
     mathModel::modelWildV2
 
     t0::Float64
@@ -21,7 +22,10 @@ struct wildV2RK4 <: numericalModel
         result = Matrix{Float64}(undef, 3, n+1)
         result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
 
-        new(mathModel, t0, tf, dt, n, result)
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
+
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
     end
 
     function wildV2RK4(mathModel::modelWildV2, numericalParam::Dict{String, Float64}, 
@@ -32,8 +36,11 @@ struct wildV2RK4 <: numericalModel
 
         result = Matrix{Float64}(undef, 3, n+1)
         result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
-
-        new(mathModel, t0, tf, dt, n, result)
+        
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
+        
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
         end
 end
 

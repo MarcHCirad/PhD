@@ -1,18 +1,13 @@
 t = @elapsed begin
 
-include("modelFVHRK4.jl")
-include("modelFVHNSS.jl")
-include("modelEcoServiceRK4.jl")
-include("modelEcoServiceFVRK4.jl")
-include("modelAlleeEffect.jl")
-include("modelAlleeEffectRK4.jl")
-include("modelAlleeEffectPref.jl")
-include("modelAlleeEffectPrefRK4.jl")
-include("modelWildV2.jl")
-include("modelWildVRK4.jl")
 include("plotFile.jl")
 include("writer.jl")
 include("reader.jl")
+
+include("modelWildV1.jl")
+include("modelWildV1RK4.jl")
+include("modelWildV2.jl")
+include("modelWildV2RK4.jl")
 
 function solveModel(allModels::Dict{String, numericalModel})
     for model in collect(values(allModels)) 

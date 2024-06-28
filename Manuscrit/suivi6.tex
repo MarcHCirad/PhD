@@ -22,6 +22,7 @@
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \newtheorem*{theo}{Theorem}
+\newcommand{\marc}{\textcolor{magenta}}
 \newcommand{\yves}{\textcolor{magenta}}
 \newcommand{\gf}{(r_F - \omega f - \mu_F)}
 \newcommand{\gv}{(r_V- \mu_V)}
@@ -45,6 +46,78 @@
 \begin{document}
 
 \maketitle
+
+\section{Modèle épidémio faune sauvage-vecteurs}
+\begin{subequations}
+\begin{align}
+&\dfrac{dS}{dt} = \mu_S \dfrac{S+I}{N} - \beta \dfrac{S}{N}I_V - \mu_S S \marc{+ \delta_R R}\\
+&\dfrac{dI}{dt} = \beta \dfrac{S}{N}I_V - \mu_S I \marc{-\delta I(t-\tau)} \\
+&\marc{\dfrac{dR}{dt} = \delta I - \mu_S R} \\
+&\dfrac{dS_V}{dt} = \marc{p} r_V \left(1 - \dfrac{V}{N}\right)V \marc{\text{ ou } S_V} - \beta_V S_V \dfrac{I}{N} - \mu_V S_V \\
+&\dfrac{dI_V}{dt} = \marc{(1-p) r_V I_V \left(1-\dfrac{V}{N} \right) + } \beta_V S_V \dfrac{I}{N} - \mu_V I_V \\
+& V = I_V + S_V
+\end{align}
+\end{subequations}
+
+Sur le long terme, $V \rightarrow V^* = (1-\dfrac{1}{\mathcal{N}_0^V}) N$; on considère $V = S_V + I_V = V^*$ dans la partie dynamique, et l'équation de $I_V$ se réécrit
+\begin{equation}
+\dfrac{dI_V}{dt} = \beta_V (V^* - I_V) \dfrac{I}{N} - \mu_V I_V
+\end{equation}
+et on approxime
+\begin{equation}
+I_V \simeq \dfrac{\beta_V \dfrac{I}{N}}{\beta_V + \mu_V}V^*
+\end{equation}
+ce qui nous permet de remplacer dans l'équation (1a).
+
+A creuser : rajouter deux équations pour les humains susceptibles et humains infectés ; rôles des animaux domestiques ?
+Mouvements Humains ?
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dF_S}{dt}=r_{F}\left(1-\dfrac{F_S}{f V_S}\right)F_S -\lf F_S  H_S \\
+\marc{\dfrac{dF_S}{dt}=r_{F}\dfrac{V_S}{V_S + L_S}\left(1-\dfrac{F_S}{K_F}\right)F_S -\lf F_S  H_S} \\
+\dfrac{dV_S}{dt}=r_V \left(1-\dfrac{V_S}{K_{V}}\right)V_S  -\lv V_S H_S - \alpha V_S F_S\\
+\dfrac{dH_S}{dt}= \delta H_a - \delta_s H_S \\
+%\dfrac{dH_S}{dt} = e (\lf F_S + \lv V_S)H_S + \delta H_a - \delta_S H_S - \mu_H H_S
+\end{array}\right.
+\label{model:simplified}
+\end{equation}
+
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dF_a}{dt}=r_{F}\left(1-\dfrac{F_a}{K_{F}}\right)F_a - \mu_F F_a -\lf F_a H_a \\
+\marc{\dfrac{dF_a}{dt}=r_{F} \dfrac{H_a}{H_a + L}\left(1-\dfrac{F_a}{K_{F}}\right)F_a - \mu_F F_a -\lf F_a H_a} \\
+\dfrac{dV_a}{dt}=r_V \dfrac{H_a}{H_a + L_V} \left(1-\dfrac{V_a}{K_{V}}\right)V_a -\mu_V V_a -\lv V_a H_a\\
+\dfrac{dH_a}{dt}=r_H \left(1-\dfrac{H_a}{a_a(F_a) + b_a(V_A) +a_s(F_S) + b_s(V_S) + c} \right)  (\dfrac{H_a}{\beta} - 1) H_a - \delta H_a + \delta_s H_S \\
+%\dfrac{dH_a}{dt} = c + e (\lf F_a + \lv V_a )H_a + e (\lf F_s + \lv V_s )H_s - \delta H_a + \delta_S H_S - \mu_H H_a
+\end{array}\right.
+\label{model:simplified}
+\end{equation}
+
+Etude de modèles simplifiés : 
+\begin{itemize}
+\item avec $\alpha = 0$, $V_S = K_{V_S}$ et 1ère équation pour $F_S$
+\item sous modèle sans $V_a$, juste avec $H_a$ et $F_a$
+\item 
+\end{itemize}
+
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dF_S}{dt}=r_{F}\left(1-\dfrac{F_S}{f V_S}\right)F_S -\lf F_S   H \\
+\dfrac{dV_S}{dt}=r_V \left(1-\dfrac{V_S}{K_{V}}\right)V_S  -\lv V_S H
+\end{array}\right.
+\label{model:simplified}
+\end{equation}
+
+\begin{equation}    
+\left\{ \begin{array}{l}
+\dfrac{dF_a}{dt}=r_{F}\left(1-\dfrac{F_a}{K_{F}}\right)F_a - \mu_F F_a -\lf F_a H_a \\
+\dfrac{dV_a}{dt}=r_V \dfrac{H_a}{H_a + L_V} \left(1-\dfrac{V_a}{K_{V}}\right)V_a -\mu_V V_a -\lv V_a H_a\\
+\dfrac{dH}{dt}=r_H \left(1-\dfrac{H}{a(p F_a + (1-p)F_S) + b(qV_A + (1-q)V_S) + c} \right)  (\dfrac{H}{\beta} - 1) H 
+\end{array}\right.
+\label{model:simplified}
+\end{equation}
+
+\newpage
 
 This model tries to take into account the interactions between human population ($H$), wild fauna and flora ($F$), and human-driven vegetation ($V$). 
 We assume that human pick up resources from wild and human-driven vegetation. The rate per person of this collect is assumed to be decreasing with the quantity of resources.
@@ -266,7 +339,7 @@ Equilibrium are obtained when the right hand side of the previous system is equa
 \item A human equilibrium $EE^H_\beta = \Big(0,\beta \Big)$
 \item A vegetation-human equilibrium $EE^{VH}_\beta = \Big(V^*_{\beta}, \beta \Big)$ where $V^*_\beta = K_V \Big(1- \dfrac{\beta + L_V}{\beta} \dfrac{\lv \beta + \mu_V}{r_V} \Big)$. This equilibrium exists when $\dfrac{\beta}{\beta + L_V} \dfrac{r_V}{\lv \beta + \mu_V} > 1$
 \item A human equilibrium $EE^H = \Big(0,c\Big)$
-\item One or two vegetation-human equilibrium $EE^{VH}_i = \Big(0, V^*_{VH,i}, H^*_{VH,i} \Big)$. $H^*_{c, VH,i}$ are equal at $H^*_{VH, i} = bV^*_{VH, i} + c$ and $V^*_{VH,i}$ are solutions of
+\item One or two vegetation-human equilibrium $EE^{VH}_i = \Big(V^*_{VH,i}, H^*_{VH,i} \Big)$. $H^*_{c, VH,i}$ are equal at $H^*_{VH, i} = bV^*_{VH, i} + c$ and $V^*_{VH,i}$ are solutions of
 %\begin{equation}
 %V^2 + V \left(\dfrac{\dfrac{c r_V}{K_V} + \lv b (2c+L_V) + b (\mu_V - r_V)}{b^2\lv + \dfrac{b r_V}{K_V}} \right) + \Big(\dfrac{c+L_V}{c} \dfrac{\mu_V + \lv c}{r_V} - 1\Big)\dfrac{r_V c}{b^2 \lv(1 + \dfrac{r_V}{b K_V \lv})} = 0
 %\label{equilibreVH:equationV}
