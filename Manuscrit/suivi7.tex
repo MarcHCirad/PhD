@@ -21,15 +21,16 @@
 \titlespacing*{\paragraph}
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-\newtheorem*{theo}{Theorem}
-\newcommand{\marc}{\textcolor{magenta}}
-\newcommand{\yves}{\textcolor{magenta}}
-\newcommand{\gf}{(r_F - \omega f - \mu_F)}
-\newcommand{\gv}{(r_V- \mu_V)}
 \newcommand{\lf}{\lambda_{FH}}
 \newcommand{\lv}{\lambda_{VH}}
 \newcommand{\lfa}{\lambda_{FH, A}}
 \newcommand{\lva}{\lambda_{VH, A}}
+\newcommand{\lfw}{\lambda_{FH, W}}
+\newcommand{\lvw}{\lambda_{VH, W}}
+\newcommand{\da}{\delta_A}
+\newcommand{\dw}{\delta_W}
+\newcommand{\dr}{\dfrac{\da}{\dw}}
+\newcommand{\rd}{\dfrac{\dw}{\da}}
 \newcommand{\RV}{R_0^V}
 \newcommand{\RF}{R_0^F}
 \newcommand{\NF}{\mathcal{N}_0^F}
@@ -163,9 +164,38 @@ System \eqref{submodelAnthropoFH} has the following equilibrium:
 \item A trivial equilibria $TE= (0,0)$ which always exists.
 \item A faun equilibria $EE^{F_A} = (F_A^*, 0)$ where $F_A^* = K_F\left(1 - \dfrac{\mu_F}{r_F}\right)$. It exists if $L_F = 0$ and $1 < T_F(0)$.
 \item A human equilibria $EE^{H_A}_\beta = (0, \beta)$ which always exists.
-\item A faun-human equilibrium $EE^{F_AH_A}_\beta = (F^*_{A, \beta}, \beta)$ with $F^*_{A, \beta} = K_F \Big(1-\dfrac{\beta + L_F}{\beta}\dfrac{\mu_F + \lfa \beta}{r_F}\Big)$ which exists if $1 < T_F(\beta)$.
+\item A faun-human equilibrium $EE^{F_AH_A}_\beta = \Big(F^*_{F_A, \beta}, \beta\Big)$ with $F^*_{F_A, \beta} = K_F \Big(1-\dfrac{\beta + L_F}{\beta}\dfrac{\mu_F + \lfa \beta}{r_F}\Big)$ which exists if $1 < T_F(\beta)$.
 \item A human equilibria $EE^{H_A} = (0, c)$ which always exists.
-\item One or two faun-human equilibrium $EE^{F_AH_A, i} = (F^*_{F_AH_A, i}, H^*_{F_AH_A, i})$ where $H^*_{F_AH_A, i} = a_AF^*_{F_AH_A, i}+c$.
+\item One or two faun-human equilibrium $EE^{F_AH_A, i} = \Big(F^*_{F_AH_A, i}, H^*_{F_AH_A, i}\Big)$ 
+%$F^*_{F_AH_A, i}$ is given by:
+%$$ F^*_{F_AH_A, i} = K_F \left(1 - \dfrac{H^*_{F_AH_A, i} + L_F}{H^*_{F_AH_A, i}} \dfrac{\mu_F + \lfa H^*_{F_AH_A, i}}{r_F} \right)$$
+%and its positive only if $1 < T_F(H^*_{F_AH_A, i})$.
+%
+%$H^*_{F_AH_A, i}$ is solution of
+%\begin{equation}
+%H^2 \left(1 + a_AK_F \dfrac{\lfa}{r_F} \right) - H \left( a_AK_F\left(1 - \dfrac{\mu_F + L_F \lfa}{r_F} \right) + c \right) + a_A K_F\dfrac{\mu_F L_F}{r_F} = 0
+%\label{equilibreFAHA:equationHA}
+%\end{equation}
+%
+%Note that when $L_F = 0$, this equation can be factorized by $H$ and $H^*_{F_AH_A, i}$ is solution of 
+%\begin{equation}
+%H \left(H \Big(1 + a_AK_F \dfrac{\lfa}{r_F}\Big) - a_AK_F\left(1 - \dfrac{\mu_F}{r_F} \right) - c \right) = 0
+%\label{equilibreFAHA:equationHA, LF=0}
+%\end{equation}
+%
+%We note $H^*_{F_AH_A, 2} = \dfrac{a_AK_F\left(1 - \dfrac{\mu_F}{r_F} \right) + c}{1 + a_AK_F \dfrac{\lfa}{r_F}}$ the unique positive solution of this equation. 
+%
+%Finally, when $L_F = 0$, there is only one equilibrium $EE^{F_AH_A}$ possible, which exists if $1 < T_F(H^*_{F_AH_A, 2}) \Leftrightarrow 1 < T_F(c)$.
+%
+%When $L_F > 0$, there is no such shortcut and we need to search for the real and positive solutions of equation \eqref{equilibreFAHA:equationHA}. Its discriminant is positive if:
+%
+%\begin{multline}
+%\Delta_{F_AH_A} \geq 0 \Leftrightarrow \\
+%\left( a_AK_F\left(1 - \dfrac{\mu_F + L_F \lfa}{r_F} \right) + c \right)^2 \geq  4 \left(1 + a_AK_F \dfrac{\lfa}{r_F} \right)a_A K_F\dfrac{\mu_F L_F}{r_F}
+%\label{equilibreFAHA:discriminant}
+%\end{multline}
+
+where $H^*_{F_AH_A, i} = a_AF^*_{F_AH_A, i}+c$.
 \end{itemize}
  $F^*_{F_AH_A, i}$ are solution of 
 \begin{equation}
@@ -186,7 +216,7 @@ When $L_F > 0$, there is no such shortcut and we need to search for the real and
 \begin{multline}
 \Delta_{F_AH_A} \geq 0 \Leftrightarrow \\
 \left(K_F \Big(\dfrac{\lfa(2c+L_F) + \mu_F}{r_F} - 1\Big) + \dfrac{c}{a_A} \right)^2 \geq  4 \dfrac{K_F}{a_A}  \Big(1 + \dfrac{a_A K_F \lfa}{r_F}\Big) \Big((c+L_F) \dfrac{\mu_F + \lfa c}{r_F} - c\Big)
-\label{equilibreFAHA:discriminant}
+\label{equilibreFAHA:discriminant2}
 \end{multline}
 
 If the right hand side is negative, \textit{ie} when $1< T_F(c)$, then the discriminant $\Delta_{F_AH_A}$ is positive, and the constant coefficient of \eqref{equilibreFAHA:equationFA} is negative. Thus, there is always one positive roots (and the other is negative).
@@ -216,7 +246,7 @@ there is one equilibrium, noted $EE^{F_AH_A}_2$ ; and if
     \label{equilibreFAHA:conditionExistence2}
 \end{subequations}
 }
-there are two equilibrium $EE^{V_AH_A}_1 \leq EE^{V_AH_A}_2$.
+there are two equilibrium $EE^{F_AH_A}_1 \leq EE^{F_AH_A}_2$.
 
 $F^{*}_{F_AH_A,i}$ are equal at
 \begin{equation}
@@ -285,14 +315,14 @@ r_F\dfrac{\beta}{\beta+L_F} - \lfa \beta - \mu_F & 0 \\
 \end{equation}
 Since $\beta < c$, $EE^{H_A}_\beta$ is never stable.
 
-\item At point $EE^{F_AH_A}_\beta = \Big(F^*_{A,\beta},\beta \Big)$, the Jacobian is
+\item At point $EE^{F_AH_A}_\beta = \Big(F^*_{F_A,\beta},\beta \Big)$, the Jacobian is
 \begin{equation}
-\mathcal{J}(F^*_{A,\beta}, \beta) = \begin{bmatrix}
-- r_F\dfrac{\beta}{\beta+L_F} F^*_{A,\beta} & \_ \\
+\mathcal{J}(F^*_{F_A,\beta}, \beta) = \begin{bmatrix}
+- r_F\dfrac{\beta}{\beta+L_F} F^*_{F_A,\beta} & \_ \\
 0 & r_H (1 - \dfrac{\beta}{c})
 \end{bmatrix}
 \end{equation}
-Eigenvalues appear on the diagonal. Since $\beta < c$, $EE^{H_A}_\beta$ is never stable.
+Eigenvalues appear on the diagonal. Since $\beta < c$, $EE^{F_AH_A}_\beta$ is never stable.
 
 
 \item At point $EE^{H_A} = \Big(0,c \Big)$, the Jacobian is
@@ -332,7 +362,7 @@ Using equation \eqref{equilibreFAHA:equationFA}, we can show that $H^*_{F_AH_A}$
 
 \begin{equation}
 H^2 \left(1 + a_AK_F \dfrac{\lfa}{r_F} \right) - H \left( a_AK_F\left(1 - \dfrac{\mu_F + L_F \lfa}{r_F} \right) + c \right) + a_A K_F\dfrac{\mu_F L_F}{r_F} = 0
-\label{equilibreFAHA:equationHA}
+\label{equilibreFAHA:equationHA2}
 \end{equation}
 
 Since $H^*_{F_AH_A}$ are positive solutions of \eqref{equilibreFAHA:equationHA}, the term in $H$ is negative. Then, by using appendix \ref{appendice:ineq2nd}, we know that the term $\left( \Big(\dfrac{r_F}{K_F} + a_A\lfa\Big) (H^*_{F_AH_A})^2 - a_A L_F \mu_F \right)$ is positive for $H^*_{F_AH_A, 2}$ and negative for $H^*_{F_AH_A, 1}$.
@@ -395,11 +425,6 @@ T_F(H) = \dfrac{H}{H + L_F}\dfrac{r_F}{\mu_F + \lfa H}
 T_H(F) = \dfrac{a_A F + c }{\beta}
 \tag{\ref{threshold:TH(F)}}
 \end{equation}
-In addition, we also define:
-
-\begin{equation}
-T_{H_{min}} = \dfrac{H^*_{F_AH_A, 1}}{H_{min}}
-\end{equation}
 
 \begin{equation}
 T_{\Delta_{FH}} = \dfrac{\dfrac{c}{4a_A K_F}}{\dfrac{a_A K_F \lfa}{r_F} + 1}\dfrac{\left(\dfrac{a_A K_F}{c} \Big(\dfrac{\mu_F + \lfa L_F}{r_F} - 1\Big)+ \dfrac{2 \lfa a_A K_F}{r_F} + 1 \right)^2}{\dfrac{c+L_F}{c} \dfrac{\mu_F + \lfa c}{r_F} - 1}
@@ -413,14 +438,14 @@ All those thresholds are used in the following table to summarize the different 
 
 \begin{table}[!ht]
 \centering
-\caption{\centering Stability and existence for subsystem $F_A-H_A$ when $L_F = 0$: condition in brackets are required conditions but implied by the other row's elements}
-\begin{tabular}{c|c|c|c|c}
-$T_H(0)$ & $T_F(0)$  & $T_F(c)$ & Equilibrium \\
+\caption{\centering Stability and existence for subsystem $F_A-H_A$ when $L_F = 0$}
+\begin{tabular}{c|c|c}
+$T_F(0)$  & $T_F(c)$ & Equilibrium \\
 \hline
-\multirow{3}{*}{$1<$} & $<1$ & &  $TE$, $EE^{H_A}$ \\
-\cline{2-4}
- &  \multirow{2}{*}{$1<$}  & $<1$&  $EE^{F_A}$, $EE^{H_A}$ \\
- & & $1<$ & $EE^{F_A}$, $EE^{F_AH_A}_2$ \\
+ $<1$ & &  $TE$, $EE^{H_A}$ \\
+\cline{1-3}
+  \multirow{2}{*}{$1<$}  & $<1$&  $EE^{F_A}$, $EE^{H_A}$ \\
+& $1<$ & $EE^{F_A}$, $EE^{F_AH_A}_2$ \\
 \hline
 \end{tabular}
 \end{table}
@@ -451,15 +476,15 @@ $T_H(0)$ & $T_F(0)$  & $T_F(c)$ & Equilibrium \\
 
 \begin{table}[!ht]
 \centering
-\caption{\centering Stability and existence for subsystem $F_A-H_A$ when $L_F > 0$: condition in brackets are required conditions but implied by the other row's elements}
-\begin{tabular}{c|c|c|c}
-$T_H(0)$ & $T_F(c)$ & $T_{\Delta_{F_AH_A}}$  & Equilibrium \\
- & & and $T_R$ &  \\
+\caption{\centering Stability and existence for subsystem $F_A-H_A$ when $L_F > 0$}
+\begin{tabular}{c|c|c}
+ $T_F(c)$ & $T_{\Delta_{F_AH_A}}$  & Equilibrium \\
+ & and $T_R$ &  \\
 \hline
-\multirow{3}{*}{$1<$} & \multirow{2}{*}{$<1$} &$<1$& $TE, EE^{H_A}, EE^{F_AH_A}_2$ \\
- & & & $TE, EE^{H_A}$ \\
- \cline{2-4}
- &$1<$ & & $TE, EE^{F_AH_A}_2$ \\
+ \multirow{2}{*}{$<1$} &$<1$& $TE, EE^{H_A}, EE^{F_AH_A}_2$ \\
+ & & $TE, EE^{H_A}$ \\
+ \cline{1-3}
+$1<$ & & $TE, EE^{F_AH_A}_2$ \\
 \hline
 \end{tabular}
 \end{table}
@@ -561,12 +586,12 @@ T_V(H) = \dfrac{H}{H + L_V} \dfrac{r_V}{\mu_V + \lva H}
 
 Model \eqref{modelAnthropo} admits the following equilibrium:
 \begin{itemize}
-\item $TE = (0,0,0)$, which is AS if $T_F(0) < 1$.
+\item $TE = (0,0,0)$.
 \item A faun equilibrium $EE^{F_A} = (F_A^*, 0, 0)$ which exists if $L_F = 0$ and if $1 < T_F(0)$.
 \item A human equilibrium $EE^{H_A}_\beta = \Big(0,0,\beta \Big)$.
-\item A faun-human equilibrium $EE^{F_AH_A}_\beta = \Big(F^*_{A, \beta}, 0, \beta\Big)$ where $F^*_{A, \beta} = K_F \Big(1-\dfrac{\beta + L_F}{\beta}\dfrac{\mu_F + \beta \lfa}{r_F} \Big)$. It exists if $1 < T_F(\beta)$.
-\item A vegetation-human equilibrium $EE^{V_AH_A}_\beta = (0, V_{A, \beta}^*, \beta)$ with $V_{A, \beta}^* = K_V \Big( 1- \dfrac{\beta + L_V}{\beta} \dfrac{\mu_V + \lva \beta}{r_V} \Big)$. This equilibria exists when $1 < T_V(\beta)$.
-\item A faun-vegetation-human equilibrium $EE^{F_AV_AH_A}_\beta = (F^*_{A, \beta}, V_{A, \beta}^*, \beta)$. This equilibria exists when $1 < T_F(\beta)$ and $1 < T_V(\beta)$.
+\item A faun-human equilibrium $EE^{F_AH_A}_\beta = \Big(F^*_{F_A, \beta}, 0, \beta\Big)$ where $F^*_{F_A, \beta} = K_F \Big(1-\dfrac{\beta + L_F}{\beta}\dfrac{\mu_F + \beta \lfa}{r_F} \Big)$. It exists if $1 < T_F(\beta)$.
+\item A vegetation-human equilibrium $EE^{V_AH_A}_\beta = (0, V_{V_A, \beta}^*, \beta)$ with $V_{V_A, \beta}^* = K_V \Big( 1- \dfrac{\beta + L_V}{\beta} \dfrac{\mu_V + \lva \beta}{r_V} \Big)$. This equilibria exists when $1 < T_V(\beta)$.
+\item A faun-vegetation-human equilibrium $EE^{F_AV_AH_A}_\beta = (F^*_{F_A, \beta}, V_{V_A, \beta}^*, \beta)$. This equilibria exists when $1 < T_F(\beta)$ and $1 < T_V(\beta)$.
 \item A human equilibria $EE^{H_A} = (0, 0, c)$ which always exists.
 \item One or two faun-human equilibrium $EE^{F_AH_A}_i = \Big(F^*_{F_AH_A, i}, 0, a_A F^*_{F_AH_A, i}+c\Big)$ 
 \item One or two vegetation-human equilibrium $EE^{V_AH_A}_i = \Big(0, V^*_{V_AH_A, i}, bV^*_{V_AH_A, i}+c \Big)$.
@@ -599,15 +624,15 @@ When it is the case, equation \eqref{equilibreFAVAHA:equationHA} admits two real
 0 < a_A K_F \Big(1-\dfrac{\mu_F + L_F\lfa}{r_F}\Big) + b_A K_V \Big(1-\dfrac{\mu_V + L_V\lva}{r_V}\Big) + c
 \end{equation}
 
-Moreover, the positive solutions must satisfy $1 < T_F(H_i)$ and $1 < T_V(H_i)$ in order to get positive values of $F^*_{F_AV_AH_A}$ and $V^*_{F_AV_AH_A}$.
+Moreover, the positive solutions must satisfy $1 < T_F(H^*_{F_AV_AH_A,i})$ and $1 < T_V(H^*_{F_AV_AH_A,i})$ in order to get positive values of $F^*_{F_AV_AH_A,i}$ and $V^*_{F_AV_AH_A,i}$.
 
 Finally, condition of existence are given by:
 \begin{subequations}
     \begin{empheq}[left={\empheqlbrace\,}]{align}
 &0 \leq \Delta_{F_AV_AH_A} \\
 &0 < a_A K_F \Big(1-\dfrac{\mu_F + L_F\lfa}{r_F}\Big) + b_A K_V \Big(1-\dfrac{\mu_V + L_V\lva}{r_V}\Big) + c \\
-&1 < T_F(H_i) \\
-&1 < T_V(H_i)
+&1 < T_F(H^*_{F_AV_AH_A,i}) \\
+&1 < T_V(H^*_{F_AV_AH_A,i})
     \end{empheq}
 \end{subequations}
 
@@ -659,8 +684,8 @@ and $EE^{F_A}$ is AS.
 Since $\beta < c$, $EE^{H_A}_\beta$ is never stable.
 \item At point $EE^{F_AH_A}_\beta$:
 \[
-\mathcal{J}(F^*_{A, \beta},0,\beta) = \begin{bmatrix}
--\dfrac{r_F \beta}{\beta + L_F}\dfrac{F^*_{A, \beta}}{K_F} & 0 & \dfrac{r_F L_F}{(\beta+L_F)^2}\left(1-\dfrac{F^*_{A, \beta}}{K_F}\right)F^*_{A, \beta}  - \lfa F^*_{A, \beta} \\ 
+\mathcal{J}(F^*_{F_A, \beta},0,\beta) = \begin{bmatrix}
+-\dfrac{r_F \beta}{\beta + L_F}\dfrac{F^*_{F_A, \beta}}{K_F} & 0 & \dfrac{r_F L_F}{(\beta+L_F)^2}\left(1-\dfrac{F^*_{F_A, \beta}}{K_F}\right)F^*_{F_A, \beta}  - \lfa F^*_{F_A, \beta} \\ 
 0 &\dfrac{r_V \beta}{\beta + L_V} - \mu_V - \lva \beta & 0 \\ 
 0 & 0 & r_H \Big(1-\dfrac{\beta}{a_AF^*_{A, \beta} + c}\Big)
 \end{bmatrix}
@@ -668,19 +693,19 @@ Since $\beta < c$, $EE^{H_A}_\beta$ is never stable.
 Since $\beta < c$, $EE^{F_AH_A}_\beta$ is never stable.
 \item At point $EE^{V_AH_A}_\beta$:
 \[
-\mathcal{J}(0,V^*_{A, \beta},\beta) = \begin{bmatrix}
+\mathcal{J}(0,V^*_{V_A, \beta},\beta) = \begin{bmatrix}
 \dfrac{r_F \beta}{\beta + L_F} - \mu_F - \lfa \beta & 0 & 0\\
-0 & -\dfrac{r_V \beta}{\beta + L_V}\dfrac{V^*_{A, \beta}}{K_V} & \dfrac{r_V L_V}{(\beta+L_V)^2}\left(1-\dfrac{V^*_{A, \beta}}{K_V}\right)V^*_{A, \beta}  - \lva V^*_{A, \beta} \\
-0 & 0 & r_H \Big(1-\dfrac{\beta}{b_AV^*_{A, \beta} + c}\Big)
+0 & -\dfrac{r_V \beta}{\beta + L_V}\dfrac{V^*_{V_A, \beta}}{K_V} & \dfrac{r_V L_V}{(\beta+L_V)^2}\left(1-\dfrac{V^*_{V_A, \beta}}{K_V}\right)V^*_{V_A, \beta}  - \lva V^*_{V_A, \beta} \\
+0 & 0 & r_H \Big(1-\dfrac{\beta}{b_AV^*_{V_A, \beta} + c}\Big)
 \end{bmatrix}
 \]
 Since $\beta < c$, $EE^{V_AH_A}_\beta$ is never stable.
 \item At point $EE^{F_AV_AH_A}_\beta$:
 \[
-\mathcal{J}(F^*_{A, \beta},V^*_{A, \beta},\beta) = \begin{bmatrix}
--\dfrac{r_F \beta}{\beta + L_F}\dfrac{F^*_{A, \beta}}{K_F} & 0 & \dfrac{r_F L_F}{(\beta+L_F)^2}\left(1-\dfrac{F^*_{A, \beta}}{K_F}\right)F^*_{A, \beta}  - \lfa F^*_{A, \beta}\\
-0 & -\dfrac{r_V \beta}{\beta + L_V}\dfrac{V^*_{A, \beta}}{K_V} & \dfrac{r_V L_V}{(\beta+L_V)^2}\left(1-\dfrac{V^*_{A, \beta}}{K_V}\right)V^*_{A, \beta}  - \lva V^*_{A, \beta} \\
-0 & 0 & r_H \Big(1-\dfrac{\beta}{a_AF^*_{A, \beta} + b_AV^*_{A, \beta} + c}\Big)
+\mathcal{J}(F^*_{F_A, \beta},V^*_{V_A, \beta},\beta) = \begin{bmatrix}
+-\dfrac{r_F \beta}{\beta + L_F}\dfrac{F^*_{F_A, \beta}}{K_F} & 0 & \dfrac{r_F L_F}{(\beta+L_F)^2}\left(1-\dfrac{F^*_{F_A, \beta}}{K_F}\right)F^*_{F_A, \beta}  - \lfa F^*_{F_A, \beta}\\
+0 & -\dfrac{r_V \beta}{\beta + L_V}\dfrac{V^*_{V_A, \beta}}{K_V} & \dfrac{r_V L_V}{(\beta+L_V)^2}\left(1-\dfrac{V^*_{V_A, \beta}}{K_V}\right)V^*_{V_A, \beta}  - \lva V^*_{V_A, \beta} \\
+0 & 0 & r_H \Big(1-\dfrac{\beta}{a_AF^*_{F_A, \beta} + b_AV^*_{V_A, \beta} + c}\Big)
 \end{bmatrix}
 \]
 Since $\beta < c$, $EE^{F_AV_AH_A}_\beta$ is never stable.
@@ -709,7 +734,7 @@ X + \dfrac{r_F H^*_{F_AH_A, i}}{H^*_{F_AH_A, i} + L_F}\dfrac{F^*_{F_AH_A, i}}{K_
  -r_H a_A \Big(\dfrac{H^*_{F_AH_A, i}}{\beta}-1\Big) & X + r_H \Big(\dfrac{H^*_{F_AH_A, i}}{\beta}-1\Big)
 \end{vmatrix}
 \end{multline}
-This 2 by 2 determinant is the Jacobian's characteristic polynomial of the sub-system $F_A-H_A$, and its stability has already been studied: see equation \eqref{stabilityFAHA:jacobianFAHA}.
+This 2 by 2 determinant is the characteristic polynomial of the Jacobian's sub-system $F_A-H_A$, and its stability has already been studied: see equation \eqref{stabilityFAHA:jacobianFAHA}.
 Thus, we can use the result obtained to say that:
 \begin{itemize}
 \item $EE^{F_AH_A}_2$ is AS if $T_V(H^*_{F_AH_A, 2}) < 1$.
@@ -776,63 +801,118 @@ According to the Ruth-Hurwitz criterion, the equilibrium is AS if $q_2 > 0$, $q_
 First, let start by the sign of $q_0$.
 Using appendix \ref{appendice:ineq2nd} and equation \eqref{equilibreFAVAHA:equationHA}, we know that quantity $\left( \Big(H^*_{F_AV_AH_A}\Big)^2 \Big(1 + a_AK_F\dfrac{\lfa}{r_F} + b_AK_V \dfrac{\lva}{r_V} \Big) - \Big(a_AK_F \dfrac{L_F\mu_F}{r_F} + b_A K_V \dfrac{\mu_VL_V}{r_V} \Big)\right)$ is positive for $H^*_{F_AV_AH_A, 2}$ and negative for $H^*_{F_AV_AH_A,1}$. Then, $q_{0,2}$ is positive if $\beta < H^*_{F_AV_AH_A, 2}$ and $q_{0,1}$ is positive if $H^*_{F_AV_AH_A, 1} < \beta$.
 
+
+Since $H^*_{F_AV_AH_A, 1} > c > \beta$, $EE^{F_AV_AH_A}_1$ is never stable.
+
 Condition $\beta < H^*_{F_AV_AH_A, 2}$ is also sufficient to ensure $q_{2,2} > 0$.
 
 I introduce notation:
 \begin{subequations}
 \begin{equation}
-R_F = r_F \dfrac{H^*_{F_AV_AH_A, i}}{H^*_{F_AV_AH_A, i}+L_F} \dfrac{F^*_{F_AV_AH_A, i}}{K_F}
+R_F = r_F \dfrac{H^*_{F_AV_AH_A, 2}}{H^*_{F_AV_AH_A, 2}+L_F} \dfrac{F^*_{F_AV_AH_A, 2}}{K_F}
 \end{equation}
 \begin{equation}
-R_V = r_V \dfrac{H^*_{F_AV_AH_A, i}}{H^*_{F_AV_AH_A, i} + L_V}\dfrac{V^*_{F_AV_AH_A, i}}{K_V}
+R_V = r_V \dfrac{H^*_{F_AV_AH_A, 2}}{H^*_{F_AV_AH_A, 2} + L_V}\dfrac{V^*_{F_AV_AH_A, 2}}{K_V}
 \end{equation}
 \begin{equation}
-R_H = r_H\Big(\dfrac{H^*_{F_AV_AH_A, i}}{\beta} - 1\Big)
+R_H = r_H\Big(\dfrac{H^*_{F_AV_AH_A, 2}}{\beta} - 1\Big)
 \end{equation}
 \end{subequations}
 We have then:
 \begin{subequations}
 \begin{equation}
-q_{2,i} = R_F + R_V + R_H
+q_{2,2} = R_F + R_V + R_H
 \end{equation}
-\begin{equation}
-q_{0,i} = \dfrac{R_FR_VR_H}{H^2} \left(H^2 \Big(1 + aK_F\dfrac{\lfa}{r_F} + bK_V \dfrac{\lva}{r_V}\Big) - \Big(aK_F \dfrac{L_F\mu_F}{r_F} + bK_V \dfrac{L_V \mu_V}{r_V}\Big) \right)
-\end{equation}
-\begin{equation}
-q_1 = R_FR_V + R_FR_H\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-H^2\Big) \dfrac{K_F\lfa}{r_FH^2}\right) + R_VR_H \left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-H^2\Big) \dfrac{K_V \lva}{H^2r_V}\right)
-\end{equation}
+\begin{multline}
+q_{0,2} = \dfrac{R_FR_VR_H}{(H^*_{F_AV_AH_A, 2})^2} \times \\ \left((H^*_{F_AV_AH_A, 2})^2 \Big(1 + aK_F\dfrac{\lfa}{r_F} + bK_V \dfrac{\lva}{r_V}\Big) - \Big(aK_F \dfrac{L_F\mu_F}{r_F} + bK_V \dfrac{L_V \mu_V}{r_V}\Big) \right)
+\end{multline}
+\begin{multline}
+q_{1,2} = R_FR_V + R_FR_H\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_{F_AV_AH_A, 2})^2\Big) \dfrac{K_F\lfa}{r_F(H^*_{F_AV_AH_A, 2})^2}\right) + \\ R_VR_H \left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-(H^*_{F_AV_AH_A, 2})^2\Big) \dfrac{K_V \lva}{(H^*_{F_AV_AH_A, 2})^2r_V}\right)
+\end{multline}
 \end{subequations}
 
 and
 \begin{subequations}
 \begin{multline}
-q_{2,i}q_{1,i} = R_F^2R_V + R_FR_V^2 + \\
-\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-H^2\Big) \dfrac{K_F\lfa}{r_FH^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
-\left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-(H^*_i)^2\Big) \dfrac{K_V \lva}{(H^*_i)^2r_V}\right) \left(R_V^2R_H + R_VR_H^2\right) + \\
-R_FR_VR_H \left(3 + b K_V \dfrac{\lva}{r_V} + a K_F \dfrac{\lfa}{r_F} - b \dfrac{K_V}{(H^*_i)^2}\dfrac{L_V \mu_V}{r_V} - a \dfrac{K_F}{(H^*_i)^2} \dfrac{L_F \mu_F}{r_F} \right)
+q_{2,2}q_{1,2} = R_F^2R_V + R_FR_V^2 + \\
+\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
+\left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-(H^*_2)^2\Big) \dfrac{K_V \lva}{(H^*_2)^2r_V}\right) \left(R_V^2R_H + R_VR_H^2\right) + \\
+R_FR_VR_H \left(3 + b K_V \dfrac{\lva}{r_V} + a K_F \dfrac{\lfa}{r_F} - b \dfrac{K_V}{(H^*_2)^2}\dfrac{L_V \mu_V}{r_V} - a \dfrac{K_F}{(H^*_2)^2} \dfrac{L_F \mu_F}{r_F} \right)
 \end{multline}
 \begin{multline}
 q_{2,i}q_{1,i} = R_F^2R_V + R_FR_V^2 + \\
-\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_i)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_i)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
-\left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-(H^*_i)^2\Big) \dfrac{K_V \lva}{(H^*_i)^2r_V}\right) \left(R_V^2R_H + R_VR_H^2\right) + \\
-2 R_FR_VR_H + q_{0,i}
+\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
+\left( 1 - b\Big(\dfrac{L_V\mu_V}{\lva}-(H^*_2)^2\Big) \dfrac{K_V \lva}{r_V (H^*_2)^2}\right) \left(R_V^2R_H + R_VR_H^2\right) + \\
+2 R_FR_VR_H + q_{0,2}
 \end{multline}
 \end{subequations}
 
 We have then :
 
-\begin{subequations}
 \begin{multline}
-q_{2,i}q_{1,i} -q_{0,i} = R_F^2R_V + R_FR_V^2 + 2 R_FR_VR_H + \\
-\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_i)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_i)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
-\left( 1 - \dfrac{b K_V}{(H^*_i)^2r_V}\Big(L_V\mu_V- \lva(H^*_i)^2\Big) \right) \left(R_V^2R_H + R_VR_H^2\right) 
+q_{2,2}q_{1,2} -q_{0,2} = R_F^2R_V + R_FR_V^2 + 2 R_FR_VR_H + \\
+\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
+\left( 1 - \dfrac{b K_V}{(H^*_2)^2r_V}\Big(L_V\mu_V- \lva(H^*_2)^2\Big) \right) \left(R_V^2R_H + R_VR_H^2\right) 
 \end{multline}
-\end{subequations}
+\end{itemize}
 
+\paragraph{Analyse de $q_{2,2}q_{1,2} -q_{0,2}$ : piste 2}
+
+\begin{multline*}
+q_{2,2}q_{1,2} -q_{0,2} = R_F^2R_V + R_FR_V^2 + 2 R_FR_VR_H + \\
+\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) \left(R_F^2R_H + R_FR_H^2\right) + \\
+\left( 1 - \dfrac{b K_V}{(H^*_2)^2r_V}\Big(L_V\mu_V- \lva(H^*_2)^2\Big) \right) \left(R_V^2R_H + R_VR_H^2\right) 
+\end{multline*}
+
+On note que 
+\begin{align*}
+&\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) > 0 \\
+\Leftrightarrow &(H^*_2)^2 \dfrac{r_F}{K_F} + a_A \Big( (H^*_2)^2\lfa - L_F \mu_F\Big) > 0
+\end{align*}
+ 
+
+On peut définir la fonction 
+\begin{equation}
+S_F(H) = H^2 \dfrac{r_F}{K_F} + a_A \Big(H^2 \lfa  - L_F \mu_F\Big)
+\end{equation}
+Lorsque $S_F(H^*_2) > 0$ et $S_V(H^*_2) > 0$, on a $q_2q_1 - q_0 > 0$.
+
+Quand $(H_2^*)^2 \geq \dfrac{L_F \mu_F}{\lfa}$, le terme $S_F(H^*_2)$ est positif.
+
+Quand $(H_2^*)^2 < \dfrac{L_F \mu_F}{\lfa}$, on montre (cf dessous) que c'est $S_V(H^*_2)$ qui est positif.
+
+On peut donc distinguer 3 cas : 
+\begin{itemize}
+\item $(H_2^*)^2 \geq \max \left( \dfrac{L_F \mu_F}{\lfa}, \dfrac{L_V \mu_V}{\lva} \right)$ : alors $S_F(H^*_2) > 0$, $S_V(H^*_2) > 0$ et $q_2q_1 - q_0 > 0$.
+\item $\min\left( \dfrac{L_F \mu_F}{\lfa}, \dfrac{L_V \mu_V}{\lva} \right) > (H_2^*)^2$ : alors $S_F(H^*_2) > 0$, $S_V(H^*_2) > 0$ et $q_2q_1 - q_0 > 0$.
+\item $\max \left( \dfrac{L_F \mu_F}{\lfa}, \dfrac{L_V \mu_V}{\lva} \right) > (H_2^*)^2 \geq \min\left( \dfrac{L_F \mu_F}{\lfa}, \dfrac{L_V \mu_V}{\lva} \right)$ : alors ???
+\end{itemize}
+
+Preuve que $(H_2^*)^2 < \dfrac{L_V \mu_V}{\lva}$, implique $S_F(H^*_2) > 0$:
+
+
+\begin{align*}
+& S_F(H^*_2) > 0 \\
+\Leftrightarrow & (H_2^*)^2 \left(1 + \dfrac{a_A K_F \lfa}{r_F} \right) > \dfrac{a_A K_F \mu_F L_F}{r_F} \\
+\Leftrightarrow & H^*_2 \left( a_A K_F \Big(1-\dfrac{\mu_F +L_F \lfa}{r_F}\Big) + b_A K_V \Big(1-\dfrac{\mu_V +L_V \lva}{r_V}\Big) + c \right) - \dfrac{b_A K_V \lva}{r_V  }\Big(H^*_2\Big)^2 - \\ & \dfrac{a_A K_F \mu_F L_F}{r_F} - \dfrac{b_A K_V \mu_V L_V}{r_V} > \dfrac{a_A K_F \mu_F L_F}{r_F} \text{ en utilisant l'équation \eqref{equilibreFAVAHA:equationHA} vérifiée par $H^*$} \\
+\Leftrightarrow & H^*_2 \left( a_A K_F \Big(1-\dfrac{\mu_F +L_F \lfa}{r_F}\Big) + b_A K_V \Big(1-\dfrac{\mu_V +L_V \lva}{r_V}\Big) + c \right) > \\ & 2 \dfrac{a_A K_F \mu_F L_F}{r_F} + \dfrac{b_A K_V \mu_V L_V}{r_V} + \dfrac{b_A K_V \lva}{r_V  }\Big(H^*_2\Big)^2
+\end{align*}
+
+Or, comme $(H_2^*)^2 < \dfrac{L_V \mu_V}{\lva}$, on a 
+$$
+2 \dfrac{a_A K_F \mu_F L_F}{r_F} + 2 \dfrac{b_A K_V \mu_V L_V}{r_V} > 2 \dfrac{a_A K_F \mu_F L_F}{r_F} + \dfrac{b_A K_V \mu_V L_V}{r_V} + \dfrac{b_A K_V \lva}{r_V  }\Big(H^*_2\Big)^2  
+$$
+
+et on sait (en utlisant l'équation \eqref{equilibreFAVAHA:equationHA} vérifiée par $H^*$) que 
+$$
+H^*_2 \left( a_A K_F \Big(1-\dfrac{\mu_F +L_F \lfa}{r_F}\Big) + b_A K_V \Big(1-\dfrac{\mu_V +L_V \lva}{r_V}\Big) + c \right) > 2 \dfrac{a_A K_F \mu_F L_F}{r_F} + 2 \dfrac{b_A K_V \mu_V L_V}{r_V} 
+$$
+
+\paragraph{Analyse de $q_{2,2}q_{1,2} -q_{0,2}$ : piste 1}
 On a 
 \begin{align*}
-&\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_i)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_i)^2}\right) > 0 \\
-\Leftrightarrow &(H^*_i)^2 \Big(\dfrac{r_F}{K_F} + a_A \lfa \Big) - a_AL_F \mu_F > 0
+&\left(1 - a \Big(\dfrac{L_F\mu_F}{\lfa}-(H^*_2)^2\Big) \dfrac{K_F\lfa}{r_F(H^*_2)^2}\right) > 0 \\
+\Leftrightarrow &(H^*_2)^2 \Big(\dfrac{r_F}{K_F} + a_A \lfa \Big) - a_AL_F \mu_F > 0
 \end{align*}
  
 
@@ -846,13 +926,15 @@ S_V(H) = H^2 \Big(\dfrac{r_V}{K_V} + b_A \lva \Big) - b_AL_V \mu_V
 \end{equation}
 
 
-On sait que si $S_V(H^*_{F_AV_AH_A,i}) > 0$ et $S_F(H^*_{F_AV_AH_A,i}) > 0$ alors $q_2q_1 - q_0 > 0$.
+On sait que si $S_V(H^*_{F_AV_AH_A,2}) > 0$ et $S_F(H^*_{F_AV_AH_A,2}) > 0$ alors $q_2q_1 - q_0 > 0$.
 
-On sait aussi que $S_V(H^*_{V_AH_A,i}) > 0$ et $S_F(H^*_{F_AH_A,i}) > 0$.
+On sait aussi que $S_V(H^*_{V_AH_A,2}) > 0$ et $S_F(H^*_{F_AH_A,2}) > 0$.
 
-Est ce que $H^*_{V_AH_A,i} < H^*_{F_AV_AH_A,i}$ ??
+Est ce que $H^*_{V_AH_A,2} < H^*_{F_AV_AH_A,2}$ ??
 
-\end{itemize}
+quand $L_i = 0$,  $S_i(H) > 0$ 
+
+
 
 
 \newpage
@@ -929,7 +1011,7 @@ $EE^{V_AH_A}_1 $ & & & $<1$ & & & & $<1$ & & & $<1$ & &$1\leq$& $1<$ & $1<$\\ \h
 
 \begin{equation}
 \left\lbrace \begin{array}{l}
-\dfrac{dF_W}{dt} = r_F \textcolor{red}{\dfrac{V_W}{V_W + L_V}}\left(1 - \dfrac{F_W}{f V_W}\right) F_W \\
+\dfrac{dF_W}{dt} = r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{F_W}{f V_W}\right) F_W \\
 \dfrac{dV_W}{dt} = r_V \left(1 - \dfrac{V_W}{K_V}\right) V_W - \alpha V_W F_W
 \end{array} \right.
 \label{modelWild1}
@@ -938,7 +1020,7 @@ $EE^{V_AH_A}_1 $ & & & $<1$ & & & & $<1$ & & & $<1$ & &$1\leq$& $1<$ & $1<$\\ \h
 The model's Jacobian is given by:
 \begin{equation}
 \mathcal{J}(F_W, V_W) = \begin{bmatrix}
-r_F \left(1 - \dfrac{2F_W}{fV_W}\right) & \dfrac{r_FF_W^2}{fV_W} \\
+r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{2F_W}{fV_W}\right) & r_F F_W \dfrac{L_W f + F_W}{f (V_W + L_W)^2} \\
 -\alpha V_W & r_V \left(1 - \dfrac{2V_W}{K_V}\right) - \alpha F_W
 \end{bmatrix}
 \end{equation}
@@ -946,12 +1028,12 @@ r_F \left(1 - \dfrac{2F_W}{fV_W}\right) & \dfrac{r_FF_W^2}{fV_W} \\
 \subsubsection{Equilibrium and stability}
 Model \eqref{modelWild1} admits the following equilibrium:
 \begin{itemize}
-\item \textcolor{red}{TE = (0,0)}
-\item A equilibria of vegetation only, $EE^{V_W} = \Big(0, K_V\Big)$. At this point, the Jacobian eigenvalues are $r_F$ and $-r_V$ and thus, $EE^{V_W}$ is never stable.
+\item TE = (0,0). At this point, the Jacobian's eigenvalues are $0$ and $r_V$. $TE$ is thus never AS.
+\item A equilibria of vegetation only, $EE^{V_W} = \Big(0, K_V\Big)$. At this point, the Jacobian eigenvalues are $r_F \dfrac{K_V}{K_V + L_W}$ and $-r_V$ and thus, $EE^{V_W}$ is never stable.
 \item A fauna-vegetation, $EE^{F_WV_W} = \left(fV^*_{F_WV_W}, V^*_{F_WV_W} \right)$ where $V^*_{F_WV_W} = K_V \dfrac{1}{1+K_V\dfrac{\alpha f}{r_V}}$. At this point, the Jacobian is:
 \begin{equation}
 \mathcal{J}(F_{F_WV_W}^*, V_{F_WV_W}^*) = \begin{bmatrix}
--r_F  & r_FF_{F_WV_W}^* \\
+-r_F \dfrac{V_{F_WV_W}^*}{V_{F_WV_W}^* +L_W}  & r_F f \dfrac{V_{F_WV_W}^*}{L_V + V_{F_WV_W}^*}\\
 - \alpha V_{F_WV_W}^* & -r_V \dfrac{V_{F_WV_W}^*}{K_V}
 \end{bmatrix}
 \end{equation}
@@ -959,127 +1041,269 @@ The trace of $\mathcal{J}(F_{F_WV_W}^*, V_{F_WV_W}^*)$ is negative and its deter
 \end{itemize}
 
 \subsubsection{Limit cycle}
-We can use the function $\phi(F_W, V_W) = \dfrac{1}{F_W V_W}$ and the Bendixson-Dulac theorem to show that model \eqref{modelWild1} does not admit any limit cycle.
+Let define the functions $\phi(F_W, V_W) = \dfrac{1}{F_W V_W}$ on $ \Omega = \{(F_W, V_W) \ F_W > 0, V_W > 0\}$, $f_1(F_W, V_W) = r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{F_W}{f V_W}\right) F_W$ and $f_2 = r_V \left(1 - \dfrac{V_W}{K_V}\right) V_W - \alpha V_W F_W$.
 
-This also implies, by the Poincarré theorem, that $EE^{F_WV_W}$ is globally asymptotically stable on $\{(F_W, V_W) \ F_W > 0, V_W > 0\}$.
+For $(F_W, V_W) \in \Omega$, we have
+\begin{equation}
+\dfrac{\partial (\phi f_1)}{\partial F_W} = - \dfrac{r_F}{fV_W (V_W + L_V)}
+\end{equation}
+and
+\begin{equation}
+\dfrac{\partial (\phi f_2)}{\partial V_W} = - \dfrac{r_V}{K_V F_W}
+\end{equation}
+The sum of these two quantities is negative on $\Omega$, and we can use the Bendixson-Dulac's theorem to say that model \eqref{modelWild1} does not admit any limit cycle.
+
+This also implies, by the Poincarré theorem, that $EE^{F_WV_W}$ is globally asymptotically stable on $\Omega$.
 
 
-%\subsection{Summary}
-%
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{c|c|c|c}
-%Model & Equilibrium & Limit Cycle & GAS ?\\
-%\hline
-%\multirow{2}{*}{$K_F$} & $EE^{F_W} = (F^*_S, 0)$ , with $F^*_S \in (0, +\infty)$ Stable if $\dfrac{r_V}{\alpha F^*_S} < 1 $ & \multirow{2}{*}{No} & No\\
-%& if $1< \dfrac{r_V}{\alpha K_F} $ $EE^{F_WV_W} = (K_F, K_V\Big(1 - \dfrac{\alpha K_F}{r_V} \Big) )$ , AS & & GAS on $\{(F_W, V_W) \ K_F \geq F_W > 0, V_W > 0\}$\\
-%\hline
-%\multirow{1}{*}{$f V_W$} & $EE^{F_W} = (fV^*_S, V_W^*)$ AS & \multirow{1}{*}{No} & GAS on $\{(F_W, V_W) \ F_W > 0, V_W > 0\}$\\
-%\hline
-%\end{tabular}
-%\end{table}
+\section{Model with human migration}
+We can add human migration between the anthropized and wild area. The model becomes:
 
-%\section{OLD}
-%
-%\subsection{Summary of the long term behavior}
-%We define 
-%\begin{subequations}
-%\begin{align}
-%& T_H(F, V) = \dfrac{aF + bV + c}{\beta} \\
-%& T_F(H) = \dfrac{r_F}{\mu_F + H (\omega f + \lf)} \\
-%& T_V(F, H) = \dfrac{r_V}{\mu_V + \alpha F + H \lv} \dfrac{H}{H + L_V}
-%\end{align}
-%\end{subequations}
-%
-%$T_H$ is increasing with respect to both $F$ and $V$, $T_F$ is decreasing wrt $H$ and $T_V$ is decreasing wrt $F$, and increasing on $[0, \sqrt{L_V (\mu_V + \alpha F) /\lv}]$, decreasing on $[\sqrt{L_V (\mu_V + \alpha F) /\lv}, +\infty]$.
-%
-%We also define
-%\begin{subequations}
-%{\footnotesize
-%\begin{align}
-%&  T_{\Delta_{VH}} = \dfrac{b}{4K_V}\Big(1 + \dfrac{b K_V \lv}{r_V}\Big)^{-1}\Big((c+L_V) \dfrac{\mu_V + \lv c}{r_V} - c\Big)^{-1} \left(K_V \Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big)+\dfrac{c}{b} \right)^2 \\
-%& T_{V?} = \dfrac{bK_V}{c} \dfrac{1 - \dfrac{\mu_V + \lv L_V}{r_V}}{1 + \dfrac{2 \lv bK_V}{r_V}}
-%\end{align}
-%}
-%\end{subequations}
-%
-%
-%Some equilibrium values are also recall:
-%\begin{subequations}
-%\begin{align*}
-%& F^*_{FH} = K_F \left( \dfrac{1 - \dfrac{\mu_F}{r_F} - c \dfrac{\omega f + \lf}{r_F}}{1 + a K_F \dfrac{\omega f + \lf}{r_F}} \right) \\
-%& H^*_{VH,2} = b V^*_{VH, 2} + c
-%\end{align*}
-%\end{subequations}
-%
-%The existence and stability condition are summarized in the following table:
-%
-%\newpage
-%\begin{landscape}
-%\begin{table}
-%\centering
-%\caption{Summary of conditions of existence and stability for all the possible equilibrium excepting $EE^{FVH}$}
-%{\small
-%\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
-%Equilibrium & $T_H(0, 0)$ & $T_H(F^*_{FH},0)$ & $T_H(0,V^*_{VH,i})$ & $T_F(0)$ & $T_F(\beta)$ & $T_F(c)$& $T_F(H^*_{VH, i})$ & $T_V(\beta, 0)$ & $T_V(\beta, F^*_\beta)$ & $T_V(c, 0)$ & $T_V(c, F^*_{FH})$ & $T_{\Delta_{VH}}$ & $T_{V?}$ & $\dfrac{ H^*_{VH, 1}}{H_{min}} $ \\ \hline
-%$TE$ & & & & $<1$ & & & & & & & & & \\ \hline
-%$EE^H_\beta$& $<1$ & & & & $<1$ & & & $<1$ & & & & & \\ \hline
-%$EE^F$ & & & & $1<$ & & & & & & & & & \\ \hline
-%$EE^{FH}_\beta$ & $<1$ & & & & $1<$ & & & & $<1$ & & & & \\ \hline
-%$EE^{VH}_\beta$ & $<1$ & & & & $<1$ & & & $1<$ & & & & & \\ \hline
-%$EE^{FVH}_\beta$ & $<1$ & & & & $1<$ & & & & $1<$ & & & & \\ \hline
-%$EE^H $ & $1<$  & & & & & $<1$ & & & & $<1$ & & & \\ \hline
-%$EE^{FH} $ & & $1<$  & & & & $1<$ & & & & & $<1$ & & \\ \hline
-%$EE^{VH}_2 $ & & & $1<$ & & & & $<1$ & & & $1<$ & & & & \\ \hline
-%$EE^{VH}_2 $ & & & $1<$ & & & & $<1$ & & & $<1$ & &$1\leq$& $1<$ & \\ \hline
-%$EE^{VH}_1 $ & & & $<1$ & & & & $<1$ & & & $<1$ & &$1\leq$& $1<$ & $1<$\\ \hline
-%\end{tabular}
-%}
-%\end{table}
-%\end{landscape}
-%\subsection{Long term dynamic with biological restrictions}
-%
-%Among the possible equilibrium, $EE^H_\beta = (0,0,\beta)$ gives cause for concern. Indeed, stability of this equilibria means that the human population has no resources available by wild ($F^*_{H_\beta} = 0$) or from cultivation ($V^*_{H_\beta} = 0$), and that the number of people is highest than the number allowed by importation (parameter $c$). In other word, this equilibrium is AS if the human population is highest than the maximum capacity.
-%
-%To avoid this situation, we impose a limitation on $\beta$. We define $\beta_{max}$ such that:
-%\begin{equation}
-%T_F(\beta_{max}) = 1 \Leftrightarrow \beta_{max} = \dfrac{r_F - \mu_F}{\omega f + \lf}
-%\end{equation}
-%and we restrict $\beta \in (0, \beta_{max})$. Since $T_F(H)$ is decreasing, we have, for all $\beta \in (0, \beta_{max})$, $T_F(\beta) > 1$. This restriction has several consequences.
-%
-%First, as required, $EE^H_\beta$ will never be stable. It is also the case for $EE_\beta^{VH}$, which is understandable by saying that a low human population can not, in the same time, destroy the forest and cultivate land.
-%
-%Second, since we have $T_F(0) > T_F(\beta) > 1$, $TE$ will also never be stable while $EE^F$ will always be stable.
-%
-%Third, $EE^{VH}_1$ will also never be stable. Indeed, the stability conditions for the equilibria are
-%\begin{subequations}
-%    \begin{empheq}[left={\empheqlbrace\,}]{align}
-%&H_{min} < H^*_{VH,1} < \beta \\
-%&T_F(H^*_{VH,1}) < 1
-%    \end{empheq}
-%\end{subequations}
-%and, once again using monotony of $T_F$, we see that first condition implies $T_F(H^*_{VH,1}) > 1$, which prevents the second condition to be satisfied.
-%
-%All those consideration leads to the following simplified table:
-%\begin{table}[ht]
-%\centering
-%\caption{\centering Summary of conditions of existence and stability for all the possible equilibrium excepting $EE^{FVH}$, considering biological limitations ($\beta < \beta_{max}$)}
-%{\small
-%\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
-%Eq & $T_H(0, 0)$ & $T_H(F^*_{FH}, 0)$ & $T_H(0, V^*_{VH,2})$ & $T_F(c)$& $T_F(H^*_{VH, 2})$ & $T_V(\beta, F^*_\beta)$ & $T_V(c, 0)$ & $T_V(c, F^*_{FH})$ & $T_{\Delta_{VH}}$ & $T_{V?}$  \\ \hline
-%$EE^F$ & & & & & & & & & & \\ \hline
-%$EE^{FH}_\beta$ & $<1$ & & & & & $<1$ & & & & \\ \hline
-%$EE^{FVH}_\beta$ & $<1$ & & & & & $1<$ & & & & \\ \hline
-%$EE^H $ & $1<$  & & & $<1$& & & $<1$ & & & \\ \hline
-%$EE^{FH} $ & & $1<$  & & $1<$ & & & & $<1$ & & \\ \hline
-%$EE^{VH}_2 $ & & & $1<$ & & $<1$ & & $1<$ & & & \\ \hline
-%$EE^{VH}_2 $ & & & $1<$ & & $<1$ & & $<1$ & &$1\leq$& $1<$ \\ \hline
-%\end{tabular}
-%}
-%\end{table}
+\begin{subequations}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_{a}}{dt}=r_{F}\dfrac{H_{A}}{H_{A}+L_F}\left(1-\dfrac{F_{A}}{K_{F}}\right)F_{A}-\mu_{F}F_{A}-\lfa F_{A} H_{A}\\
+\dfrac{dV_{A}}{dt}=r_{V}\dfrac{H_{A}}{H_{A}+L_V}\left(1-\dfrac{V_{A}}{K_{V}}\right)V_A-\mu_{V}V_A-\lfa V_{A}H_{A}\\
+\dfrac{dH_{a}}{dt}=r_{H}\left(1-\dfrac{H_A}{a_AF_A+b_{A}V_{A}+a_{W}F_{W}+b_{W}V_{W}+c}\right)\left(\dfrac{H_{A}}{\beta}-1\right)H_{A}-\da H_{A}+\dw H_{W}
+\end{array} \right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{F_W}{f V_W}\right) F_W - \lfw H_W F_W\\
+\dfrac{dV_W}{dt} = r_V \left(1 - \dfrac{V_W}{K_V}\right) V_W - \alpha V_W F_W - \lvw H_W V_W \\
+\dfrac{dH_W}{dt} = \da H_A - \dw H_W
+\end{array} \right.
+\end{equation}
+\end{subequations}
 
-\newpage
+At equilibrium, $H_W =  \dfrac{\da}{\dw} H_A$. We consider the ratio $\delta = \dfrac{\da}{\dw} < 1$, meaning both that the population in the wild area is lower than the one in the anthropized area, and that the time spend in wild area is lower than the time spend in the anthropized area.
 
+\subsection{$H_W = \dfrac{\da}{\dw} H_A$, $V_A = 0$, $F_A = 0$}
+First, we consider the subsystem  $H_A-F_W-V_W-H_W$ with $H_W = \delta H_A$.
+Equations are:
+
+\begin{subequations}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dH_{a}}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{W}F_{W}+b_{W}V_{W}+c}\right)\left(\dfrac{H_{A}}{\beta}-1\right)H_{A}
+\end{array} \right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{F_W}{f V_W}\right) F_W - \lfw H_A F_W\\
+\dfrac{dV_W}{dt} = r_V \left(1 - \dfrac{V_W}{K_V}\right) V_W - \alpha V_W F_W - \lvw H_A V_W
+\end{array} \right.
+\end{equation}
+\end{subequations}
+where we rename $\lvw = \delta \lvw$ and $ \lfw = \delta \lfw$.
+
+\subsubsection{Equilibrium}
+Possible equilibrium are:
+
+\begin{itemize}
+\item $TE = \Big(0,0,0 \Big)$
+\item $EE^{V_W} = \Big(0,0 ,K_V \Big)$
+\item $EE^{F_WV_W} = \Big(0, fV^*_{F_WV_W},V^*_{F_WV_W} \Big)$
+\item $EE^{H_A}_\beta = \Big(\beta,0,0 \Big)$
+\item $EE^{H_AV_W}_\beta = \Big(\beta,0,V_{\beta V_W}^* \Big)$ where $V_{\beta V_W}^* = K_V \Big(1 - \dfrac{\lvw \beta}{r_V} \Big)$. This equilibrium exists if $\dfrac{r_V}{\lvw \beta}>1$
+\item $EE^{H_AV_WF_W}_\beta = \Big(\beta,F_{\beta V_WF_W}^*,V_{\beta V_WF_W}^* \Big)$ where
+$$V_{\beta V_WF_W}^* = K_V \Big(1 -\dfrac{\lvw \beta}{r_V} \Big) - K_V \dfrac{\alpha}{r_V} F_{\beta V_WF_W}^* $$
+and
+$$
+F_{\beta V_WF_W}^* = f \Big(1 - \dfrac{\lfw \beta}{r_F}\Big) V_{V_WF_W, \beta}^* - fL_W \dfrac{\lfw \beta}{r_F}
+$$
+Using these two expressions leads to:
+$$F_{\beta V_WF_W}^* = \dfrac{fK_V\Big(1 - \dfrac{\lfw \beta}{r_F}\Big)\Big(1 - \dfrac{\lvw \beta}{r_V}\Big) - fL_W \dfrac{\lfw \beta}{r_F}}{1 + f K_V \dfrac{\alpha}{r_V} \Big(1 - \dfrac{\lfw \beta}{r_F}\Big)} $$
+and
+$$V_{\beta V_WF_W}^* = K_V \dfrac{1 + \dfrac{\beta}{r_V}\Big(\dfrac{\alpha \lfw f L_W}{r_F} - \lvw \Big)}{1 + fK_V\dfrac{\alpha}{r_V}\Big(1 - \dfrac{\lfw \beta}{r_F}\Big)}
+$$
+The two first expressions show that:
+\begin{itemize}
+\item $V_{\beta V_WF_W}^* < K_V$
+\item $V_{\beta V_WF_W}^* < V_{W \beta}^*$
+\item $\Big(1 -\dfrac{\lvw \beta}{r_V} \Big) > 0$ ; otherwise $V_{\beta V_WF_W}^*$ is negative
+\item $\Big(1 - \dfrac{\lfw \beta}{r_F}\Big) > 0$; otherwise $F_{\beta V_WF_W}^*$ is negative
+\item $V_{\beta V_WF_W}^* +K_V \dfrac{\alpha}{r_V} F_{\beta V_WF_W}^*  = V_{\beta V_W}^*$
+\end{itemize}
+$EE^{H_AV_WF_W}_\beta$ exists if:
+\begin{itemize}
+\item $\Big(1 - \dfrac{\lfw \beta}{r_F}\Big) > 0$
+\item $\Big(1 -\dfrac{\lvw \beta}{r_V} \Big) > 0$ 
+\item $\dfrac{K_V}{L_W}\Big(1 - \dfrac{\lvw \beta}{r_V}\Big) \Big(\dfrac{r_F}{\lfw \beta} - 1\Big) > 1$
+\end{itemize}
+
+\item $EE^{H_A} = \Big(c, 0, 0\Big)$
+\item $EE^{H_AV_W} = \Big(bV^*_{H_AV_W} + c, 0, V^*_{H_AV_W}\Big)$ where $V^*_{H_AV_W} = K_V \dfrac{1-\dfrac{\lvw c}{r_V}}{1 + K_V \dfrac{\lvw b}{r_V}}$. It exists if $\dfrac{\lvw c}{r_V} < 1$.
+
+NB : puisque $\beta < c$, 
+\begin{itemize}
+\item existence de $EE^{H_AV_W}$ implique existence de $EE^{H_AV_W}_\beta$
+\item si les deux existent, $V^*_{\beta V_W} > V_W^*$ et inverse pour la pop humaine
+\end{itemize}
+\end{itemize}
+
+It is clear that
+\begin{itemize}
+\item
+\begin{equation}
+V^*_{V_W} = K_V > V^*_{V_WF_W}\:\:\: , \:\:\:V^*_{\beta V_W}
+\end{equation}
+and 
+\begin{equation}
+V^*_{\beta V_W} > V^*_{\beta V_W F_W} \:\:\: , \:\:\: V^*_{H_A V_W}
+\end{equation}
+\item When $\dfrac{1 + \dfrac{K_V b \lvw}{r_V}}{1 + \dfrac{K_V f \alpha}{r_V}} > 1 - \dfrac{\lvw c }{r_V}$, we also have
+\begin{equation}
+V^*_{V_WF_W} > V^*_{H_A V_W}
+\end{equation}
+Question : which criteria to go from $EE^{H_AV_WF_W}$ to $EE^{H_AV_W}$ ?
+\begin{itemize}
+\item a priori soit $\lfw$ trop important
+\item soit $\lvw$ trop important ?? plutôt $EE^{H_A}$ dans ce cas
+\end{itemize}
+
+\item $EE^{H_AF_WV_W} = \Big(a F^*_{H_AF_WV_W} + bV^*_{H_AF_WV_W} + c, F^*_{H_AF_WV_W}, V^*_{H_AF_WV_W}\Big)$ where
+\begin{equation}
+V^*_{H_AF_WV_W} = V^*_{H_AV_W} - K_V \dfrac{\dfrac{\lvw a_W + \alpha}{r_V}}{1 + \dfrac{K_V b \lvw}{r_V}} F^*_{H_AF_WV_W}
+\end{equation}
+and $F^*_{H_AF_WV_W}$ is solution of (I note $p = K_V \dfrac{\dfrac{\lvw a_W + \alpha}{r_V}}{1 + \dfrac{K_V b \lvw}{r_V}}$):
+
+\begin{multline}
+F^2 \Big(p \lfw (b_Wp - a_W) \Big) + \\
+F \left(r_F (\dfrac{1}{f} + p) + \lfw (a_W(V^*_{H_AV_W} + L_W) - 2 b_W p V^*_{H_AV_W} - (b_W L_W + c) p \right) + \\
+\lfw \Big( b_W (V^*_{H_AV_W})^2 + c L_W + bL_W V^*_{H_AV_W} + c V^*_{H_AV_W} \Big) - r_F V^*_{H_AV_W} = 0
+\end{multline}
+On peut réécrire les termes:
+\begin{multline}
+F^2 \Big(p \lfw (b_Wp - a_W) \Big) + \\
+F \left(r_F (\dfrac{1}{f} + p) - \lfw \big((b_Wp-a)(V^*_{H_AV_W} + L_W) + p (bV^*_{H_AV_W} + c)\big) \right) + \\
+\lfw \Big(b_W V^*_{H_AV_W} + c \Big) \Big(V^*_{H_AV_W} + L_W \Big) - r_F V^*_{H_AV_W} = 0
+\end{multline}
+On a 
+$$
+b_W p - a_W = \dfrac{\dfrac{b_W K_V \alpha}{r_V} - a_W}{1 + \dfrac{K_V b \lvw}{r_V}}
+$$
+
+Regarder les solutions dans des cas extrêmes ?? $\lfw = 0$ ou grand, $\alpha =0$ ou grand...
+
+\end{itemize}
+
+
+\subsubsection{Stability}
+The Jacobian is 
+{\footnotesize
+\begin{multline}
+\mathcal{J}(H_A,F_W,V_W) = \\
+\begin{bmatrix}
+r_H(1-\dfrac{H_A}{a_W F_W+b_W V_W+c})(\dfrac{2H_A}{\beta}-1) - \dfrac{r_H \Big(\dfrac{H}{\beta}-1\Big)H}{a_WF_W+b_WV_W+c} & \dfrac{r_H a_W H^2}{(a_WF_W+b_WV_W+c)^2} (\dfrac{H}{\beta}-1) \\
+-\lfw F_W & r_F \dfrac{V_W}{V_W + L_W} \left(1 - \dfrac{2F_W}{fV_W}\right) -\lfw H_A  \\
+-\lvw V_W & -\alpha V_W
+\end{bmatrix} \\
+\begin{bmatrix}
+ \dfrac{r_H b_W H^2}{(a_WF_W+b_WV_W+c)^2} (\dfrac{H}{\beta}-1) \\
+r_F F_W \dfrac{L_W f + F_W}{f (V_W + L_W)^2} \\
+ r_V \left(1 - \dfrac{2V_W}{K_V}\right) - \alpha F_W - \lvw H_A 
+\end{bmatrix}
+\end{multline}}
+
+\begin{itemize}
+\item At point $TE$:
+\begin{equation}
+\mathcal{J}(0,0,0) =
+\begin{bmatrix}
+-r_H &  & 0 \\
+0 & 0 & 0 \\
+0 & 0 & r_V
+\end{bmatrix}
+\end{equation}
+\item At point $EE^{V_W}$:
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+-r_H & 0 & 0 \\
+0 & r_F \dfrac{K_V}{K_V + L_W} & 0 \\
+- \lvw K_V & - \alpha K_V & -r_V
+\end{bmatrix}
+\end{equation}
+\item At point $EE^{F_WV_W}$:
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+-r_H & 0 & 0 \\
+-\lfw F_{F_WV_W}^* & -r_F \dfrac{V_{F_WV_W}^*}{V_{F_WV_W}^* +L_W}  & r_F f \dfrac{V_{F_WV_W}^*}{L_V + V_{F_WV_W}^*}\\
+-\lvw V_{F_WV_W}^* & - \alpha V_{F_WV_W}^* & -r_V \dfrac{V_{F_WV_W}^*}{K_V}
+\end{bmatrix}
+\end{equation}
+Eigenvalues are all negatives, and $EE^{F_WV_W}$ is AS
+
+\item At point $EE^{H_A}_\beta$,
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+r_H \Big(1 - \dfrac{\beta}{c} \Big) & 0 & 0 \\
+0 & -\lfw \beta  & 0 \\
+0 & 0 & r_V - \lvw \beta
+\end{bmatrix}
+\end{equation}
+
+\item At point $EE^{H_AV_W}_\beta$,
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+r_H \Big(1 - \dfrac{\beta}{c} \Big) & 0 & 0 \\
+0 & r_F \dfrac{V^*_{\beta V_W}}{V^*_{\beta V_W} + L_W} -\lfw \beta  & 0 \\
+-\lvw V^*_{\beta V_W} & -\alpha V^*_{\beta V_W} & -r_V \dfrac{V^*_{\beta V_W}}{K_V}
+\end{bmatrix}
+\end{equation}
+
+\item At point $EE^{H_AF_WV_W}_\beta$,
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+r_H \Big(1 - \dfrac{\beta}{c} \Big) & 0 & 0 \\
+-\lfw F^*_{\beta F_WV_W} & -r_F \dfrac{F^*_{\beta F_WV_W} }{f(V^*_{\beta F_WV_W}  + L_W)}  & r_F \Big(1 - \dfrac{\lfw \beta}{r_F} \Big) \dfrac{F^*_{\beta F_WV_W} }{L_W + V^*_{\beta F_WV_W} } \\
+-\lvw V^*_{\beta F_WV_W}  & -\alpha V^*_{\beta F_WV_W}  & -r_V \dfrac{V^*_{\beta F_WV_W} }{K_V}
+\end{bmatrix}
+\end{equation}
+
+
+\item At point $EE^{H_A}$,
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+-r_H \Big(\dfrac{c}{\beta}-1\Big) & a_W \Big(\dfrac{c}{\beta}-1\Big) & b_W \Big(\dfrac{c}{\beta}-1\Big) \\
+0 & -\lfw c  & 0 \\
+0 & 0 & r_V - \lvw c
+\end{bmatrix}
+\end{equation}
+
+\item At point $EE^{H_AV_W}$,
+\begin{equation}
+\mathcal{J} =
+\begin{bmatrix}
+-r_H \Big(\dfrac{bV^*_{H_AV_W} + c}{\beta}-1\Big) & a_W \Big(\dfrac{bV^*_{H_AV_W} + c}{\beta}-1\Big) & b_W \Big(\dfrac{bV^*_{H_AV_W} + c}{\beta}-1\Big) \\
+0 & r_F \dfrac{V^*_{H_AV_W}}{V^*_{H_AV_W} + L_W}-\lfw (bV^*_{H_AV_W} + c)  & 0 \\
+-\lvw V^*_{H_AV_W} & -\alpha V^*_{H_AV_W} & -r_V \dfrac{V^*_{H_AV_W}}{K_V} 
+\end{bmatrix}
+\end{equation}
+
+Eigenvalues are $r_F\dfrac{V^*_{H_AV_W}}{V^*_{H_AV_W} + L_W}-\lfw (bV^*_{H_AV_W} + c)$, and the roots of
+$$
+X^2 + \left(r_H \Big(\dfrac{bV^*_{H_AV_W} + c}{\beta}-1\Big) + r_V \dfrac{V^*_{H_AV_W}}{K_V}  \right) X + \Big(\dfrac{bV^*_{H_AV_W} + c}{\beta}-1\Big) \left( r_H \dfrac{r_V}{K_V} +  \lvw b_W \right) V^*_{H_AV_W}
+$$
+
+
+\item At point $EE^{H_AF_WV_W}$, 
+\begin{multline}
+\mathcal{J} = \\
+\begin{bmatrix}
+-r_H \Big(\dfrac{H^*_{H_AF_WV_W}}{\beta}-1\Big) & a_W \Big(\dfrac{H^*_{H_AF_WV_W}}{\beta}-1\Big) & b_W \Big(\dfrac{H^*_{H_AF_WV_W}}{\beta}-1\Big) \\
+-\lfw F^*_{H_AF_WV_W} & -r_F \dfrac{F^*_{H_AF_WV_W}}{f(V^*_{H_AF_WV_W} + L_W)} &
+r_F F^*_{H_AF_WV_W} \dfrac{L_W f + F^*_{H_AF_WV_W}}{f(V^*_{H_AF_WV_W} + L_W)^2}\\
+-\lvw V^*_{H_AF_WV_W} & -\alpha V^*_{H_AF_WV_W} & -r_V \dfrac{V^*_{H_AF_WV_W}}{K_V} 
+\end{bmatrix}
+\end{multline}
+\end{itemize}
 
 \section{Moustique}
 
@@ -1087,7 +1311,7 @@ This also implies, by the Poincarré theorem, that $EE^{F_WV_W}$ is globally asy
 \dfrac{dA}{dt} = b \dfrac{F_W}{F_W + L_S} \left(1 - \dfrac{A}{\beta V_W + c} \right) A - \mu A
 \end{equation}
 \begin{itemize}
-\item $\beta V_W$ : site de ponte, service que VS fait pour $A$
+\item $\beta V_W$ : site de ponte, service que $V_W$ fait pour $A$
 \item mortalité densité dépendante $ - \mu A^2$
 \item $b$ nbr d'individus qui émergent ; on peut calculer
 \item même équation dans zone A ; avec une capacité différente car autre type de gîte, qui sont artificiels et fournis par $H_A$. Ou bien constante ? -> peut être utilisé en terme de contrôle
@@ -1132,27 +1356,26 @@ Indeed, we have :
 \end{subequations}
 and when $B < 0$ and $0 < C$, we have $ -B = \sqrt{B^2} > \sqrt{B^2 - 4C}$.
 
-%\section{Calculation details to derive equation \eqref{equilibreVH:equation H} \label{appendix:equilibreVH:equation H}}
-%Equilibrium $EE^{VH}$ is characterized by the fact that $V^*_{VH}$ are solutions of equation \eqref{equilibreVH:V}:
-%\begin{equation*}
-%V^2 + V \left(\dfrac{K_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + \dfrac{c}{b}}{1 + \dfrac{b K_V \lv}{r_V}}  \right) + \dfrac{K_Vc}{b} \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}} = 0
-%\end{equation*}
-%and by $H^*_{VH} = b V^*_{VH} + c$. Thus, replacing $V$ by $\dfrac{H-c}{b}$ in the previous equation leads to say that $H^*_{VH}$ are solutions of
-%
-%\begin{subequations}
-%\begin{align*}
-%& \Big(\dfrac{H-c}{b} \Big)^2 + \dfrac{H-c}{b} \left(\dfrac{K_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + \dfrac{c}{b}}{1 + \dfrac{b K_V \lv}{r_V}}  \right) + \dfrac{K_Vc}{b} \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1 + \dfrac{b K_V \lv}{r_V}} = 0 \\
-%&\text{Multiply by $b^2$:} \\
-%& H^2 -2Hc + c^2 + \Big(H-c\Big) \left(\dfrac{K_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) + \dfrac{c}{b}}{1/b + \dfrac{K_V \lv}{r_V}}  \right) + K_Vc \dfrac{\Big(\dfrac{c+L_V}{c} \dfrac{\lv c + \mu_V}{r_V} - 1\Big)}{1/b + \dfrac{K_V \lv}{r_V}} = 0 \\
-%&\text{Regroup the constant coefficient:} \\
-%& H^2 -2Hc + H\left(\dfrac{K_V\Big(\dfrac{\lv(2c+L_V) + \mu_V}{r_V} - 1\Big) +  \dfrac{c}{b}}{1/b + \dfrac{K_V \lv}{r_V}}  \right) + \dfrac{c^2}{1 + \dfrac{r_V}{b K_V \lv}} + \dfrac{K_Vc}{1/b + \dfrac{K_V \lv}{r_V}} \Big(-\dfrac{\lv c}{r_V} + \dfrac{L_V \mu_V}{r_V c}\Big) = 0 \\
-%&\text{Regroup the first order coefficient:} \\
-%& H^2 + H\left(\dfrac{ \lv L_V + \mu_V - r_V -  \dfrac{r_V c}{bK_V}}{(\dfrac{r_V}{b \lv K_V} + 1 )\lv}  \right) + \dfrac{c^2}{1 + \dfrac{r_V}{b K_V \lv}} + \dfrac{c \Big(-\lv c+ \dfrac{L_V \mu_V}{c}\Big)}{(\dfrac{r_V}{\lv bK_V} + 1)\lv}  = 0 \\
-%&\text{Simplify:}\\
-%& H^2 + H\left(\dfrac{-r_V\Big(1 + \dfrac{c}{bK_V}\Big) +  \lv L_V + \mu_V }{\Big(\dfrac{r_V}{b \lv K_V} + 1 \Big)\lv}  \right) + \dfrac{L_V \mu_V}{\Big(\dfrac{r_V}{\lv bK_V} + 1\Big))\lv}  = 0
-%\end{align*}
-%\end{subequations}
-%And this last equation is precisely equation \eqref{equilibreVH:equation H}.
+\section{$H_{F_AV_AH_A}^*$ is higher than $H_{F_AH_A}^*$ and $H_{V_AH_A}^*$}
+At equilibrium, the system equation are:
+\begin{equation}
+\left\lbrace \begin{array}{l}
+r_{H}\left(1-\dfrac{H_A^*}{a_{A}F^*_{A}+b_{A}V^*_{A}+c}\right)\left(\dfrac{H^*_A}{\beta}-1\right)H^*_A = 0, \\
+r_F\dfrac{H^*_A}{H_A^* + L_F} \left(1-\dfrac{F_A^*}{K_{F}}\right)F_A^*-\mu_{F}F_A^*-\lambda_{FH,A}F_A^*H_A^* = 0, \\
+r_{V}\dfrac{H_A^*}{H_A^*+L_{V}}\left(1-\dfrac{V_A^*}{K_{V}}\right)V_A^*-\mu_{V}V_A^*-\lambda_{VH,A}V_A^*H_A^* = 0.
+\end{array} \right.
+\label{modelAnthropo:eq}
+\end{equation}
+
+We assume $H_A^* = a_AF_A^* + b_AV_A^* + c$, $F^*_A > 0$ and $V_A^* \geq 0$. Then, $H_A^*$ satisfies the equation
+
+\begin{equation}
+ \left(1 + a K_F \dfrac{\lfa}{r_F} \right)\left(H^*_A\right)^2 - \left(a_A K_F \Big(1 - \dfrac{\mu_F + \lfa L_F}{r_F} + c + b_A V^*_A \right) H^*_A + aK_F \dfrac{L_F\mu_F}{r_F} = 0
+\end{equation}
+
+When the discriminant of this equation is positive,
+
+
 \end{appendices}
 
 \bibliographystyle{plain}

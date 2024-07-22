@@ -71,16 +71,27 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         end
         myModel = modelWildV1(param)
         return myModel
-    elseif modelType == "WildV2"
-        nbrParameters = length(fieldnames(modelWildV2))
-        if nbrParameters > length(param)
-            println("Number of parameter is incoherent with model WildV2")
+    elseif modelType == "Wild"
+        nbrParameters = length(fieldnames(modelWild))
+        if nbrParameters -1 > length(param)
+            println("Number of parameter is incoherent with model Wild")
             println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
                         nbrParameters)
-            println(keys(param), fieldnames(modelWildV2))
+            println(keys(param), fieldnames(modelWild))
             return
         end
-        myModel = modelWildV2(param)
+        myModel = modelWild(param)
+        return myModel
+    elseif modelType == "Anthropized"
+        nbrParameters = length(fieldnames(modelAnthropized))
+        if nbrParameters - 1 > length(param)
+            println("Number of parameter is incoherent with model Anthropized")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelAnthropized))
+            return
+        end
+        myModel = modelAnthropized(param)
         return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
@@ -139,31 +150,34 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end
-    elseif mathModelType == "WildV2"
+    elseif mathModelType == "Wild"
         if numericalModelType == "RK4"
-            myModel = wildV2RK4(mathModel, numericalParam, initialValues)
+            myModel = wildRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "Anthropized"
+        if numericalModelType == "RK4"
+            myModel = anthropizedRK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end
     end
 end
 
-function readNumericalModel(dirName::String)
-    fileName = dirName * "/input.txt"
-    open(fileName, "r") do fin    
-
+function readNumericalModel(inputFile::String)
+    """
+    Take an directory name as input, conaining an input.txt file with appropriate format
+    Return a list of numerical models, describe by the input.txt file
+    """
+    open(inputFile, "r") do fin
         readline(fin) ## Should be ## Mathematical Parameters ##
 
         ## Read the math model type(s)
         line = readline(fin)
-        indTab = last(findfirst("    ", line))
-        mathModelTypesString::String = line[last(indTab)+1:end]
-
-        commaIndices = findall(",", mathModelTypesString)
-        firstIndices = append!([1], [last(ind)+1 for ind in commaIndices])
-        lastIndices = append!([first(ind)-1 for ind in commaIndices], [length(mathModelTypesString)])
-        mathModelTypes = [mathModelTypesString[firstIndices[k]:lastIndices[k]] for k in 1:(length(firstIndices))]
-        
+        indTab = last(findfirst("    ", line)) ## escape the spaces
+        mathModelType::String = line[last(indTab)+1:end]
+      
         ## Read the math model parameters
         mathParam = Dict{String, Float64}()
         line = readline(fin)
@@ -173,11 +187,7 @@ function readNumericalModel(dirName::String)
             line = readline(fin)
         end
 
-        mathModels = Dict{String, T where T<:mathematicalModel}()
-        for mathModelType in mathModelTypes
-            myModel = createMathModel(mathModelType, mathParam)
-            mathModels[mathModelType] = myModel
-        end
+        mathModel = createMathModel(mathModelType, mathParam)
         
         ## Read the initial values
         line = readline(fin)
@@ -200,13 +210,10 @@ function readNumericalModel(dirName::String)
             numericalParam[line[1:first(indTab)-1]] = tryparse(Float64, line[last(indTab)+1:end])
         end
 
-        numericalModels = Dict{String, numericalModel}()
-        for mathModelType in collect(keys(mathModels))
-            numericalModels[mathModelType] = createNumericalModel(numericalModelType, mathModelType, 
-                                                    mathModels[mathModelType], numericalParam, initialValues)
-        end
 
-        return numericalModels
+        myNumModel = createNumericalModel(numericalModelType, mathModelType, 
+                            mathModel, numericalParam, initialValues)
+        return myNumModel
     end
 end
 

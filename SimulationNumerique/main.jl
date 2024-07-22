@@ -1,18 +1,45 @@
 t = @elapsed begin
 
+abstract type mathematicalModel end
+abstract type numericalModel end
+
+include("modelWild.jl")
+include("modelWildRK4.jl")
+include("modelAnthropized.jl")
+include("modelAnthropizedRK4.jl")
+
 include("plotFile.jl")
 include("writer.jl")
 include("reader.jl")
 
-include("modelWildV1.jl")
-include("modelWildV1RK4.jl")
-include("modelWildV2.jl")
-include("modelWildV2RK4.jl")
+
 
 function solveModel(allModels::Dict{String, numericalModel})
     for model in collect(values(allModels)) 
         solveModel(model)
     end
+end
+
+function solveWriteModel(inputFile::String)
+    myModel = readNumericalModel(inputFile)
+    solveModel(myModel)
+    indInput = first(findfirst("input", inputFile))
+    dirName = inputFile[1:last(indInput)-2] ## we delete .txt
+    suffix = inputFile[first(indInput)+5:end-4]
+    resultFolder = writeNumericalModel(myModel, dirName, suffix)
+    cp(inputFile, resultFolder * "/" * inputFile[first(indInput):end], force=true)
+    return resultFolder
+end
+
+function solveWriteModels(dirName::String)
+    searchdir(path,key) = filter(x->occursin(key,x), readdir(path))
+    inputNames = searchdir(dirName, "input")
+
+    resultFolders = []
+    for inputName in inputNames
+        push!(resultFolders, solveWriteModel(dirName * inputName))
+    end
+    return resultFolders
 end
 
 function writeNumericalModel(allModels::Dict{String, numericalModel}, dirPrefix::String)
@@ -97,20 +124,22 @@ function mainBifurcation()
                         fontsize = 30)
 end
 
+
+
 function mainSolveModel()
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
-    pathWDFV = pathWD * "/Wild"
-    allModels = readNumericalModel(pathWDFV)
-    resultFolder = ["/home/hetier/Documents/PhD/SimulationNumerique/Wild/RK4"]
-    nameFile = pathWDFV*"/plotLVd.html"
-
-    ## Solving ##
-    solveModel(allModels)
-    resultFolder = writeNumericalModel(allModels, pathWDFV)
-    println("Results have been writting in the following folders :")
-    for dir in resultFolder
-        println(dir)
-    end
+    pathWild = pathWD * "/Wild/"
+    
+    resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_",
+                    "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_2", 
+                    "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_3", 
+                    "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_4", 
+                    "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_5",
+                    "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_6"]
+    resultFolders = solveWriteModels(pathWild)
+    # myModel = readNumericalModel(pathWild * "/input.txt")
+    # modelWild = myModel.mathModel
+    # println(equilibriumFV(modelWild))
 
     ## Plotting ##
     # plotTrajectory1d([dir * "/result.csv" for dir in resultFolder],
@@ -120,12 +149,53 @@ function mainSolveModel()
     #                     legend=[latexstring("a_\\alpha")],
     #                     toPlot=true)
 
-    plotPhasePortrait([dir * "/result.csv" for dir in resultFolder],
-                        pathWDFV*"/plot.html",
+    plotPhasePortrait([resultFolder * "/result.csv" for resultFolder in resultFolders],
+                        pathWild*"/plot.html",
                         [1,2];
-                        title="Comparison of two models : Eq FH",
-                        legend=[latexstring("allee"), "ecoService"],
+                        title=latexstring("\\text{Orbit in the } F_W - V_W \\text{ plane}"),
+                        # legend=[latexstring("allee"), "ecoService"],
                         toPlot=true)
+end
+
+function comparisonH()
+    pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
+
+    pathWD = pathWD * "/TestA"
+    allModels = readNumericalModel(pathWD)
+    numModel = allModels["Anthropized"]
+    mathModel = numModel.mathModel
+
+    listLV = [k for k = 0.1:0.1:70]
+    listLF = [k for k = 0.1:0.1:70]
+    mylist = [k for k = 0.1:0.01:7]
+
+    ## dir and file name ##
+    dirName = pathWD * "/comparisonH/"
+    nameSuffix = "bifurcationDiagramCLV"
+    filePrefix = dirName * "/" * nameSuffix
+
+    valFH = []
+    valFVH = []
+
+    localParam = Dict([
+        ("rF",mathModel.rF), ("KF",mathModel.KF), ("LF",mathModel.LF), ("muF",mathModel.muF), ("lambdaFH", mathModel.lambdaFH),
+        ("rV",mathModel.rV), ("KV",mathModel.KV), ("LV", mathModel.LV), ("muV",mathModel.muV), ("lambdaVH", mathModel.lambdaVH),
+        ("rH",mathModel.rH), ("a", mathModel.a), ("b", mathModel.b), ("c", mathModel.c), ("beta", mathModel.beta)
+        ])
+
+    mylist = listLF
+    paramName = "LF"
+    
+    for param in mylist
+        localParam[paramName] = param
+        localModel = modelAnthropized(localParam)
+        append!(valFH, equilibriumFH(localModel)[3])
+        append!(valFVH, equilibriumFVH(localModel)[3])
+    end
+    myPlot = PlotlyJS.plot([PlotlyJS.scatter(x=mylist, y=valFH, name="valFH"),
+                            PlotlyJS.scatter(x=mylist, y=valFVH, name="valFVH")])
+    display(myPlot)
+
 end
 
 mainSolveModel()

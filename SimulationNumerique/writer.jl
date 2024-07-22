@@ -28,11 +28,11 @@ function writeResult(myModel::numericalModel, dirName::String)
 end
 
 
-function writeNumericalModel(myModel::numericalModel, dirPrefix::String)
+function writeNumericalModel(myModel::numericalModel, dirPrefix::String, suffix::String)
     if !isdir(dirPrefix)
         mkdir(dirPrefix)
     end
-    dirName = dirPrefix * "/"*string(typeof(myModel))
+    dirName = dirPrefix * "/"*string(typeof(myModel)) * "_" * suffix
     numParamterFile =  dirName * "/numerical_parameters.txt"
     parameters = fieldnames(typeof(myModel))
 

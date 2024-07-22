@@ -1,8 +1,9 @@
-include("modelWildV1.jl")
+include("modelWild.jl")
 
-struct wildV1RK4 <: numericalModel
+struct wildRK4 <: numericalModel
 
-    mathModel::modelWildV1
+    variablesNames::Vector{String}
+    mathModel::modelWild
 
     t0::Float64
     tf::Float64
@@ -11,9 +12,9 @@ struct wildV1RK4 <: numericalModel
 
     result::Matrix{Float64}
 
-    function wildV1RK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
+    function wildRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
                             initialValues::Dict{String, Float64})
-        mathModel = modelWildV1(modelParam)
+        mathModel = modelWild(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
         n = Int((tf-t0)/dt)
@@ -21,10 +22,13 @@ struct wildV1RK4 <: numericalModel
         result = Matrix{Float64}(undef, 3, n+1)
         result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
 
-        new(mathModel, t0, tf, dt, n, result)
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
+
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
     end
 
-    function wildV1RK4(mathModel::modelWildV1, numericalParam::Dict{String, Float64}, 
+    function wildRK4(mathModel::modelWild, numericalParam::Dict{String, Float64}, 
         initialValues::Dict{String, Float64})
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
@@ -32,12 +36,15 @@ struct wildV1RK4 <: numericalModel
 
         result = Matrix{Float64}(undef, 3, n+1)
         result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
-
-        new(mathModel, t0, tf, dt, n, result)
+        
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
+        
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
         end
 end
 
-function numericalScheme(model::wildV1RK4, variables::Vector{Float64})
+function numericalScheme(model::wildRK4, variables::Vector{Float64})
     k1 = equationModel(model.mathModel, variables)
     k2 = equationModel(model.mathModel, variables + model.dt/2 * k1)
     k3 = equationModel(model.mathModel, variables + model.dt/2 * k2)
@@ -46,7 +53,7 @@ function numericalScheme(model::wildV1RK4, variables::Vector{Float64})
     return variables + model.dt/6*(k1 + 2*k2 + 2*k3 + k4)
 end
 
-function solveModel(model::wildV1RK4)
+function solveModel(model::wildRK4)
     for ind in 1:model.n
         model.result[1, ind+1] = model.result[1, ind] + model.dt
         model.result[2:3, ind+1] = numericalScheme(model, model.result[2:3, ind])
