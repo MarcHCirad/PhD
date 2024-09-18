@@ -93,6 +93,17 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         end
         myModel = modelAnthropized(param)
         return myModel
+    elseif modelType == "Migration"
+        nbrParameters = length(fieldnames(modelMigration))
+        if nbrParameters - 1 > length(param)
+            println("Number of parameter is incoherent with model Migration")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelMigration))
+            return
+        end
+        myModel = modelMigration(param)
+        return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
         return
@@ -159,6 +170,12 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
     elseif mathModelType == "Anthropized"
         if numericalModelType == "RK4"
             myModel = anthropizedRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "Migration"
+        if numericalModelType == "RK4"
+            myModel = migrationRK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end

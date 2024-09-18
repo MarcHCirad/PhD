@@ -1,8 +1,12 @@
-function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
+function plotTrajectory1d(inputFileNames::Vector{String},
+        saveFileName::String,
+        nbrVariables::Int64;
         title::String = "",
-        plotLegend = false,
+        legendTitle = "",
+        showLegend = false,
         legend=Vector{String}(),
-        toPlot = false)
+        toPlot = false,
+        fontsize = 12)
 
     listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
 
@@ -14,20 +18,17 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
     myCSV = CSV.read(fileName, DataFrame)
     header = names(myCSV)
 
-    nameTime = header[1]
-    nameColumn2 = header[2]
-    nameColumn3 = header[3]
-    nameColumn4 = header[4]
-
     time = myCSV[1:end, 1]
     column2 = myCSV[1:end, 2]
-    column3 = myCSV[1:end, 3]
-    column4 = myCSV[1:end, 4]
 
     lineCSV = attr(color=listColor[1])
-    s1 = [PlotlyJS.scatter(x=time, y = column2, showlegend = plotLegend, name=legend[1], line=lineCSV)]
-    s2 = [PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV)]
-    s3 = [PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV)]
+    Variable1 = [PlotlyJS.scatter(x=time, y = column2, showlegend = showLegend, name=legend[1], line=lineCSV)]
+    Variables = [Variable1]
+    for var in 2:nbrVariables
+        column = myCSV[1:end, var + 1]
+        localVar = [PlotlyJS.scatter(x=time, y = column, showlegend=false, line=lineCSV)]
+        push!(Variables, localVar)
+    end
 
     for ind in 2:length(inputFileNames)
         fileName = inputFileNames[ind]
@@ -36,25 +37,28 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
         time = myCSV[1:end, 1]
 
         column2 = myCSV[2:end, 2]
-        push!(s1, PlotlyJS.scatter(x=time, y = column2, showlegend = plotLegend, name=legend[ind], line=lineCSV))
-
-        column3 = myCSV[2:end, 3]
-        push!(s2, PlotlyJS.scatter(x=time, y = column3, showlegend=false, line=lineCSV))
-
-        column4 = myCSV[2:end, 4]
-        push!(s3, PlotlyJS.scatter(x=time, y = column4, showlegend=false, line=lineCSV))
+        push!(Variables[1], PlotlyJS.scatter(x=time, y = column2, showlegend = showLegend, name=legend[ind], line=lineCSV))
+        for var in 2:nbrVariables
+            column = myCSV[1:end, var + 1]
+            push!(Variables[var], PlotlyJS.scatter(x=time, y = column, showlegend=false, line=lineCSV))
+        end
     end
 
+    myPlot = make_subplots(rows = nbrVariables, cols = 1, shared_xaxes = true)
+    for var in 1:nbrVariables
+        for ind in 1:length(inputFileNames)
+            add_trace!(myPlot, Variables[var][ind], row=var, col=1)
+        end
+    end
 
-    l1 = PlotlyJS.Layout(yaxis_title = nameColumn2)
-    l2 = PlotlyJS.Layout(yaxis_title = nameColumn3)
-    l3 = PlotlyJS.Layout(xaxis_title = nameTime, yaxis_title = nameColumn4)
-    p1 = PlotlyJS.plot(s1, l1)
-    p2 = PlotlyJS.plot(s2, l2)
-    p3 = PlotlyJS.plot(s3, l3)
-
-    myPlot = [p1 ; p2 ; p3]
-    PlotlyJS.relayout!(myPlot, title_text=title)
+    yaxis_titles = header[2:end]
+    append!(yaxis_titles, ["" for _ in 1:(3 - length(header) + 1)])
+    PlotlyJS.relayout!(myPlot; title_text=title,
+                        legend_title_text = legendTitle,
+                        yaxis_title = latexstring("\\LARGE{$(yaxis_titles[1])}"), 
+                        yaxis2_title = latexstring("\\LARGE{$(yaxis_titles[2])}"), 
+                        yaxis3_title = latexstring("\\LARGE{$(yaxis_titles[3])}"),
+                        font=attr(size=fontsize))
     if toPlot
         display(myPlot)
     end
@@ -62,11 +66,14 @@ function plotTrajectory1d(inputFileNames::Vector{String}, saveFileName::String;
     PlotlyJS.savefig(myPlot, saveFileName)
 end
 
-function plotTrajectory3d(inputFileNames::Vector{String}, saveFileName::String;
-    variables = [],
-    title = "",
+function plotTrajectory3d(inputFileNames::Vector{String},
+    saveFileName::String;
+    title::String = "",
+    legendTitle = "",
+    showLegend = false,
     legend=Vector{String}(),
-    toPlot = false)
+    toPlot = false,
+    fontsize = 12)
 
     listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
 
@@ -90,8 +97,9 @@ function plotTrajectory3d(inputFileNames::Vector{String}, saveFileName::String;
     markerCSV = attr(color=listColor[1], size=5, symbol="cross")
     layout = PlotlyJS.Layout(scene = attr(xaxis_title = nameColumn2, yaxis_title=nameColumn3, zaxis_title=nameColumn4), title=title)
     trajectory = [PlotlyJS.scatter(x=column2, y=column3, z=column4, type="scatter3d", name=legend[1], mode="lines", line=lineCSV)]
+    
     push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], z=[column4[1]], 
-                type="scatter3d", mode="markers", marker=markerCSV, showlegend=false))
+                type="scatter3d", mode="markers", marker=markerCSV, showlegend=showLegend))
     
 
     for ind in 2:length(inputFileNames)
@@ -100,15 +108,24 @@ function plotTrajectory3d(inputFileNames::Vector{String}, saveFileName::String;
         lineCSV = attr(color=listColor[ind], width=2)
         markerCSV = attr(color=listColor[ind], size=5, symbol="cross")
 
-        column2 = myCSV[2:end, 2]
-        column3 = myCSV[2:end, 3]
-        column4 = myCSV[2:end, 4]
+        column2 = myCSV[1:end, 2]
+        column3 = myCSV[1:end, 3]
+        column4 = myCSV[1:end, 4]
         push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, z=column4, type="scatter3d", name=legend[ind], mode="lines", line=lineCSV))
         push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], z=[column4[1]], 
                                                     type="scatter3d", mode="markers", marker=markerCSV, showlegend=false))
     end
 
+    xaxis_title = nameColumn2
+    yaxis_title=nameColumn3
+    zaxis_title=nameColumn4
     myPlot = PlotlyJS.plot(trajectory, layout)
+    # PlotlyJS.relayout!(myPlot; title_text=title,
+    #                     legend_title_text = legendTitle,
+    #                     # scene = attr(xaxis_title = latexstring("\\LARGE{$(xaxis_title)}"), 
+    #                     # yaxis_title = latexstring("\\LARGE{$(yaxis_title)}"), 
+    #                     # zaxis_title = latexstring("\\LARGE{$(zaxis_title)}")),
+    #                     font=attr(size=fontsize))
     if toPlot
         display(myPlot)
     end
@@ -184,7 +201,7 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
                             colorbar=attr(tickmode="array",
                                             tickvals=myTickvals,
                                             ticktext=myTicktext,
-                                            title=attr(text="Existing and AS equilibrium")),
+                                            title=attr(text="Existing and <br> AS equilibrium")),
                             autocolorscale = false,
                             colorscale = myColorScale,
                             zauto = false,
@@ -194,39 +211,39 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     myPlot = PlotlyJS.plot(data, layout)
     PlotlyJS.savefig(myPlot, saveFileName)
 
-    if eqVals
-        FFileName = inputFileName[1:end-4] * "F.csv"
-        VFileName = inputFileName[1:end-4] * "V.csv"
-        HFileName = inputFileName[1:end-4] * "H.csv"
-        CSVF = CSV.read(FFileName, DataFrame)
-        FMatrix = transpose(Matrix(CSVF[2:end, 2:end]))
-        CSVV = CSV.read(VFileName, DataFrame)
-        VMatrix = transpose(Matrix(CSVV[2:end, 2:end]))
-        CSVH = CSV.read(HFileName, DataFrame)
-        HMatrix = transpose(Matrix(CSVH[2:end, 2:end]))
+    # if eqVals
+    #     FFileName = inputFileName[1:end-4] * "F.csv"
+    #     VFileName = inputFileName[1:end-4] * "V.csv"
+    #     HFileName = inputFileName[1:end-4] * "H.csv"
+    #     CSVF = CSV.read(FFileName, DataFrame)
+    #     FMatrix = transpose(Matrix(CSVF[2:end, 2:end]))
+    #     CSVV = CSV.read(VFileName, DataFrame)
+    #     VMatrix = transpose(Matrix(CSVV[2:end, 2:end]))
+    #     CSVH = CSV.read(HFileName, DataFrame)
+    #     HMatrix = transpose(Matrix(CSVH[2:end, 2:end]))
 
-        dataF = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = FMatrix)
-        dataV = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = VMatrix)
-        dataH = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = HMatrix)
+    #     dataF = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = FMatrix)
+    #     dataV = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = VMatrix)
+    #     dataH = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = HMatrix)
 
-        layoutF = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title= latexstring("F" * titleEqVals))
-        myPlotF = PlotlyJS.plot(dataF, layoutF)
-        PlotlyJS.savefig(myPlotF, saveFileName[1:end-5]*"F.html")
-        layoutV = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("V" * titleEqVals))
-        myPlotV = PlotlyJS.plot(dataV, layoutV)
-        PlotlyJS.savefig(myPlotV, saveFileName[1:end-5]*"V.html")
-        layoutH = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("H" * titleEqVals))
-        myPlotH = PlotlyJS.plot(dataH, layoutH)
-        PlotlyJS.savefig(myPlotH, saveFileName[1:end-5]*"H.html")
-    end
+    #     layoutF = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title= latexstring("F" * titleEqVals))
+    #     myPlotF = PlotlyJS.plot(dataF, layoutF)
+    #     PlotlyJS.savefig(myPlotF, saveFileName[1:end-5]*"F.html")
+    #     layoutV = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("V" * titleEqVals))
+    #     myPlotV = PlotlyJS.plot(dataV, layoutV)
+    #     PlotlyJS.savefig(myPlotV, saveFileName[1:end-5]*"V.html")
+    #     layoutH = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("H" * titleEqVals))
+    #     myPlotH = PlotlyJS.plot(dataH, layoutH)
+    #     PlotlyJS.savefig(myPlotH, saveFileName[1:end-5]*"H.html")
+    # end
 
     if toPlot
         display(myPlot)
-        if eqVals
-            display(myPlotF)
-            display(myPlotV)
-            display(myPlotH)
-        end
+        # if eqVals
+        #     display(myPlotF)
+        #     display(myPlotV)
+        #     display(myPlotH)
+        # end
     end
 end
 
@@ -234,13 +251,22 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
     variables::Vector{Int64};
     title = "",
     legend=Vector{String}(),
-    toPlot = false)
+    showLegend = true,
+    completeLegend = false,
+    listColor = Vector{String}(),
+    toPlot = false,
+    fontsize = 12)
 
-    listColor = ["royalblue", "firebrick", "darkorange", "green", "orchid", "black"]
-
-    if length(legend) < length(inputFileNames)
-        append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
+    if isempty(listColor) 
+        listColor = ["royalblue", "firebrick", 
+                "darkorange", "green", "orchid", "black", "goldenrod",
+                "sienna", "purple", "navy", "silver", "turquoise"]
     end
+
+    # if completeLegend && (length(legend) < length(inputFileNames))
+    #     # append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
+    #     append!(legend, ["" for ind in length(legend):length(inputFileNames)])
+    # end
 
     fileName = inputFileNames[1]
     myCSV = CSV.read(fileName, DataFrame)
@@ -252,15 +278,21 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
     nameColumn2 = header[indColumn2]
     nameColumn3 = header[indColumn3]
 
-    column2 = myCSV[2:end, indColumn2]
-    column3 = myCSV[2:end, indColumn3]
+    column2 = myCSV[1:end, indColumn2]
+    column3 = myCSV[1:end, indColumn3]
 
     lineCSV = attr(color=listColor[1], width=2)
     markerCSV = attr(color=listColor[1], size=5, symbol="cross")
     
     
-    
-    trajectory = [PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", name=legend[1], mode="lines", line=lineCSV)]
+    if haskey(legend, 1)
+        showLegend = true
+        legendText = legend[1]
+    else
+        showLegend = false
+        legendText = ""
+    end
+    trajectory = [PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", showlegend = showLegend, name=legendText, mode="lines", line=lineCSV)]
     push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
                 type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
     
@@ -271,14 +303,24 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
         lineCSV = attr(color=listColor[ind], width=2)
         markerCSV = attr(color=listColor[ind], size=5, symbol="cross")
 
-        column2 = myCSV[2:end, indColumn2]
-        column3 = myCSV[2:end, indColumn3]
-        push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", name=legend[ind], mode="lines", line=lineCSV))
+        column2 = myCSV[1:end, indColumn2]
+        column3 = myCSV[1:end, indColumn3]
+
+        if haskey(legend, ind)
+            showLegend = true
+            legendText = legend[ind]
+        else
+            showLegend = false
+            legendText = ""
+        end
+
+        push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", showlegend = showLegend, name=legendText, mode="lines", line=lineCSV))
         push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
                     type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
     end
-
-    layout = PlotlyJS.Layout(xaxis_title = nameColumn2, yaxis_title = nameColumn3, title=title)
+    
+    layout = PlotlyJS.Layout(xaxis_title = latexstring("\\LARGE{$nameColumn2}"), yaxis_title = latexstring("\\LARGE{$nameColumn3}"), title=title,
+                font=attr(size=fontsize))
     myPlot = PlotlyJS.plot(trajectory, layout)
     if toPlot
         display(myPlot)

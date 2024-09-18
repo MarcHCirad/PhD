@@ -13,7 +13,7 @@ struct modelWild <: mathematicalModel
         rF, f, LW = modelParam["rF"], modelParam["f"], modelParam["LW"]
         rV, KV, alpha = modelParam["rV"], modelParam["KV"], modelParam["alpha"]
 
-        variablesNames = ["F", "V"]
+        variablesNames = ["F_W", "V_W"]
 
         new(variablesNames, rF, LW, f, rV, KV, alpha)
     end

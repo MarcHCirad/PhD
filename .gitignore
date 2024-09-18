@@ -11,5 +11,11 @@ SimulationNumerique/*/*/*/
 *.bbl
 *.gz
 *.pdf
-Wild
+*.ps
+*.toc
+*.out
+Wild/
 Images/
+Anthropized/
+Migration/
+WildLW/

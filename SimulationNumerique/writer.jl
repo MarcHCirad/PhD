@@ -55,7 +55,7 @@ end
 
 function writeBifurcationDiagram(myModel::mathematicalModel, bifurcationDiagram::Matrix{Any}, dirPrefix::String ;
             nameSuffix = "bifurcationDiagram",
-            bifF = Matrix{Any}(), bifV = Matrix{Any}(), bifH = Matrix{Any}(), eqVals = false)
+            bifF = Matrix{Any}, bifV = Matrix{Any}, bifH = Matrix{Any}, eqVals = false)
     
     if !isdir(dirPrefix)
         mkpath(dirPrefix)

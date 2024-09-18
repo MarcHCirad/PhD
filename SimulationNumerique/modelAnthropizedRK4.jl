@@ -1,7 +1,7 @@
 include("modelAnthropized.jl")
 
 struct anthropizedRK4 <: numericalModel
-
+    variablesNames::Vector{String}
     mathModel::modelAnthropized
 
     t0::Float64
@@ -13,15 +13,18 @@ struct anthropizedRK4 <: numericalModel
 
     function anthropizedRK4(modelParam::Dict{String, Float64}, numericalParam::Dict{String, Float64}, 
                             initialValues::Dict{String, Float64})
-        mathModel = modelanthropized(modelParam)
+        mathModel = modelAnthropized(modelParam)
 
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
         n = Int((tf-t0)/dt)
         
-        result = Matrix{Float64}(undef, 3, n+1)
-        result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
+        result = Matrix{Float64}(undef, 4, n+1)
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
 
-        new(mathModel, t0, tf, dt, n, result)
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
+
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
     end
 
     function anthropizedRK4(mathModel::modelAnthropized, numericalParam::Dict{String, Float64}, 
@@ -30,10 +33,13 @@ struct anthropizedRK4 <: numericalModel
         t0, tf, dt = numericalParam["t0"], numericalParam["tf"], numericalParam["dt"]
         n = Int((tf-t0)/dt)
 
-        result = Matrix{Float64}(undef, 3, n+1)
-        result[:,1] = [t0, initialValues["F0"], initialValues["V0"]]
+        result = Matrix{Float64}(undef, 4, n+1)
+        result[:,1] = [t0, initialValues["F0"], initialValues["V0"], initialValues["H0"]]
+        
+        variablesNames = mathModel.variablesNames
+        pushfirst!(variablesNames, "time")
 
-        new(mathModel, t0, tf, dt, n, result)
+        new(variablesNames, mathModel, t0, tf, dt, n, result)
         end
 end
 
@@ -49,6 +55,6 @@ end
 function solveModel(model::anthropizedRK4)
     for ind in 1:model.n
         model.result[1, ind+1] = model.result[1, ind] + model.dt
-        model.result[2:3, ind+1] = numericalScheme(model, model.result[2:3, ind])
+        model.result[2:4, ind+1] = numericalScheme(model, model.result[2:4, ind])
     end
 end
