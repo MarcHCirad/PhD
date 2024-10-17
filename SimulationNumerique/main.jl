@@ -9,6 +9,10 @@ include("modelAnthropized.jl")
 include("modelAnthropizedRK4.jl")
 include("modelMigration.jl")
 include("modelMigrationRK4.jl")
+include("modelHunter.jl")
+include("modelHunterRK4.jl")
+include("modelTest.jl")
+include("modelTestRK4.jl")
 
 include("plotFile.jl")
 include("writer.jl")
@@ -76,8 +80,10 @@ function mainBifurcation()
 
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
     pathAnthropo = pathWD * "/Anthropized/"
+    pathHunter = pathWD * "/Hunter"
+    path = pathHunter
 
-    myModel = readNumericalModel(pathAnthropo * "/input.txt")
+    myModel = readNumericalModel(path * "/input.txt")
     math = myModel.mathModel  
     
     ## color ##
@@ -107,12 +113,17 @@ function mainBifurcation()
                         "(F), (VH_\beta), (VH_2)" => "purple",
                         "(F), (VH_2)" => "lightgreen"
                     ])
+
     dicEqNamesColor = Dict(["(TE)(H_A)" => "silver",
                             "(TE)(H_A)(V_AH_A)" => "firebrick",
                             "(TE)(V_AH_A)" => "green",
                             "(V_A)(H_A)" => "seashell",
                             "(V_A)(V_AH_A)" => "sienna",
                             "(TE)(V_AH_A_1)(V_AH_A)" => "skyblue"])
+
+    dicEqNamesColor = Dict(["(F_W)" => "silver",
+                            "(F_W)(H_AH_W)" => "firebrick",
+                            "(F_W)(H_AF_WH_W)" => "green"])
 
     
     
@@ -123,31 +134,38 @@ function mainBifurcation()
     listbeta = [k for k = 0.1:0.01:12]
     lista = [k for k = 0.01:0.05:15]
     listb = [k for k = 0.01:0.05:15]
-    listc = [k for k = 2.9:0.1:3.1]
+    listc = [k for k = 2.9:0.01:10]
+    listLambdaFWH = [k for k = 0.01:0.001:0.5]
 
     ## dir and file name ##
     
-    dirName = pathAnthropo * "/bifurcation/comparisonV2/"
-    nameSuffix = "bifurcationDiagramCLambdaVH3"
+    dirName = path * "/bifurcation/"
+    nameSuffix = "bifurcationDiagramCLambdaFWH"
     println(math)
 
     ## computation ##
-    bifurcationMatrix = computeBifurcationDiagramFH(math, "c", listc, "lambdaFH", listLambdaVH ; eqValues=false)
+    bifurcationMatrix = computeBifurcationDiagram(math, "c", listc, "lambdaFWH", listLambdaFWH)
     filePrefix = writeBifurcationDiagram(math, bifurcationMatrix, dirName; 
                                         nameSuffix = nameSuffix,
                                         eqVals = false)
     ## plot ##
-    plotBifurcationFile(filePrefix * ".csv", 
-                        filePrefix * ".html" ;
+    data, layout = plotBifurcationFile(filePrefix * ".csv";
+                        toSave = true, 
+                        saveFileName = filePrefix * ".html",
                         # title = latexstring("\\text{Bifurcation Diagram in } (c, L_V) \\text{ plane}"),
                         title = "",
                         xlabel = latexstring("\\LARGE{c}"),
-                        ylabel = latexstring("\\LARGE{\\lambda_{VH}}"),
+                        ylabel = latexstring("\\LARGE{\\lambda_{FWH}}"),
                         dicEqColor = dicEqNamesColor,
-                        toPlot = true,
+                        toPlot = false,
                         eqVals = false,
                         titleEqVals = "\\text{: average of equilibrium values}",
                         fontsize = 30)
+
+    lambdamax = 2 * math.rF / (math.m * math.aW * math.KF)
+    println(lambdamax)
+    # addtraces(myPlot, scatter(;listc, lambdamax * ones(length(listc)), mode="lines"))
+    display(PlotlyJS.plot([data, PlotlyJS.scatter(x= listc, y = lambdamax * ones(length(listc)), mode="lines")], layout))              
 end
 
 function mainSolveModel()
@@ -155,7 +173,8 @@ function mainSolveModel()
     pathWild = pathWD * "/Wild/"
     pathAnthropo = pathWD * "/Anthropized/"
     pathMigration = pathWD * "/Migration/"
-    path = pathAnthropo
+    pathTest = pathWD * "/Test/"
+    path = pathTest
     
     # resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_",
                     # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_2", 
@@ -165,35 +184,33 @@ function mainSolveModel()
                     # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_6",
                     # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_7"]
     
-    # resultFolders = solveWriteModels(path)
-    # myModel = readNumericalModel(path * "/input.txt")
-    # println("Eq FV : ", equilibriumFV(myModel.mathModel))
-    # println("Eq HFV : ", equilibriumHFV(myModel.mathModel))
-    # println(computeThresholdsFH(myModel.mathModel))
-    # println(interpretThresholdsFH(myModel.mathModel, computeThresholdsFH(myModel.mathModel)))
+    resultFolders = solveWriteModels(path)
+    myModel = readNumericalModel(path * "input01.txt")
+    println(thresholdF(myModel.mathModel, myModel.mathModel.c))
+    println(equilibriumFH(myModel.mathModel))
 
 
     ## Plotting ##
     # println([resultFolder * "/result.csv" for resultFolder in resultFolders])
 
-    resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_01/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_02/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_04/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_05/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_06/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_07/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_10/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_11/",
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_12/",
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_13/", 
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_21/",
-    "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_22/"]
+    # resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_01/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_02/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_04/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_05/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_06/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_07/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_10/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_11/",
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_12/",
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_13/", 
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_21/",
+    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_22/"]
 
     listColor = ["red", "red", "red", "red", "red", "red", "blue", "blue", "blue", "blue",
                 "green", "green", "green"]
     plotPhasePortrait([resultFolder * "/result.csv" for resultFolder in resultFolders],
                         path*"/plotOrbit.html",
-                        [1,3];
+                        [1,2];
                         # title=latexstring("\\text{Orbit in the } F_W - V_W \\text{ plane}"),
                         legend=Dict([1=>latexstring("EE^{F_AH_A}_1"), 7=>latexstring("EE^{F_AH_A}_1"), 11=>latexstring("TE")]),
                         listColor = listColor,
@@ -291,15 +308,15 @@ end
 
 function mainTest()
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
-    pathAnthropo = pathWD * "/Anthropized/"
+    pathHunter = pathWD * "/Hunter/"
 
-    myModel = readNumericalModel(pathAnthropo * "/input.txt")
+    myModel = readNumericalModel(pathHunter * "/input.txt")
     math = myModel.mathModel
-
-    
+    println(math)
 end
 
-# mainBifurcation()
 mainSolveModel()
+# mainSolveModel()
+# mainTest()
 end
 println(t, " seconds to execute the code")

@@ -1,0 +1,2 @@
+   \usepackage{pstricks, pst-node}
+   \usepackage{multido}

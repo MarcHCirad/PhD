@@ -104,6 +104,28 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         end
         myModel = modelMigration(param)
         return myModel
+    elseif modelType == "Hunter"
+        nbrParameters = length(fieldnames(modelHunter))
+        if nbrParameters - 2 > length(param)
+            println("Number of parameter is incoherent with model Hunter")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelHunter))
+            return
+        end
+        myModel = modelHunter(param)
+        return myModel
+    elseif modelType == "Test"
+        nbrParameters = length(fieldnames(modelTest))
+        if nbrParameters - 1 > length(param)
+            println("Number of parameter is incoherent with model Test")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelTest))
+            return
+        end
+        myModel = modelTest(param)
+        return myModel
     else
         println("Model type : ", modelType, " is not implemented.")
         return
@@ -176,6 +198,18 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
     elseif mathModelType == "Migration"
         if numericalModelType == "RK4"
             myModel = migrationRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "Hunter"
+        if numericalModelType == "RK4"
+            myModel = hunterRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "Test"
+        if numericalModelType == "RK4"
+            myModel = testRK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end

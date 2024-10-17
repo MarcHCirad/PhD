@@ -134,7 +134,9 @@ function plotTrajectory3d(inputFileNames::Vector{String},
     PlotlyJS.savefig(myPlot, saveFileName)
 end
 
-function plotBifurcationFile(inputFileName::String, saveFileName::String;
+function plotBifurcationFile(inputFileName::String;
+        toSave = true,
+        saveFileName::String = "",
         dicEqColor = Dict{String, String}(),
         xlabel = "",
         ylabel = "",
@@ -146,7 +148,9 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     """
     Take a CSV bifurcation filename as input and produce the corresponding plot
     """
-    println(inputFileName)
+    if saveFileName ==""
+        saveFileName = inputFileName[1:end-4] * ".html"
+    end
     CSVBifurcation = CSV.read(inputFileName, DataFrame)
    
     listParamX = tryparse.(Float64, CSVBifurcation[2:end, 1])
@@ -172,7 +176,7 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
     myTickvals = [(2*k-1) / 2 for k = 1:legendSize]
     myTicktext = sort(collect(keys(dicEqNbr)))
     myTicktext = [replace(text, "\beta"=>"β") for text in myTicktext]
-    # myTicktext = [latexstring(text) for text in myTicktext]
+    myTicktext = [latexstring(text) for text in myTicktext]
     listColor = ["teal", "cyan", "red", "black"]
     
     myColorScale = []
@@ -209,42 +213,15 @@ function plotBifurcationFile(inputFileName::String, saveFileName::String;
                             zmax = myzmax)
     
     myPlot = PlotlyJS.plot(data, layout)
-    PlotlyJS.savefig(myPlot, saveFileName)
 
-    # if eqVals
-    #     FFileName = inputFileName[1:end-4] * "F.csv"
-    #     VFileName = inputFileName[1:end-4] * "V.csv"
-    #     HFileName = inputFileName[1:end-4] * "H.csv"
-    #     CSVF = CSV.read(FFileName, DataFrame)
-    #     FMatrix = transpose(Matrix(CSVF[2:end, 2:end]))
-    #     CSVV = CSV.read(VFileName, DataFrame)
-    #     VMatrix = transpose(Matrix(CSVV[2:end, 2:end]))
-    #     CSVH = CSV.read(HFileName, DataFrame)
-    #     HMatrix = transpose(Matrix(CSVH[2:end, 2:end]))
-
-    #     dataF = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = FMatrix)
-    #     dataV = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = VMatrix)
-    #     dataH = PlotlyJS.heatmap(x = listParamX, y = listParamY, z = HMatrix)
-
-    #     layoutF = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title= latexstring("F" * titleEqVals))
-    #     myPlotF = PlotlyJS.plot(dataF, layoutF)
-    #     PlotlyJS.savefig(myPlotF, saveFileName[1:end-5]*"F.html")
-    #     layoutV = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("V" * titleEqVals))
-    #     myPlotV = PlotlyJS.plot(dataV, layoutV)
-    #     PlotlyJS.savefig(myPlotV, saveFileName[1:end-5]*"V.html")
-    #     layoutH = PlotlyJS.Layout(xaxis_title= xlabel, yaxis_title=ylabel, title=latexstring("H" * titleEqVals))
-    #     myPlotH = PlotlyJS.plot(dataH, layoutH)
-    #     PlotlyJS.savefig(myPlotH, saveFileName[1:end-5]*"H.html")
-    # end
-
-    if toPlot
-        display(myPlot)
-        # if eqVals
-        #     display(myPlotF)
-        #     display(myPlotV)
-        #     display(myPlotH)
-        # end
+    if toSave
+        PlotlyJS.savefig(myPlot, saveFileName)
     end
+
+      if toPlot
+        display(myPlot)
+    end
+    return data, layout
 end
 
 function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,

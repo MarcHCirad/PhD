@@ -1,0 +1,186 @@
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+\graphicspath{{./Images/}{./Images/ComparisonBifurcationFAHA}}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\lf}{\lambda_{FH}}
+\newcommand{\lv}{\lambda_{VH}}
+\newcommand{\lfa}{\lambda_{F, A}}
+\newcommand{\lva}{\lambda_{V, A}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\lvw}{\lambda_{V}}
+\newcommand{\lfv}{\lambda_{W}}
+\newcommand{\da}{\delta_A}
+\newcommand{\dw}{\delta_W}
+\newcommand{\dr}{\dfrac{\da}{\dw}}
+\newcommand{\rd}{\dfrac{\dw}{\da}}
+\newcommand{\df}{\delta_0^F}
+\newcommand{\dv}{\delta_0^V}
+\newcommand{\RV}{R_0^V}
+\newcommand{\RF}{R_0^F}
+\newcommand{\NF}{\mathcal{N}_0^F}
+\newcommand{\NV}{\mathcal{N}_0^V}
+\newcommand{\NH}{\mathcal{N}_0^H}
+\newcommand{\Fbeta}{F^*_\beta}
+\newcommand{\Hbeta}{H^*_\beta}
+\newcommand{\Vbeta}{V^*_\beta}
+\newcommand{\VbetaF}{V^*_{\Fbeta, \beta}}
+\newcommand{\FHterme}{\omega f + \lf}
+\newcommand{\marc}[1]{\textcolor{red}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Paramètres Thèse Marc}
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+\section{Model}
+
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dF_{A}}{dt}=r_{F_A}  \dfrac{H_A}{H_A+L_F}F_A - \dfrac{\delta_0^F}{1 +\delta_1 H_A}F_A^2-\mu_{F}F_A-\lambda_{FH,A}F_AH_A,\\
+\dfrac{dV_{A}}{dt}=r_{V_A}  \dfrac{H_A}{H_A+L_V}V_A - \delta_0^V V_A^2-\mu_{V}V_A-\lambda_{VH,A}V_AH_A,\\
+\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{A}F_{A} + b_A V_A + a_W F_W + c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A -m_A H_A + m_W H_W. \\
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_{F_W} \dfrac{V_W}{V_W + L_W} F_W - \dfrac{r_{F_W}}{f(V_W + L_W)} F_W^2 - \lfw H_W F_W\\
+\dfrac{dV_W}{dt} = r_{V_W} \left(1 - \dfrac{V_W}{K_V}\right) V_W - \lfv V_W F_W \\
+\epsilon \dfrac{dH_W}{dt}= m_A H_A - m_W H_W 
+\end{array} \right.
+\end{equation}
+OU 
+
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_{F_W} \Big(1 - \dfrac{F_W}{K_F}\Big) F_W - \lfw H_W F_W\\
+\epsilon \dfrac{dH_W}{dt}= m_A H_A - m_W H_W 
+\end{array} \right.
+\end{equation}
+\label{anthropicWild}
+\end{subequations}
+
+
+
+
+\section{Parameters values}
+
+\begin{table}[!ht]
+\centering
+\caption{Parameters values}
+\begin{tabular}{c|c|c|c|c}
+& Parameter & Value & Source & Remark \\
+\cline{1-5}
+\multirow{10}{*}{Wild Area} & $b_W$ & 0 & \cite{loung_pygmees_1996, koppert_consommation_1996, bennett_carrying_2000} & \\
+& $\lvw$ & 0 & \cite{loung_pygmees_1996, koppert_consommation_1996, bennett_carrying_2000} &\\
+& $a_W$ & $76.65$ kg/personn/year & \cite{koppert_consommation_1996, bennett_carrying_2000} \\
+& $f$ ou bien $K_F$ & $1273 \pm 516.79$ kg/km2 & \cite{bennett_carrying_2000} & A convertir en kg/kg\\
+& $\lfv$ & & & \marc{On peut l'estimer avec l'équilibre ?}\\
+& $\lfw$ & $[72-110] kg/(T\times H_W)$ &\cite{avila_interpreting_2019, jones_consequences_2020} & A convertir en $(T H_W)^-1$\\
+& $L_W$ \\
+& $K_V$ & [300-500] tonnes/hectare & Witold & \\
+& $r_V$ \\
+& $r_F$ & $0.64 \pm 0.68$ year$^{-1}$ & \cite{bennett_carrying_2000} & Moyenne obtenue sur différentes espèces\\
+& $m= \dfrac{m_A}{m_W}$ & $0.2380 \pm 0.07$ & \cite{avila_interpreting_2019} \\
+\hline
+\multirow{4}{*}{Residential Area} & $a_A$ & & \\
+ & $\lfa F_A $ & 0.63 T /an /personne & Enquête Stat Camerounaise \\
+ & $\lva V_A $ &  122 T / an / personne & Enquête Stat Camerounaise
+\end{tabular}
+\end{table}
+
+\subsection{Remarque plus complètes:}
+\begin{itemize}
+\item Sur $\lvw$ et $b_W$ : \cite{koppert_consommation_1996} a mesuré que les protéines et calories provenant de la cueillette représentent autour de 1\% des apports totaux (calories : environ 10\% de chasse, 80 de production locale, 5 d'importation, 1 de cueillette). Leur utilisation correspond à des condiments, et non à de l'alimentation. Une récolte journalière, ainsi qu'une densité de population plus faible serait nécessaire pour que la cueillette joue un rôle plus important.
+
+Même remarque chez \cite{loung_pygmees_1996}, qui rajoute que les produits disponibles en permanences ou stockables ne sont pas intéressant nutritivement.
+L'agriculture permet de pallier à ces défaults.
+
+Chez \cite{bennett_carrying_2000} on rajoute que la cueillette demande trop de temps et d'énergie. Activité plus secondaire, en complément de la chasse.
+
+\item $a_W$ \cite{koppert_consommation_1996} donne des informations de consommation de viande chassée par personne par jour, que j'annualise ici. Ces données sont mesurées sur les populations Bakola et Mvae (région cotière Cameroun). Elles sont cohérentes avec celle donnée par \cite{bennett_carrying_2000} pour d'autres peuples (amérique du sud, océanie, indonésie).
+
+\item $f$ \cite{bennett_carrying_2000} propose un tableau où la densité d'animaux de plus de 1kg est renseigné, selon le type d'habitat. Je regarde ici les forêts à feuilles persistantes (evergreen forest), sous catégorisé par upland, closed, alluvial, flooded, terra-firm, late secondary. On obtient les valeurs suivantes :Min. 891, 1st Qu. 972,  Median 1068,    Mean 1273, 3rd Qu. 1322,   Max. 2264.
+
+\item $r_F$ est estimé en utilisant le travail de \cite{bennett_carrying_2000}, qui regroupe des estimations de taux d'accroissement pour différentes espèces. On a 
+ Min. : 0.0700 1st Qu : 0.2150  Median : 0.4000    Mean :0.6447 3rd Qu. :0.7650   Max. :2.9200 
+ 
+\item J'estime $m$ ici en faisant le rapport population village / chasseurs. Les données concernent la réserve de Dja, sud est du Cameroun, voir \cite{avila_interpreting_2019}.
+\marc{Le temps passé à la chasse varie selon les sources : de 10 à 20jours par an selon les sources, avec des sorties de plusieurs jours ou uniquement de qlq heures..}
+
+\item $\lfw$ estimé à partir du poids des prises pesées au village. \cite{avila_interpreting_2019} étudie des villages du sud du cameroun très isolés (donne le $\lfw = 72 kg/(TH_W)$), et \cite{jones_consequences_2020} des villages de la Gola Forest, Liberia, où des petites activités minières ont lieux.
+
+\item Pour $a_A$ et $b_A$ : 
+
+\begin{itemize}
+\item selon \cite{alimentation_adie_1996} à \textbf{Evodoula, région centre}, l'alimentation (en Kcal) en zone cacoyère se répartit selon : 4.3\% de céréales, 39\% de manioc, 6.6\% de tubercules, 3.7\% de feuilles/légumes, 4.2\% de plantains, 19\% haricots, 1.6\% viande (chasse et élevage confondu), 2.4\% poissons. Moyenne faites sur 3 jours seulement.
+10\% des familles estiment manger du boeuf/volailles au moins une 1 fois par semaine, 6\% seuleument pour le gibier. Quasiment toutes mangent du boeuf et du gibier au moins une fois par mois.
+
+Régime majoritairement à base de manioc, plantain et tubercules. Très peu de viande.
+\end{itemize}
+
+\item Pour $r_{V_A}$ : 
+\begin{itemize}
+\item manioc $[3.65 - 22]$ an $^{-1}$ (voir \cite{chapwanya_application_2021}),
+\item banane : "The average maturity time from planting to harvesting of a banana plant is
+12–15 months depending on the cultivar" (ref : doi:10.1142/021833901650008x), ce qui donne un $r = [0.8, 1]$ an $^{-1}$.
+\item Pour le maïs : $r = [378,890]$ Ind . jour $^{-1}$ (article yves) ;
+\end{itemize}  
+
+\item Capacité $\dv$ : pour le maïs : 4000 kg/hectare (article Valaire-Blériot)
+
+\item Pour $\lva$ et $\lfa$ on peut utiliser les données en figure ci-dessous : sur un hectare, on aurait $\lva V_A = 122 T / an / personne$  et $\lfa F_A = 0.63T /an /personne$.
+
+\end{itemize}
+
+
+\begin{figure}
+\centering
+\caption{Source : DESA RAPPORT CFSAM 2019 ; 771 755 d'habitants, superficie totale de 109 002km2, densité de 7.1 hab/km2}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{viandeEst.png}
+\caption{Sur un hectare cultivé, on obtient une production moyenne de 0.044T/ha}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{cultureEst.png}
+\caption{Sur un hectare cultivé, on obtient un rendement moyen de 8.6T/ha}
+\end{subfigure}
+\end{figure}
+
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{SDM,SocioEcoModel,EcoServices, EcoModel, WildArea, Math, AnthropoArea}
+
+
+\end{document}
