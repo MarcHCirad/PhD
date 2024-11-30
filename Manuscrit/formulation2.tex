@@ -2567,8 +2567,8 @@ We note $f_2(H)$ the left hand side and $f_1(H)$ the right hand side of this equ
 
 
 \begin{multline}
-\mathcal{J}(F^*_{F_AH_A}, V^*_{F_AH_A}, H^*_{F_AH_A}) = \\ \begin{bmatrix}
-- \dfrac{\df}{1 + \delta_1 H^*}F^* & F^* \left( \dfrac{(r_F - \lfa)L_F}{(H^* + L_F)^2} + \dfrac{\delta_1 \df F^*}{(1 + \delta_1 H^*)^2} \right) & 0\\
+\mathcal{J}(F^*_{F_AV_AH_A}, V^*_{F_AV_AH_A}, H^*_{F_AV_AH_A}) = \\ \begin{bmatrix}
+- \dfrac{\df}{1 + \delta_1 H^*}F^* & 0 & F^* \left( \dfrac{(r_F - \lfa)L_F}{(H^* + L_F)^2} + \dfrac{\delta_1 \df F^*}{(1 + \delta_1 H^*)^2} \right) \\
 0 & - \dv V^* & V^* \left( \dfrac{(r_V - \lva)L_V}{(H^* + L_V)^2} \right) \\
 r_H a_A (\dfrac{H^*}{\beta} - 1)&r_H b_A (\dfrac{H^*}{\beta} - 1) & -r_H(\dfrac{H^*}{\beta} - 1)
 \end{bmatrix}
@@ -2594,7 +2594,7 @@ Note that all those quantities are positive.
 The Jacobian writes:
 \begin{equation}
 \mathcal{J}(F^*_{F_AH_A}, V^*_{F_AH_A}, H^*_{F_AH_A}) =  \begin{bmatrix}
-- R_F & R_F  C_F & 0\\
+- R_F & 0 & R_F C_F\\
 0 & - R_V & R_V C_V \\
 a_A R_H & b_A R_H & -R_H
 \end{bmatrix}
@@ -2690,6 +2690,21 @@ n this section, we study the case where humans do not practice breeding or agric
 \label{anthropicWild:VW=KV:Functional:subHAFWHW}
 \end{subequations}
 
+
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_W F_W + c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A -m_A H_A + m_W H_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_{F_W} \Big(1 - \dfrac{F_W}{K_F(1-\alpha H)}\Big) F_W - \lfw H_W F_W \text{ou  } \Big(1 - \dfrac{F_W}{\dfrac{K_F}{1 + \alpha H}}\Big) \\
+\dfrac{dH_W}{dt}= m_A H_A - m_W H_W 
+\end{array} \right.
+\end{equation}
+\label{anthropicWild:VW=KV:Functional:subHAFWHW}
+\end{subequations}
 
 \subsubsection{Equilibrium}
 We define 
@@ -2838,56 +2853,113 @@ So when $\dfrac{1}{2} < T_F(a_WK_F)$, $-\Tr q_1 + \det$ is positive. This is onl
 4 \left( Rf^{2} + Rh^{2} + mA^{2} + mW^{2} \right) + 8 Rf \left( Rh + mA + mW \right) - 12 \left( Rf \left( Rh + mA \right) + \left( Rf + Rh \right) mW \right) \\ + 8 Rh \left( mA + mW \right) + 8 mA mW
 \end{multline}
 
-\section{Model without intraspecific competition for domestic fauna/vegetation}
-
-We assume that there is no intraspecific competition for domestic fauna and vegetation but that human population control their natural mortality. The model becomes:
-
+\section{Changing the equation for $F_W$}
+We try a new type of equation for $F_W$, giving up the logistic. We consider that there is a constant born rate, $\Lambda$, depending on the level and type of vegetation. The impact of human activities are taking into through hunting, $-\lfw H_W F_W$ and impact on the vegetation $ \Lambda (1 - \alpha (H_W + H_D))$. We also modify the functions for $H_D$ : the logistic and allee effect are applied to $H_D + H_W$ and not only $H_D$.
+The model is now:
+\begin{subequations}
 \begin{equation}
 \left\{ \begin{array}{l}
-\dfrac{dF_{A}}{dt}= \Big(r_{F_A} - \lfa \Big)  \dfrac{H_A}{H_A+L_F}F_A - \dfrac{\mu_{F}}{1 +\delta_1 H_A}F_A,\\
-\dfrac{dV_{A}}{dt}= \Big(r_{V_A} - \lva \Big) \dfrac{H_A}{H_A+L_V}V_A - \dfrac{\mu_{V}}{1 + \delta_1^V H_A}V_A,\\
-\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{A}F_{A} + b_A V_A+ c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A
+\dfrac{dH_D}{dt}=r_{H}\left(1-\dfrac{H_D + H_W}{a_W F_W + c}\right)\left(\dfrac{H_D + H_W}{\beta}-1\right)H_D -m_D H_D + m_W H_W.
 \end{array}\right.
 \end{equation}
-
-We can start by studying the submodel $F_A$-$H_A$:
 \begin{equation}
-\left\{ \begin{array}{l}
-\dfrac{dF_{A}}{dt}= \Big(r_{F_A} - \lfa \Big)  \dfrac{H_A}{H_A+L_F}F_A - \dfrac{\mu_{F}}{1 +\delta_1 H_A}F_A,\\
-\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{A}F_{A} +  c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A.
-\end{array}\right.
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = \Lambda \Big(1 - \alpha (H_D + H_W) \Big) - \mu_F F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
 \end{equation}
-Among others, it admits an endemic equilibrium $\Big(F_{F_AH_A}^*, H_{F_AH_A}^* \Big)$ where:
+\end{subequations}
 
-$$
-H_{F_AH_A}^* = a_A F_{F_AH_A}^* + c
-$$
-and $F_{F_AH_A}^*$ is solution of:
+At equilibrium, we have:
 
-\begin{multline}
-F^2 \left(1 - \dfrac{\lfa}{r_F}\right) + F \left( \dfrac{1 + \delta_1 c}{\delta_1 c} \Big(1-\dfrac{\lfa}{r_F} - \dfrac{\mu_F}{r_F(1+\delta_1 c)} \Big) + \dfrac{c}{a} \Big(1-\dfrac{\lfa}{r_F} \Big) \right) + \\
-\dfrac{(1+\delta_1 c)c}{\delta_1 a^2} \left(1-\dfrac{\lfa}{r_F} - \dfrac{\mu_F}{r_F(1+\delta_1 c)} \dfrac{L_F + c}{c} \right) = 0
-\end{multline}
+\begin{equation*}
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*
+\end{equation*}
 
-Note that we have  $0 < 1 - \dfrac{\lfa}{r_F}$ (otherwise equation for $\dfrac{dF_A}{dt}$ is decreasing and $F_A$ converges to 0).
-To study the number of positive solutions, we can distinguish two cases:
+\begin{equation*}
+\left(\dfrac{(1+m) H_D^*}{\beta}-1\right) \left(1 - \dfrac{(1+m)H_D}{aF_W^* + cI} \right) H_D^* = 0
+\end{equation*}
+\begin{equation*}
+\Lambda \left(1 - (1+m) \alpha H_D ^* \right) - \mu_F F_W^* - \lfw m H_D^* F_W^* = 0 
+\end{equation*}
 
+The equilibrium are thus:
 \begin{itemize}
-\item if $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < 1$ : then the constant coefficient is negative, and there is a unique positive solution according to the Descartes' rule of sign.
-\item if $1 < \dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}}$, then the constant coefficient is positive and it may have 0 or two real solutions, depending on the discriminant's sign. However, since $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < \dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} }$, the coefficient in $F$ is also positive, and there will be no positive solutions,  according to the Descartes' rule of sign.
+\item A equilibrium of Fauna only: $EE^{F_W} = \Big(0, \dfrac{\Lambda}{\mu_F}, 0 \Big)$
+\item A equilibrium of Human only $EE^{H_D}_\beta$, and a equilibrium of Human-Fauna $EE^{H_DF_W}_\beta$, where $H_D^* = \beta$. $EE^{H_DF_W}_\beta$ exists if $1 > \alpha \beta$.
+\item Two equilibrium where $H_D^* + H_W^* = aF_W^* + cI$ which exists if $1\geq \alpha cI$.
+\begin{itemize}
+\item If $1 = \alpha cI$, $F_W^* = 0$, $H_D^*= \dfrac{cI}{1 + m}$
+\item If $1 > \alpha cI$, $F_W^*$ is the unique positive solution of
+
+\begin{equation*}
+F^2 \left(a_W \lfw \dfrac{m}{1+m} \right) + F \left(\mu_F + \alpha a_W \Lambda + cI \lfw \dfrac{m}{1+m} \right) - \Lambda (1 - \alpha cI)= 0
+\end{equation*} 
+\end{itemize}
 \end{itemize}
 
-Finally, the endemic equilibrium exists if $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < 1$.
+\begin{landscape}
+The Jacobian of the system is given by:
 
-The system's Jacobian at this point is given by:
 \begin{equation*}
-\mathcal{J}(F^*, H^*) = \begin{bmatrix}
-0 & F^*_A \Big(\dfrac{(r_F - \lfa) L_F}{(H^*_A + L_F)^2} + \dfrac{\mu_F \delta_1}{(1+\delta_1H^*_A)^2} \Big) \\
-r_H a_A \Big(\dfrac{H^*_A}{\beta} - 1\Big) & -r_H \Big(\dfrac{H^*_A}{\beta} - 1\Big)
+\mathcal{J} = \begin{bmatrix}
+-m_D + r_H \left(\dfrac{2H_D+H_W}{\beta}-1 \right)\left(1 - \dfrac{H_D+H_W}{aF_W + cI} \right) -  \dfrac{r_HH_D}{aF_W + cI}\left(\dfrac{H_D+H_W}{\beta}-1 \right) & a r_H \left(\dfrac{H_D+H_W}{\beta}-1 \right)  \dfrac{H_D(H_D+H_W)}{(aF_W + cI)^2} & m_W + r_H \dfrac{H_D}{\beta}\left(1 - \dfrac{H_D+H_W}{aF_W + cI} \right) - r_H \dfrac{H_D}{aF_W + cI}\left(\dfrac{H_D+H_W}{\beta}-1 \right)
 \end{bmatrix}
 \end{equation*}
-The determinant of this matrix is negative, and thus equilibrium $EE^{F_AH_A}$ is unstable.
 
+\end{landscape}
+
+%\section{Model without intraspecific competition for domestic fauna/vegetation}
+%
+%We assume that there is no intraspecific competition for domestic fauna and vegetation but that human population control their natural mortality. The model becomes:
+%
+%\begin{equation}
+%\left\{ \begin{array}{l}
+%\dfrac{dF_{A}}{dt}= \Big(r_{F_A} - \lfa \Big)  \dfrac{H_A}{H_A+L_F}F_A - \dfrac{\mu_{F}}{1 +\delta_1 H_A}F_A,\\
+%\dfrac{dV_{A}}{dt}= \Big(r_{V_A} - \lva \Big) \dfrac{H_A}{H_A+L_V}V_A - \dfrac{\mu_{V}}{1 + \delta_1^V H_A}V_A,\\
+%\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{A}F_{A} + b_A V_A+ c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A
+%\end{array}\right.
+%\end{equation}
+%
+%We can start by studying the submodel $F_A$-$H_A$:
+%\begin{equation}
+%\left\{ \begin{array}{l}
+%\dfrac{dF_{A}}{dt}= \Big(r_{F_A} - \lfa \Big)  \dfrac{H_A}{H_A+L_F}F_A - \dfrac{\mu_{F}}{1 +\delta_1 H_A}F_A,\\
+%\dfrac{dH_A}{dt}=r_{H}\left(1-\dfrac{H_A}{a_{A}F_{A} +  c}\right)\left(\dfrac{H_A}{\beta}-1\right)H_A.
+%\end{array}\right.
+%\end{equation}
+%Among others, it admits an endemic equilibrium $\Big(F_{F_AH_A}^*, H_{F_AH_A}^* \Big)$ where:
+%
+%$$
+%H_{F_AH_A}^* = a_A F_{F_AH_A}^* + c
+%$$
+%and $F_{F_AH_A}^*$ is solution of:
+%
+%\begin{multline}
+%F^2 \left(1 - \dfrac{\lfa}{r_F}\right) + F \left( \dfrac{1 + \delta_1 c}{\delta_1 c} \Big(1-\dfrac{\lfa}{r_F} - \dfrac{\mu_F}{r_F(1+\delta_1 c)} \Big) + \dfrac{c}{a} \Big(1-\dfrac{\lfa}{r_F} \Big) \right) + \\
+%\dfrac{(1+\delta_1 c)c}{\delta_1 a^2} \left(1-\dfrac{\lfa}{r_F} - \dfrac{\mu_F}{r_F(1+\delta_1 c)} \dfrac{L_F + c}{c} \right) = 0
+%\end{multline}
+%
+%Note that we have  $0 < 1 - \dfrac{\lfa}{r_F}$ (otherwise equation for $\dfrac{dF_A}{dt}$ is decreasing and $F_A$ converges to 0).
+%To study the number of positive solutions, we can distinguish two cases:
+%
+%\begin{itemize}
+%\item if $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < 1$ : then the constant coefficient is negative, and there is a unique positive solution according to the Descartes' rule of sign.
+%\item if $1 < \dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}}$, then the constant coefficient is positive and it may have 0 or two real solutions, depending on the discriminant's sign. However, since $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < \dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} }$, the coefficient in $F$ is also positive, and there will be no positive solutions,  according to the Descartes' rule of sign.
+%\end{itemize}
+%
+%Finally, the endemic equilibrium exists if $\dfrac{r_F}{\lfa + \dfrac{\mu_F}{1 + \delta_1 c} \dfrac{c + L_F}{c}} < 1$.
+%
+%The system's Jacobian at this point is given by:
+%\begin{equation*}
+%\mathcal{J}(F^*, H^*) = \begin{bmatrix}
+%0 & F^*_A \Big(\dfrac{(r_F - \lfa) L_F}{(H^*_A + L_F)^2} + \dfrac{\mu_F \delta_1}{(1+\delta_1H^*_A)^2} \Big) \\
+%r_H a_A \Big(\dfrac{H^*_A}{\beta} - 1\Big) & -r_H \Big(\dfrac{H^*_A}{\beta} - 1\Big)
+%\end{bmatrix}
+%\end{equation*}
+%The determinant of this matrix is negative, and thus equilibrium $EE^{F_AH_A}$ is unstable.
+%
+%\marc{$=>$ Pas intéressant !!!}
 
 \section{Récapitulatif général}
 

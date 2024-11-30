@@ -177,7 +177,7 @@ function plotBifurcationFile(inputFileName::String;
     myTicktext = sort(collect(keys(dicEqNbr)))
     myTicktext = [replace(text, "\beta"=>"β") for text in myTicktext]
     myTicktext = [latexstring(text) for text in myTicktext]
-    listColor = ["teal", "cyan", "red", "black"]
+    listColor = ["teal", "cyan", "red", "black", "ForestGreen"]
     
     myColorScale = []
     counter = 1
@@ -227,12 +227,11 @@ end
 function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
     variables::Vector{Int64};
     title = "",
-    legend=Vector{String}(),
-    showLegend = true,
-    completeLegend = false,
+    legend=Dict{Int64, String}(),
     listColor = Vector{String}(),
     toPlot = false,
-    fontsize = 12)
+    fontsize = 12,
+    transform = "")
 
     if isempty(listColor) 
         listColor = ["royalblue", "firebrick", 
@@ -240,10 +239,6 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
                 "sienna", "purple", "navy", "silver", "turquoise"]
     end
 
-    # if completeLegend && (length(legend) < length(inputFileNames))
-    #     # append!(legend, ["File " * string(ind) for ind in length(legend):length(inputFileNames)])
-    #     append!(legend, ["" for ind in length(legend):length(inputFileNames)])
-    # end
 
     fileName = inputFileNames[1]
     myCSV = CSV.read(fileName, DataFrame)
@@ -252,14 +247,23 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
     indColumn2 = variables[1]+1
     indColumn3 = variables[2]+1
 
-    nameColumn2 = header[indColumn2]
+    if transform == "plus"
+        nameColumn2 = "F_D + V_D"
+    else
+        nameColumn2 = header[indColumn2]
+    end
     nameColumn3 = header[indColumn3]
 
-    column2 = myCSV[1:end, indColumn2]
+    if transform == "plus"
+        column2 = myCSV[1:end, indColumn2] + myCSV[1:end, 3]
+    else
+        column2 = myCSV[1:end, indColumn2]
+    end
     column3 = myCSV[1:end, indColumn3]
 
     lineCSV = attr(color=listColor[1], width=2)
-    markerCSV = attr(color=listColor[1], size=5, symbol="cross")
+    markerBeginning = attr(color=listColor[1], size=10, symbol="cross")
+    markerEnd = attr(color=listColor[1], size=20, symbol="circle")
     
     
     if haskey(legend, 1)
@@ -271,16 +275,23 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
     end
     trajectory = [PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", showlegend = showLegend, name=legendText, mode="lines", line=lineCSV)]
     push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
-                type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
+                type="scatter1d", mode="markers", marker=markerBeginning, showlegend=false))
+    push!(trajectory, PlotlyJS.scatter(x=[column2[end]], y=[column3[end]], 
+        type="scatter1d", mode="markers", marker=markerEnd, showlegend=false))
     
 
     for ind in 2:length(inputFileNames)
         fileName = inputFileNames[ind]
         myCSV = CSV.read(fileName, DataFrame)
         lineCSV = attr(color=listColor[ind], width=2)
-        markerCSV = attr(color=listColor[ind], size=5, symbol="cross")
+        markerBeginning = attr(color=listColor[ind], size=10, symbol="cross")
+        markerEnd = attr(color=listColor[ind], size=20, symbol="circle")
 
-        column2 = myCSV[1:end, indColumn2]
+        if transform == "plus"
+            column2 = myCSV[1:end, indColumn2] + myCSV[1:end, 3]
+        else
+            column2 = myCSV[1:end, indColumn2]
+        end
         column3 = myCSV[1:end, indColumn3]
 
         if haskey(legend, ind)
@@ -293,7 +304,9 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
 
         push!(trajectory, PlotlyJS.scatter(x=column2, y=column3, type="scatter1d", showlegend = showLegend, name=legendText, mode="lines", line=lineCSV))
         push!(trajectory, PlotlyJS.scatter(x=[column2[1]], y=[column3[1]], 
-                    type="scatter1d", mode="markers", marker=markerCSV, showlegend=false))
+                    type="scatter1d", mode="markers", marker=markerBeginning, showlegend=false))
+        push!(trajectory, PlotlyJS.scatter(x=[column2[end]], y=[column3[end]], 
+                    type="scatter1d", mode="markers", marker=markerEnd, showlegend=false))
     end
     
     layout = PlotlyJS.Layout(xaxis_title = latexstring("\\LARGE{$nameColumn2}"), yaxis_title = latexstring("\\LARGE{$nameColumn3}"), title=title,
@@ -303,6 +316,6 @@ function plotPhasePortrait(inputFileNames::Vector{String}, saveFileName::String,
         display(myPlot)
     end
 
-
     PlotlyJS.savefig(myPlot, saveFileName)
+    return trajectory, layout
 end

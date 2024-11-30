@@ -2,44 +2,14 @@
 \input tmp.inputs
 \pagestyle{empty}
 \begin{document}
-\begin{pspicture}(0,0)(10,10)
-\newrgbcolor{mygreen}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-%%%%%%% Pour HA %%%%%%%
-\rput(4.7, 2.85){\pnode{HANW}}
-\rput(4.4, 2.85){\pnode{HANW2}}
-\rput(5.3, 2.85){\pnode{HANE}}
-\rput(5.6, 2.85){\pnode{HANE2}}
-\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Human Population\\ $H_A$ \end{tabular}}}}
-\ncangle[offsetA = 15pt, offsetB = 15pt, angleA=90, armA = 0.8, armB = 0.8, angleB=90]{<-}{HA}{HA}
-\naput*[npos=0.3]{Growth}
-%%%%%%% Pour FA %%%%%%%
-\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Fauna \\ $F_A$ \end{tabular}}}} %FA
-\rput(0,6.5){\pnode{FAN}}
-\ncline{->}{FA}{FAN} %muFA
-\naput{Mortality }
-\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA}
-\ncangle[offsetA = 5pt, offsetB = 5pt, angleA=180, angleB=180, armA=0.5, armB=0.5]{<-}{FA}{FA}
-\naput[npos=1.5]{Growth}
-\ncangle[angleB=90, armB =0, linestyle=dashed]{->}{FA}{HANW}
-\rput(1.5, 3.5){\pnode{FASE}}
-\ncangle[angleB = -90]{<-}{FASE}{FA}
-\ncput[npos=0.3]{\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
-\ncangle[offsetA =-15pt, offsetB = 0.2, angleA = -90, angleB = 180, linestyle=dashed]{FASE}{HA}
-%%%%%%% Pour VA %%%%%%%
-\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Vegetation \\ $V_A$ \end{tabular}}}}
-\rput(10,5){\pnode{VAL}}
-\rput(10,6.5){\pnode{VAN}}
-\ncline{->}{VA}{VAN}
-\nbput{Mortality}
-\ncloop[angleA = 90, angleB=180, loopsize=0, linestyle=dashed]{<-}{HANE}{VA}
-\ncloop[offsetA = 5pt, offsetB = 5pt, angleA=0, angleB=0, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-\naput[npos=3.5]{Growth}
-\ncangles[offsetA =-5pt, offsetB = 0.2, angleA = 0, angleB = 0, linestyle=dashed]{VA}{HA}
-\rput(8.5, 3.5){\pnode{VASW}}
-\ncangle[angleA = -90]{->}{VA}{VASW}
-\ncput[npos=1.8]{\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
-\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VASW}{HA}
+\psset{xunit=0.6cm,yunit=0.2cm}
+\begin{pspicture}(-5,-10)(5,10)
+\psaxes[linewidth=0.7pt,Dx=1,Dy=5](0,0)(-5,-10)(5,10)
+\psplot[algebraic,
+          plotpoints=500,
+          linecolor=blue,
+          linewidth=1.5pt,
+          yMinValue=-10,
+          yMaxValue=10]{7.1}{16}{(log(x-7))/(log(2))}
 \end{pspicture}
 \end{document}

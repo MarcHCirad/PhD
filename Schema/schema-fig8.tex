@@ -1,0 +1,52 @@
+\documentclass{article}
+\input tmp.inputs
+\pagestyle{empty}
+\begin{document}
+\begin{pspicture}(0.,0)(14,14)
+\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+\newrgbcolor{mypink}{0.988 0.91 0.875}
+\newrgbcolor{mybrown}{0.72 0.33 0.07}
+\newrgbcolor{mygreen}{0.66 0.8 0.4}
+\newrgbcolor{mypink2}{0.78 0.71 0.675}
+\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+\newrgbcolor{myblue}{0.1 0.2 0.8}
+\psset{arrowscale=1.5, arrowinset=0}
+\psset{framearc = 0.3}
+\sffamily
+\large
+%%%%%%% cadre zone D %%%%%%%
+\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
+\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+
+%%%%%%% Pour HD %%%%%%%
+\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
+%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
+\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
+
+%%%%%%% Pour FD %%%%%%%
+\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+\rput(-2.5,5){\pnode{FDW}}
+\ncline{->}{FD}{FDW} %muFD
+\nbput[npos = 1]{$\mu_{F_D}$}
+\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
+\naput[npos=1.5]{$r_{F_D}(H)$}
+\rput(3, 5){\pnode{FDE}}
+\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
+\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
+\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
+
+%%%%%%% Pour VD %%%%%%%
+\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+\rput(-2.8,3){\pnode{VDW}}
+\ncline{->}{VD}{VDW}
+\naput[npos = 1]{$\mu_{V_D}$}
+\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
+\naput[npos=3.5]{$r_{V_D}(H)$}
+\rput(3, 3){\pnode{VDE}}
+\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
+\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
+\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
+
+\end{pspicture}
+\end{document}

@@ -1,0 +1,27 @@
+## Mathematical Parameters ##
+type    Domestic
+rF    2
+delta1    0.1
+delta0F    0.5
+LF    40
+muF    0.1
+lambdaFH    0.4
+rV    2
+delta0V    0.05
+LV    40
+muV    0.1
+lambdaVH    0.4
+rH    0.8
+a    2
+b    2
+c    30
+beta    25
+## Initial Values ##
+F0    5
+V0    5
+H0    27
+## Numerical Parameters ##
+type    RK4
+t0    0.0
+tf    500
+dt    0.01

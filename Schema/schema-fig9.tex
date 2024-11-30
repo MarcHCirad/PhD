@@ -1,0 +1,30 @@
+\documentclass{article}
+\input tmp.inputs
+\pagestyle{empty}
+\begin{document}
+\begin{pspicture}(-5,5)
+\newrgbcolor{mygreen}{0.52 0.753 0.49}
+\newrgbcolor{mypink}{0.988 0.91 0.875}
+\newrgbcolor{mybrown}{0.72 0.33 0.07}
+\newrgbcolor{myorange}{0.9 0.59 0.28}
+\newrgbcolor{myblue}{0 0.48 0.8}
+\psset{arrowscale=1.5, arrowinset=0}
+\psset{framearc = 0.3}
+\sffamily
+\large
+%%%%%%% Up %%%%%%%
+\pscircle[linewidth = 0.1, linecolor=myblue](0,0){5}
+\psarc[linewidth = 0.1, linecolor=myblue]{<-}(0,0){5}{130}{180}
+\rput(0,4.5){\rnode{Up}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Biological/Ecological \\ Problems \& Questions \end{tabular}}}}
+\rput(5,0){\rnode{Right}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Mathematical \\ Model(s) \end{tabular}}}}
+\rput(0,-4.3){\rnode{Down}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Theoretical Analysis \\ \normalsize{Exisentence and unicity of solutions ?} \\ \normalsize{Well condtioned ?} \end{tabular}}}}
+\rput(-5, 0){\rnode{Left}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Numerical \\ Implementation \\ \& Simulations \end{tabular}}}}
+
+\rput(0,3.8){\pnode{UpS}}
+\rput(3.4,0){\pnode{RightW}}
+\rput(0,-3.3){\pnode{DownN}}
+\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{RightW}{UpS}
+\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{DownN}{UpS}
+\nbput[npos=0.4]{\textcolor{mygreen}{\begin{tabular}{c} Discussion \\ with Biologists \\ \normalsize{Is it biologicall} \\ \normalsize{coherent ?}\end{tabular}}}
+\end{pspicture}
+\end{document}

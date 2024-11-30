@@ -1,2 +1,6 @@
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+	\usepackage{pstricks-add}
    \usepackage{pstricks, pst-node}
    \usepackage{multido}
+   \newcommand{\lfw}{\lambda_{F}}

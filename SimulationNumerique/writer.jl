@@ -53,19 +53,14 @@ function writeNumericalModel(myModel::numericalModel, dirPrefix::String, suffix:
     return dirName
 end
 
-function writeBifurcationDiagram(myModel::mathematicalModel, bifurcationDiagram::Matrix{Any}, dirPrefix::String ;
-            nameSuffix = "bifurcationDiagram",
-            bifF = Matrix{Any}, bifV = Matrix{Any}, bifH = Matrix{Any}, eqVals = false)
+function writeDiagram(myModel::mathematicalModel, diagram::Matrix{Any}, dirPrefix::String ;
+            nameSuffix = "Diagram")
     
     if !isdir(dirPrefix)
         mkpath(dirPrefix)
     end
     fileName = dirPrefix * "/" * nameSuffix * ".csv"
-    CSV.write(fileName, DataFrame(bifurcationDiagram, :auto))
-    if eqVals
-        CSV.write(fileName[1:end-4]*"F.csv", DataFrame(bifF, :auto))
-        CSV.write(fileName[1:end-4]*"V.csv", DataFrame(bifV, :auto))
-        CSV.write(fileName[1:end-4]*"H.csv", DataFrame(bifH, :auto))
-    end
+    CSV.write(fileName, DataFrame(diagram, :auto))
+    
     return fileName[1:end-4]
 end

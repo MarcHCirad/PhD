@@ -3,16 +3,18 @@ t = @elapsed begin
 abstract type mathematicalModel end
 abstract type numericalModel end
 
-include("modelWild.jl")
-include("modelWildRK4.jl")
-include("modelAnthropized.jl")
-include("modelAnthropizedRK4.jl")
-include("modelMigration.jl")
-include("modelMigrationRK4.jl")
-include("modelHunter.jl")
-include("modelHunterRK4.jl")
-include("modelTest.jl")
-include("modelTestRK4.jl")
+# include("modelWild.jl")
+# include("modelWildRK4.jl")
+# include("modelAnthropized.jl")
+# include("modelAnthropizedRK4.jl")
+# include("modelMigration.jl")
+# include("modelMigrationRK4.jl")
+include("modelHunterRC.jl")
+include("modelHunterRCRK4.jl")
+# include("modelTest.jl")
+# include("modelTestRK4.jl")
+# include("modelDomestic.jl")
+# include("modelDomesticRK4.jl")
 
 include("plotFile.jl")
 include("writer.jl")
@@ -80,10 +82,12 @@ function mainBifurcation()
 
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
     pathAnthropo = pathWD * "/Anthropized/"
-    pathHunter = pathWD * "/Hunter"
+    pathHunter = pathWD * "/Hunter/"
+    pathHunterTest = pathWD * "/HunterTest/"
+    pathDomestic = pathWD * "/Domestic/"
     path = pathHunter
 
-    myModel = readNumericalModel(path * "/input.txt")
+    myModel = readNumericalModel(path * "input.txt")
     math = myModel.mathModel  
     
     ## color ##
@@ -122,110 +126,94 @@ function mainBifurcation()
                             "(TE)(V_AH_A_1)(V_AH_A)" => "skyblue"])
 
     dicEqNamesColor = Dict(["(F_W)" => "silver",
-                            "(F_W)(H_AH_W)" => "firebrick",
-                            "(F_W)(H_AF_WH_W)" => "green"])
+                            "(F_W)(H_DH_W)" => "firebrick",
+                            "(F_W)(H_DF_WH_W)" => "green"])
 
     
     
     ## parameter list ##
-    listLambdaFH = [k for k = 0.001:0.01:0.5]
-    listLambdaVH = [k for k = 0.001:0.0001:0.05]
+    listLambdaFWH = [k for k = 0.001:0.05:0.5]
+    listKF = [k for k=10.:1.:200]
+    listLambdaVH = [k for k = 0.1:0.002:1]
     listLV = [k for k = 1.0:0.1:75.1]
     listbeta = [k for k = 0.1:0.01:12]
     lista = [k for k = 0.01:0.05:15]
     listb = [k for k = 0.01:0.05:15]
-    listc = [k for k = 2.9:0.01:10]
-    listLambdaFWH = [k for k = 0.01:0.001:0.5]
+    listc = [k for k = 1.5:0.01:2.1]
+    listDelta1 = [k for k = 0.01:0.001:0.5]
 
     ## dir and file name ##
     
     dirName = path * "/bifurcation/"
-    nameSuffix = "bifurcationDiagramCLambdaFWH"
+    nameSuffix = "bifurcationDiagramCLambdaFWHTest"
     println(math)
 
     ## computation ##
-    bifurcationMatrix = computeBifurcationDiagram(math, "c", listc, "lambdaFWH", listLambdaFWH)
-    filePrefix = writeBifurcationDiagram(math, bifurcationMatrix, dirName; 
-                                        nameSuffix = nameSuffix,
-                                        eqVals = false)
+    bifurcationMatrix = computeBifurcationDiagram(math, "lambdaFWH", listLambdaFWH, "c", listc)
+    filePrefix = writeDiagram(math, bifurcationMatrix, dirName; 
+                                        nameSuffix = nameSuffix)
     ## plot ##
     data, layout = plotBifurcationFile(filePrefix * ".csv";
-                        toSave = true, 
+                        toSave = false, 
                         saveFileName = filePrefix * ".html",
                         # title = latexstring("\\text{Bifurcation Diagram in } (c, L_V) \\text{ plane}"),
                         title = "",
-                        xlabel = latexstring("\\LARGE{c}"),
-                        ylabel = latexstring("\\LARGE{\\lambda_{FWH}}"),
+                        xlabel = latexstring("\\LARGE{\\lambda_{FH}}"),
+                        ylabel = latexstring("\\LARGE{c}"),
                         dicEqColor = dicEqNamesColor,
-                        toPlot = false,
+                        toPlot = true,
                         eqVals = false,
                         titleEqVals = "\\text{: average of equilibrium values}",
                         fontsize = 30)
 
-    lambdamax = 2 * math.rF / (math.m * math.aW * math.KF)
-    println(lambdamax)
-    # addtraces(myPlot, scatter(;listc, lambdamax * ones(length(listc)), mode="lines"))
-    display(PlotlyJS.plot([data, PlotlyJS.scatter(x= listc, y = lambdamax * ones(length(listc)), mode="lines")], layout))              
+    # lambdamax = 4 * math.rF / (math.m * math.aW * math.KF)
+    # println(lambdamax)
+    # # addtraces(myPlot, scatter(;listc, lambdamax * ones(length(listc)), mode="lines"))
+    # display(PlotlyJS.plot([data, PlotlyJS.scatter(x= listc, y = lambdamax * ones(length(listc)), mode="lines")], layout))              
 end
 
 function mainSolveModel()
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
-    pathWild = pathWD * "/Wild/"
-    pathAnthropo = pathWD * "/Anthropized/"
-    pathMigration = pathWD * "/Migration/"
-    pathTest = pathWD * "/Test/"
-    path = pathTest
+    # pathWild = pathWD * "/Wild/"
+    # pathAnthropo = pathWD * "/Anthropized/"
+    # pathMigration = pathWD * "/Migration/"
+    pathHunter = pathWD * "/HunterRC/"
+    # pathTest = pathWD * "/Test/"
+    # pathDomestic = pathWD * "/Domestic/"
+    path = pathHunter
     
-    # resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_",
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_2", 
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_3", 
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_4", 
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_5",
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_6",
-                    # "/home/hetier/Documents/PhD/SimulationNumerique/Wild/wildRK4_7"]
+    # resultFolders = solveWriteModels(path)
+    # println(resultFolders)
+    resultFolder = solveWriteModel(path * "input.txt")
+    resultFolders = [resultFolder]
+    myModel = readNumericalModel(path * "input.txt")
     
-    resultFolders = solveWriteModels(path)
-    myModel = readNumericalModel(path * "input01.txt")
-    println(thresholdF(myModel.mathModel, myModel.mathModel.c))
-    println(equilibriumFH(myModel.mathModel))
+    println("HDFWHW : ", equilibriumHDFW(myModel.mathModel))
+
 
 
     ## Plotting ##
-    # println([resultFolder * "/result.csv" for resultFolder in resultFolders])
-
-    # resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_01/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_02/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_04/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_05/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_06/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_07/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_10/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_11/",
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_12/",
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_13/", 
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_21/",
-    # "/home/hetier/Documents/PhD/SimulationNumerique/Anthropized/anthropizedRK4_22/"]
 
     listColor = ["red", "red", "red", "red", "red", "red", "blue", "blue", "blue", "blue",
                 "green", "green", "green"]
-    plotPhasePortrait([resultFolder * "/result.csv" for resultFolder in resultFolders],
-                        path*"/plotOrbit.html",
-                        [1,2];
-                        # title=latexstring("\\text{Orbit in the } F_W - V_W \\text{ plane}"),
-                        legend=Dict([1=>latexstring("EE^{F_AH_A}_1"), 7=>latexstring("EE^{F_AH_A}_1"), 11=>latexstring("TE")]),
-                        listColor = listColor,
-                        completeLegend = true,
-                        showLegend = true,
-                        toPlot=true,
-                        fontsize = 30)
     # plotPhasePortrait([resultFolder * "/result.csv" for resultFolder in resultFolders],
-    #                     pathMigration*"/plotHF.html",
-    #                     [1,2];
+    #                     path*"/plotOrbit.html",
+    #                     [1,3];
     #                     # title=latexstring("\\text{Orbit in the } F_W - V_W \\text{ plane}"),
-    #                     # legend=[latexstring("allee"), "ecoService"],
-    #                     showLegend = false,
+    #                     legend=Dict([1=>latexstring("EE^{F_AH_A}_1"), 7=>latexstring("EE^{F_AH_A}_1"), 11=>latexstring("TE")]),
+    #                     listColor = listColor,
+    #                     completeLegend = true,
+    #                     showLegend = true,
     #                     toPlot=true,
     #                     fontsize = 30)
+    trajectory, layout = plotPhasePortrait([resultFolder * "/result.csv" for resultFolder in resultFolders],
+                        path * "/plotFVH.html",
+                        [1,2];
+                        # title=latexstring("\\text{Orbit in the } F_W - V_W \\text{ plane}"),
+                        # legend=Dict([7=> "7", 1=>"1", 2=>"2",3=>"3",4=>"4",5=>"5", 6=>"6"]),
+                        toPlot=true,
+                        listColor = ["red",  "red", "red", "blue", "blue", "blue", "blue", "blue", "blue", "green"],
+                        fontsize = 30, transform="plusa")
     # plotTrajectory1d([resultFolder * "/result.csv" for resultFolder in resultFolders],
     #                     path*"/plotHFV1D.html",
     #                     3;
@@ -233,90 +221,46 @@ function mainSolveModel()
     #                     # legend=[latexstring("allee"), "ecoService"],
     #                     showLegend = true,
     #                     toPlot=true,
-    #                     fontsize = 30)
+    #                     fontsize = 15)
 end
 
-function comparisonH()
+
+function mainDeltaStab()
     pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
+    pathHunter = pathWD * "/HunterRC/"
+    path = pathHunter
 
-    pathWD = pathWD * "/TestA"
-    allModels = readNumericalModel(pathWD)
-    numModel = allModels["Anthropized"]
-    mathModel = numModel.mathModel
+    myModel = readNumericalModel(path * "input.txt")
+    mModel = myModel.mathModel
 
-    listLV = [k for k = 0.1:0.1:70]
-    listLF = [k for k = 0.1:0.1:70]
-    mylist = [k for k = 0.1:0.01:7]
+    lambdaMax = (mModel.muD - mModel.rD) * mModel.rF / (mModel.m * mModel.c)
+    println("LambdaMax: ", lambdaMax)
 
-    ## dir and file name ##
-    dirName = pathWD * "/comparisonH/"
-    nameSuffix = "bifurcationDiagramCLV"
-    filePrefix = dirName * "/" * nameSuffix
+    println("DeltaStab : ", computeDeltaStab(mModel))
 
-    valFH = []
-    valFVH = []
+    listLambda = Vector(range(0.0001, lambdaMax, 1000))
+    listAlpha = Vector(range(0.0,1.0,1000))
 
-    localParam = Dict([
-        ("rF",mathModel.rF), ("KF",mathModel.KF), ("LF",mathModel.LF), ("muF",mathModel.muF), ("lambdaFH", mathModel.lambdaFH),
-        ("rV",mathModel.rV), ("KV",mathModel.KV), ("LV", mathModel.LV), ("muV",mathModel.muV), ("lambdaVH", mathModel.lambdaVH),
-        ("rH",mathModel.rH), ("a", mathModel.a), ("b", mathModel.b), ("c", mathModel.c), ("beta", mathModel.beta)
-        ])
-
-    mylist = listLF
-    paramName = "LF"
+    # listDelta = [computeDeltaStab(mModel, alpha=alpha)[2] for alpha in listAlpha[1:end-1]]
+    # mPlot = plot(listAlpha, listDelta)
+    # display(mPlot)
     
-    for param in mylist
-        localParam[paramName] = param
-        localModel = modelAnthropized(localParam)
-        append!(valFH, equilibriumFH(localModel)[3])
-        append!(valFVH, equilibriumFVH(localModel)[3])
-    end
-    myPlot = PlotlyJS.plot([PlotlyJS.scatter(x=mylist, y=valFH, name="valFH"),
-                            PlotlyJS.scatter(x=mylist, y=valFVH, name="valFVH")])
-    display(myPlot)
+    deltaStabMatrix, FeqMatrix = computeDeltaStabMatrix(mModel, listAlpha[1:end-1], listLambda[1:end-1])
+    
+    dirName = path * "/stab/"
+    nameSuffixDelta = "stabDiagramLambdaRealTest"
+    nameSuffixFeq = "FeqDiagramLambdaRealTest"
 
-end
+    filePrefix = writeDiagram(mModel, deltaStabMatrix, dirName; 
+                nameSuffix = nameSuffixDelta)
+    filePrefix = writeDiagram(mModel, FeqMatrix, dirName; 
+                nameSuffix = nameSuffixFeq)
 
-function influenceLW()
-    pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
-    pathWild = pathWD * "/WildLW/"
-    myModelInput = pathWild * "/input.txt"
-
-    paramName = "LW"
-    paramList = [0.0, 10.0, 50.0, 100.0]
-    readCreateNumericalModel(myModelInput, paramName, paramList)
-
-    resultFolders = ["/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_", 
-                     "/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_LW1",
-                     "/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_LW2",
-                     "/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_LW3",
-                     "/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_LW4",
-                     "/home/hetier/Documents/PhD/SimulationNumerique/WildLW/wildRK4_LW5"]
-
-    resultFolders = solveWriteModels(pathWild)
-
-    plotTrajectory1d([resultFolder * "/result.csv" for resultFolder in resultFolders],
-                        pathWild*"/plot.html",
-                        2;
-                        title="",
-                        legendTitle = latexstring("L_W \\text{ values:}"),
-                        plotLegend = true,
-                        legend=string.(append!([2.0], paramList)),
-                        toPlot=true,
-                        fontsize = 30)
-end
-
-function mainTest()
-    pathWD = "/home/hetier/Documents/PhD/SimulationNumerique"
-    pathHunter = pathWD * "/Hunter/"
-
-    myModel = readNumericalModel(pathHunter * "/input.txt")
-    math = myModel.mathModel
-    println(math)
 end
 
 mainSolveModel()
-# mainSolveModel()
-# mainTest()
+# mainDeltaStab()
+# mainBifurcation()
+
 end
 println(t, " seconds to execute the code")

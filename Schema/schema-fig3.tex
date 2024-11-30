@@ -2,7 +2,7 @@
 \input tmp.inputs
 \pagestyle{empty}
 \begin{document}
-\begin{pspicture}(0.,0)(14,14)
+\begin{pspicture}
 \newrgbcolor{mygreen2}{0.52 0.753 0.49}
 \newrgbcolor{mypink}{0.988 0.91 0.875}
 \newrgbcolor{mybrown}{0.72 0.33 0.07}
@@ -15,12 +15,12 @@
 \sffamily
 \large
 %%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,0.5)(13.5,7)
+\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(14,7)
 \rput(5.25, 7.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
 
 
 %%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-5.5)(13.5,-0.5)
+\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,-5.5)(14,-0.5)
 \rput(5.25, -6.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
 
 
@@ -31,20 +31,20 @@
 \rput(5.6, 2.85){\pnode{HANE2}}
 \rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
-\rput(5,3){$r_H(F_D, V_D, F_W, V_W)$}
+\rput(5,3){Growth}
 
 
 %%%%%%% Pour FD %%%%%%%
 \rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
 \rput(-2.5,5){\pnode{FAW}}
 \ncline{->}{FA}{FAW} %muFD
-\nbput{$\mu_{F_D}$}
+\nbput[npos=1]{Mortality}
 %\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA}
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
-\naput[npos=1.5]{$r_{F_D}(H)$}
+\naput[npos=1.5]{Growth}
 \rput(3, 5){\pnode{FAE}}
 \ncline{<-}{FAE}{FA}
-\rput(2.7, 5.3){$\lambda_{HF_D}(H)$}
+\rput(2.7, 5){\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
 \rput(1.5, 3.5){\pnode{FAS}}
 \ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
 
@@ -52,12 +52,12 @@
 \rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
 \rput(13,5){\pnode{VAE}}
 \ncline{->}{VA}{VAE}
-\naput{$\mu_{V_D}$}
+\naput[npos=1]{Mortality}
 \ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-\naput[npos=3.5]{$r_{V_D}(H)$}
+\naput[npos=3.5]{Growth}
 \rput(6.5, 5){\pnode{VAW}}
 \ncline{->}{VA}{VAW}
-\rput(7.1,5.3){$\lambda_{HV_D}(H)$ }
+\rput(7,5){\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
 \ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,30 +70,30 @@
 %%%%%%% Pour FW %%%%%%%
 \rput(0,-3.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{$r_{F_W}(V_W)$}
+\naput[npos=1.5]{Growth}
 %%%% collecting %
-\rput(2.7, -3.){\pnode{FWE}}
-\ncline{->}{FW}{FWE}
-\rput(2.3,-2.7){$\lambda_{HF_W}(H)$}
+\rput(2.7, -2.7){\pnode{FWE}}
+\ncline[offsetA = 0.15]{->}{FW}{FWE}
+\rput(2.3,-2.7){\begin{tabular}{c} Collecting \\ (hunting) \end{tabular}}
 %%connection FW HA
 \ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
 
 %%%%%%%% Pour VW %%%%%%%
 \rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
-\naput[npos=1.5]{$r_{V_W}$}
+\naput[npos=1.5]{Growth}
 
 %% contribue a FW
 \ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
 %% herbivory
-\rput(12.5, -3){\pnode{VWE}}
+\rput(12.75, -3){\pnode{VWE}}
 \ncline{->}{VW}{VWE}
-\naput[npos=1]{$\lambda_{F_WV_W}$}
+\naput[npos=1.]{Herbivory}
 
 %% collecting
-\rput(7, -3){\pnode{VWW}}
-\ncline{->}{VW}{VWW}
-\rput(7.3,-2.7){$\lambda_{HV_W}(H)$}
+\rput(7, -2.7){\pnode{VWW}}
+\ncline[offsetA = -0.15]{->}{VW}{VWW}
+\rput(7.3,-2.7){\begin{tabular}{c} Collecting \\ (picking) \end{tabular}}
 %%connection VW HA
 \ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
 \end{pspicture}

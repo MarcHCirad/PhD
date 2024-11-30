@@ -28,7 +28,7 @@ end
 function equationModel(model::modelHunter, variables::Vector{Float64})
     HA, FW, HW = variables[1], variables[2], variables[3]
     dHA = model.rH * (1 - HA / (model.aW * FW + model.c)) * (HA/model.beta - 1) * HA - model.mA * HA + model.mW * HW
-    dFW = model.rF * (1 - FW / model.KF) * FW - model.lambdaFWH * HW
+    dFW = model.rF * (1 - FW / model.KF) * FW - model.lambdaFWH * FW * HW
     dHW = model.mA * HA - model.mW * HW
     return [dHA, dFW, dHW]
 end
@@ -61,7 +61,7 @@ end
 function equilibriumHAFWHW(model::modelHunter)
     numFW = 1 - model.m * model.lambdaFWH * model.c / model.rF
     denFW = 1 + model.aW * model.KF * model.m * model.lambdaFWH / model.rF
-    FW = numFW / denFW
+    FW = model.KF * numFW / denFW
     return [model.aW * FW + model.c, FW, model.m * (model.aW * FW + model.c)]
 end
 

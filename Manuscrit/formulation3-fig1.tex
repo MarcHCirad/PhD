@@ -1,0 +1,32 @@
+\documentclass{article}
+\input tmp.inputs
+\pagestyle{empty}
+\begin{document}
+\psset{xunit=0.9cm,yunit=0.9cm}
+\begin{pspicture}(-5,-10)(5,10)
+\psaxes[linewidth=0.7pt, ticks=none, labels=none]{->}(0,0)(-1,-2)(9,4)[$F$, -90][$y$, 180]
+\psplot[algebraic,
+          plotpoints=500,
+          linecolor=blue,
+          linewidth=1.5pt,
+          yMinValue=-10,
+          yMaxValue=10]{-0.1}{10}{0.2*(x-2)*(x-8)}
+\uput{2pt}[50](9.5, 3.2){\textcolor{blue}{$P_F(F)$}}
+
+\rput(3,-0.2){\pnode{Mu}}
+\ncangle[angleA = 90, angleB = 90]{Mu}{Mu}
+\naput[npos = 1.5]{$\dfrac{(\mu_D -r_D)}{m e \lfw}$}
+
+\rput(7,-0.2){\pnode{KF}}
+\ncangle[angleA = 90, angleB = 90]{KF}{KF}
+\naput[npos = 1.5]{$K_F(1-\alpha)$}
+
+\rput(2,0.2){\pnode{F1}}
+\ncangle[angleA = -90, angleB = -90]{F1}{F1}
+\nbput{$F_{W, 1}$}
+
+\rput(8,0.2){\pnode{F2}}
+\ncangle[angleA = -90, angleB = -90]{F2}{F2}
+\nbput{$F_{W, 2}$}
+\end{pspicture}
+\end{document}

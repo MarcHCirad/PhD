@@ -106,7 +106,7 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
         return myModel
     elseif modelType == "Hunter"
         nbrParameters = length(fieldnames(modelHunter))
-        if nbrParameters - 2 > length(param)
+        if nbrParameters - 3 > length(param)
             println("Number of parameter is incoherent with model Hunter")
             println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
                         nbrParameters)
@@ -114,6 +114,17 @@ function createMathModel(modelType::String, param::Dict{String, Float64})
             return
         end
         myModel = modelHunter(param)
+        return myModel
+    elseif modelType == "Domestic"
+        nbrParameters = length(fieldnames(modelDomestic))
+        if nbrParameters - 2 > length(param)
+            println("Number of parameter is incoherent with model Domestic")
+            println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                        nbrParameters)
+            println(keys(param), fieldnames(modelDomestic))
+            return
+        end
+        myModel = modelDomestic(param)
         return myModel
     elseif modelType == "Test"
         nbrParameters = length(fieldnames(modelTest))
@@ -204,6 +215,12 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
     elseif mathModelType == "Hunter"
         if numericalModelType == "RK4"
             myModel = hunterRK4(mathModel, numericalParam, initialValues)
+        else
+            println("This type of numerical scheme is not implemented for this math. model")
+        end
+    elseif mathModelType == "Domestic"
+        if numericalModelType == "RK4"
+            myModel = domesticRK4(mathModel, numericalParam, initialValues)
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end

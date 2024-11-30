@@ -1,0 +1,18 @@
+modelDomestic
+variablesNames	["time", "F_D", "V_D", "H_D"]
+rF	2.0
+delta0F	0.5
+delta1	0.1
+LF	40.0
+muF	0.1
+lambdaFH	0.4
+rV	2.0
+delta0V	0.05
+LV	40.0
+muV	0.1
+lambdaVH	0.4
+rH	0.8
+a	2.0
+b	2.0
+c	30.0
+beta	25.0

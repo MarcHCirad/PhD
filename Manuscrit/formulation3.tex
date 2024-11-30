@@ -1,0 +1,352 @@
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+%\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{pdftricks}
+\begin{psinputs}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+	\usepackage{pstricks-add}
+   \usepackage{pstricks, pst-node}
+   \usepackage{multido}
+   \newcommand{\lfw}{\lambda_{F}}
+\end{psinputs}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+\graphicspath{{./Images/}{./Images/ComparisonBifurcationFAHA}{../Schema}}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\lfd}{\lambda_{F, D}}
+\newcommand{\lva}{\lambda_{V, A}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\lvw}{\lambda_{V}}
+\newcommand{\df}{\delta_0^F}
+\newcommand{\dv}{\delta_0^V}
+\newcommand{\RV}{R_0^V}
+\newcommand{\RF}{R_0^F}
+
+\newcommand{\marc}[1]{\textcolor{red}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\newtheorem{theorem}{Theorem}
+
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Suivi Thèse Marc}
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+{\hypersetup{hidelinks}
+\tableofcontents}
+\newpage
+
+
+\section{Model Consumer-Resource}
+
+We decide to model the human-wild interactions by a consumer-resource model. We still consider two areas, one corresponding to a domestic area, the other to a wild area.
+
+On the wild area, are present wild fauna $F_W$. The dynamic of $F_W$ follows a logistic equation, which carrying capacity $K_F$, depends on the environment. To take into account the possible anthropization of the environment, we introduce the non-negative parameter $\alpha \in [0, 1)$. When $\alpha > 0$, the carrying capacity of the environment is reduced of $\alpha \%$ from its original value.
+
+Moreover, wild fauna is hunted by human present in the wild area. The collecting rate is $\lfw H_W$. It is unbounded, to take into account the possibility of over-hunt. Therefore, the level of anthropization is also taken into account by parameter $\lfw$.
+
+Human present in the domestic, $H_D$, area follow a consumer equation.  The dynamic followed by $H_D$ can be separated in three groups of term. First there is a growth due to food: a constant importation of food $cI$ and food coming from hunt, $e \lfw H_W F_W$, where $e$ is a conversion rate. Second, $H_D$ is subject to natural growth and mortality $(r_D - \mu_D) H_D$. Note that $r_D$ can be understand as $r_D = e \lfd F_D$ where $F_D$ is a constant amount of domestic animals. Third, there is migration between domestic and wild area, modeled by linear functions: $-m_D H_D + m_W H_W$.
+
+The dynamic of human present in the wild area corresponds simply to the migration terms. Note that we assume that the migration rate from the domestic area to the wild area is such that $m = \dfrac{m_D}{m_W} < 1$.
+
+Finally, the model is given by the following equations:
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= cI + e\lfw H_W F_W + (r_D - \mu_D) H_D - m_D H_D + m_W H_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\end{equation}
+\label{equationsHDFWHW}
+\end{subequations}
+
+
+\section{Model analysis}
+An analysis of model \eqref{equationsHDFWHW} is proposed on the following.
+
+First, we can note that if $r_D \geq \mu_D + m_D$, we always have $\dfrac{dH_D}{dt} > 0$. Therefore, to avoid infinite growth of $H_D$, we assume $r_D < \mu_D + m_D$. In fact, a majority of the interesting equilibrium requires $r_D < \mu_D$ to exist. We develop this in the following theorem:
+
+\begin{theorem} Model \eqref{equationsHDFWHW} admits the following equilibrium:\\
+\begin{itemize}
+\item When $cI = 0$, a trivial  equilibrium $TE = \Big(0,0,0\Big)$ which is unstable.
+\item When $cI = 0$, a equilibrium of fauna only $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$. \\
+This equilibrium is asymptotically stable if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - r_D} < 1 $
+\item When $0 < \mu_D - r_D$, an equilibrium of Human only $EE^{H} = \Big(\dfrac{cI}{\mu_D - r_D}, 0, \dfrac{m cI}{\mu_D - r_D} \Big)$. \\
+This equilibrium is asymptotically stable if $\dfrac{r_F (\mu_D -r_D) }{m \lfw cI} < 1$
+\item When $1 < \dfrac{r_F (\mu_D -r_D) }{m \lfw cI}$ (which implies $0 < \mu_D - r_D $), an equilibrium of coexistence $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, m H^*_{D} \Big)$. \\
+This equilibrium is asymptotically stable if a quantity $\Delta_{stab} > 0$. More details are given below.
+\end{itemize}
+\end{theorem}
+
+\subsection{Analysis of the existence and stability of the coexistence equilibrium}
+
+Equilibrium $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, H^*_{W} \Big)$ is characterized by (for simplicity we do not note the subscript):
+\begin{equation*}
+H_W^* =  \dfrac{m_D}{m_W} H_D^* = m H_D^*
+\end{equation*}
+
+\begin{equation*}
+H_D^* = \dfrac{r_F}{\lfw m} \left(1 - \dfrac{F_W^*}{K_F(1-\alpha)} \right)
+\end{equation*}
+
+and $F_W^*$ is solution of
+
+\begin{equation*}
+P_F(X) := X^2 \left(\dfrac{er_F}{K_F(1-\alpha)} \right) - X \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right) + \left(\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \right) = 0
+\end{equation*}
+
+
+We note $\Delta_F$ the discriminant of this equation. $\Delta_F$ is positive. Indeed, we have:
+\begin{align*}
+\Delta_F &= \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 - 4\dfrac{er_F}{K_F(1-\alpha)}  \left(\dfrac{(\mu_D -r_D) r_F}{\lfw m} - cI \right) \\
+\Delta_F &= \left(er_F - \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  cI \\
+\Delta_F &> 0
+\end{align*}
+
+\begin{figure}[!ht]
+\begin{pdfpic}
+\psset{xunit=0.9cm,yunit=0.9cm}
+\begin{pspicture}(-5,-10)(5,10)
+\psaxes[linewidth=0.7pt, ticks=none, labels=none]{->}(0,0)(-1,-2)(9,4)[$F$, -90][$y$, 180]
+\psplot[algebraic,
+          plotpoints=500,
+          linecolor=blue,
+          linewidth=1.5pt,
+          yMinValue=-10,
+          yMaxValue=10]{-0.1}{10}{0.2*(x-2)*(x-8)}
+\uput{2pt}[50](9.5, 3.2){\textcolor{blue}{$P_F(F)$}}
+
+\rput(3,-0.2){\pnode{Mu}}
+\ncangle[angleA = 90, angleB = 90]{Mu}{Mu}
+\naput[npos = 1.5]{$\dfrac{(\mu_D -r_D)}{m e \lfw}$}
+
+\rput(7,-0.2){\pnode{KF}}
+\ncangle[angleA = 90, angleB = 90]{KF}{KF}
+\naput[npos = 1.5]{$K_F(1-\alpha)$}
+
+\rput(2,0.2){\pnode{F1}}
+\ncangle[angleA = -90, angleB = -90]{F1}{F1}
+\nbput{$F_{W, 1}$}
+
+\rput(8,0.2){\pnode{F2}}
+\ncangle[angleA = -90, angleB = -90]{F2}{F2}
+\nbput{$F_{W, 2}$}
+\end{pspicture}
+\end{pdfpic}
+\caption{Graph of $P_F(F)$.}
+\end{figure}
+
+Therefore, $P_F$ admits:
+\begin{itemize}
+\item One negative root $F^*_1$ and one positive root $F^*_2$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \leq 0 \Leftrightarrow \dfrac{(\mu_D - r_D) r_F}{\lfw m cI} \leq 1$
+\item Two positive roots $F^*_1, F^*_2$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$
+\end{itemize}
+They are given by:
+%\begin{equation*}
+%F_i^* = \dfrac{er_F + \dfrac{(\mu_D-r_D) r_F}{\lfw m K_F(1-\alpha)}}{2\dfrac{er_F}{K_F(1-\alpha)}} \pm \dfrac{\sqrt{\Delta_F}}{2\dfrac{er_F}{K_F(1-\alpha)}}
+%\end{equation*}
+
+\begin{equation*}
+F_i^* = \dfrac{K_F(1-\alpha)}{2}\left(1 \pm \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - r_D}{2\lfw m e}
+\end{equation*}
+
+Moreover, $P_F$ is positive on $(0, F_1^*)$, negative on $(F^*_1, F^*_2)$ and positive on $(F^*_2, +\infty)$. Lets compute $P_F(K_{F,\alpha})$ (where $ K_{F,\alpha} = K_F(1-\alpha)$):
+
+
+
+\begin{align*}
+P_F(K_{F,\alpha}) &= K_{F,\alpha}^2 \left(\dfrac{er_F}{K_{F,\alpha}} \right) - K_{F,\alpha} \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_{F,\alpha}} \right) + \left(\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \right) \\
+&= K_{F,\alpha}er_F - K_{F,\alpha}er_F - \dfrac{(\mu_D - r_D) r_F}{\lfw m} + \dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \\
+&= -cI\\
+& < 0
+\end{align*}
+
+Therefore, $F_1^* < K_{F, \alpha} < F_2^*$. 
+
+This means that $F_2^*$ is biologically incoherent, and can not defined a equilibrium. Since a negative value for $F^*$ is also biologically incoherent, we obtained that
+
+\textbf{the system admits one endemic equilibrium $EE^{HF_W}$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$} (which implies $\mu_D > r_D$).
+
+\begin{theorem}[Hunt Limitaion]
+Co-existence between human and fauna is possible only if the hunt parameter $\lfw$ is such that
+$$
+\lambda_{F, max} := \dfrac{(\mu_D - r_D) r_F}{m cI} > \lfw
+$$
+
+\end{theorem}
+
+
+
+We can now look for the stability of this equilibrium. We are thus in the case where $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$
+
+The system's Jacobian is given by:
+\begin{equation*}
+\mathcal{J} = \begin{bmatrix}
+r_D-\mu_D - m_D & e \lfw H_W & e\lfw F_W + m_W \\
+0 & r_F \left( 1 - \dfrac{2F_W}{K_F(1-\alpha)} \right) - \lfw H_W & - \lfw F_W \\
+m_D & 0 & -m_W
+\end{bmatrix}
+\end{equation*}
+
+Note that by assumption $r_D-\mu_D - m_D < 0$.
+
+At equilibrium $EE^{H_D F_W}$, we have:
+
+\begin{equation*}
+\mathcal{J}(EE^{H_D F_W}) = \begin{bmatrix}
+r_D -\mu_D - m_D & e \lfw m H_D^* & e \lfw F^*_W +m_W \\
+0 & -r_F \dfrac{F_W^*}{K_F(1-\alpha)} & - \lfw F_W^* \\
+m_D & 0 & -m_W
+\end{bmatrix}
+\end{equation*}
+
+On the following, we note $K_{F, \alpha} = K_F(1-\alpha)$, and $\chi = X^3 + a_2 X^2 + a_1 X + a_0$ the characteristic polynomial of $\mathcal{J}(EE^{H_D F_W})$. 
+
+According to the Routh-Hurwitz  criterion, $EE^{H_D F_W}$ is AS if $a_i > 0$ and $a_2 a_1 - a_0 > 0$. Note that $a_2 = - \Tr(\mathcal{J}(EE^{H_D F_W}))$ and $a_0 = - \det (\mathcal{J}(EE^{H_D F_W}))$.
+
+We have
+\begin{equation*}
+\Tr = r_D - \mu_D - m_D - r_F \dfrac{F_W^*}{K_{F, \alpha}} - m_W < 0
+\end{equation*}
+
+and:
+
+\begin{align*}
+\det &= -\Big(\mu_D + m_D -r_D \Big) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D\Big(-e\lfw ^2 m F_W^* H_D^* + r_F \big(e \lfw F^*_W + m_W \big) \dfrac{F^*}{K_{F, \alpha}} \Big) \\
+\det &= - (\mu_D-r_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D e \lfw \Big( m \lfw H_D^* - r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W \\
+\det &= - (\mu_D-r_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D e \lfw \Big( r_F - 2 r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W \\
+\det &= m_D \lfw \left( F_W^* \Big(2 \dfrac{e r_F}{K_{F, \alpha}} \Big) - \Big(\dfrac{\mu_D - r_D}{m} \dfrac{r_F}{K_{F, \alpha} \lfw} + er_F \Big) \right) F_W^* 
+\end{align*}
+Using 
+
+\begin{equation*}
+F_W^* = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - r_D}{2\lfw m e}
+\end{equation*}
+
+We have 
+\begin{equation*}
+\det = - m_D \lfw \sqrt{\Delta_F}  F^*_{W} < 0
+\end{equation*}
+
+Coefficient $a_1$ is given by:
+\begin{align*}
+a_1 &= \big( \mu_D  -r_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}} + (\mu_D -r_D + m_D) m_W + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W - m_D (e\lfw F^*_W + m_W) \\
+a_1 &= \big( \mu_D -r_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}}  + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)  \\
+a_1 &= \big( \mu_D -r_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)
+\end{align*}
+
+We can look for the sign of $\left(\dfrac{\mu_D -r_D}{m e\lfw} - F^*_{W}\right)$. To do so, we will use the sign of $P_F(X)$ (negative on $(F^*_W, F^*_2)$, positive otherwise). We have:
+
+\begin{align*}
+P_F \left(\dfrac{\mu_D-r_D}{m e\lfw}\right) &= \left(\dfrac{\mu_D-r_D}{m e\lfw} \right)^2 \left(\dfrac{er_F}{K_{F, \alpha}} \right) - \dfrac{\mu_D-r_D}{m e\lfw} \left(er_F + \dfrac{(\mu_D -r_D) r_F}{\lfw m K_{F, \alpha}} \right) + \left(\dfrac{(\mu_D-r_D) r_F}{\lfw m} - cI\right) \\
+&= \dfrac{(\mu_D-r_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-r_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-r_D) r_F}{m \lfw} + \dfrac{(\mu_D-r_D) r_F}{m \lfw} - cI \\
+&= - cI\\
+& < 0
+\end{align*}
+
+Therefore, $\dfrac{\mu_D}{m e\lfw} > F^*_{W, 1}$. This implies $a_1 > 0$.
+
+The first assumption of Rough-Hurwitz is verified, $a_i > 0$. We need to investigate the sign of $a_2 a_1 - a_0$. To do it, we focus on the anthropization markers, parameters $\alpha$ and $\lfw$, and we define $\Delta_{Stab}(\alpha, \lfw) = a_2 a_1 - a_0$. We have:
+
+
+\begin{multline*}
+\Delta_{Stab}(\alpha, \lfw) = \left(\mu_D -r_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
+\left(\big( \mu_D -r_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)\right) - m_D \lfw \sqrt{\Delta_F}  F^*_{W} 
+\end{multline*}
+
+
+Given the complexity of this expression, we will only investigate the sign of $\Delta_{Stab}$ numerically. For fixed parameter values, we can compute $\Delta_{Stab}$ for $\alpha \in [0,1)$ and $ \lfw \in (0, \lambda_{F, max})$.
+
+\begin{figure}[!ht]
+\centering
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{DeltaStab.png}
+\end{subfigure}
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{DeltaStabBW.png}
+\end{subfigure}
+\caption{\centering $\Delta_{Stab}$ as function of $\alpha$ and $\lfw$. \\
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
+\end{figure}
+
+We can see that Hopf bifurcation can occur. Moreover, it appears that equilibrium $EE^{HF_W}$ can be AS even for large values of $\alpha$ and $\lfw$. However, values of $F^*$ will be really low:
+
+\newpage
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.8\textwidth]{Feq.png}
+\caption{\centering $F^*_W$ as function of $\alpha$ and $\lfw$. \\
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$ \\
+\textbf{Values of $F^*_W$ have artificially be damped on instability area}}
+\end{figure}
+
+\newpage
+We can focus on the area at the left of the instability area (where the largest values of $F^*_W$ are):
+
+\begin{figure}[!ht]
+\centering
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=0.8\textwidth]{DeltaStabPortion.png}
+\end{subfigure}
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=0.8\textwidth]{FeqPortion.png}
+\end{subfigure}
+\caption{\centering $\Delta_{Stab}$ and $F^*_W$ as function of $\alpha$ and $\lfw$. \\
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
+\end{figure}
+
+\textbf{For certain values of $\lfw$, $F^*_W$ seems to increase with $\alpha$ !!}
+
+On the instability area, we have unstable limit cycles:
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{OrbitLimitCycle.png}
+\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \\
+Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.2$, $\lfw = 0.0012$}
+\end{figure}
+
+\newpage
+On the AS area, we have the following orbit:
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{OrbitStable.png}
+\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \\
+Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.8$, $\lfw = 0.0001$}
+\end{figure}
+
+
+\end{document}
