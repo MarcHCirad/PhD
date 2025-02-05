@@ -1,4 +1,4 @@
-include("modelHunterTest.jl")
+include("modelHunterRC.jl")
 
 struct hunterRK4 <: numericalModel
     variablesNames::Vector{String}

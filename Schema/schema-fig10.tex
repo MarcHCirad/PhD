@@ -18,33 +18,33 @@
 \psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,0.5)(7.5,4)
 \rput(3., 4.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
 %%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,-4)(7.5,-0.5)
+\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,-4.1)(7.5,-0.5)
 \rput(3, -4.5){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% Pour HD %%%%%%%
-\rput(5.5,1.7){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+\rput(4.7, 2.85){\pnode{HANW}}
+\rput(4.4, 2.85){\pnode{HANW2}}
+\rput(5.3, 2.85){\pnode{HANE}}
+\rput(5.6, 2.85){\pnode{HANE2}}
+\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
-\rput(5.5,3.2){\rnode{rH}{Growth}}
-\rput(4.6,3.2){\pnode{rHW}}
-\rput(8.5,1.7){\pnode{I}}
-\ncline[border=2pt]{->}{I}{HA}
-\nbput[npos = 0.2]{Immigration}
+\rput(5,3){$r_H(F_W)$}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% Pour HW %%%%%%%
-\rput(5.5,-1.2){\pnode{HW}}
+\rput(5,-1){\pnode{HW}}
+%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
 \ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
 \nbput{Displacement}
 
 %%%%%%% Pour FW %%%%%%%
 \rput(0,-2.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{Growth}
+\naput[npos=1.5]{$r_{F_W}$}
 %%%% collecting %
-\rput(3, -2.){\pnode{FWE}}
-\rput(2.7, -1.5){\pnode{FWEN}}
+\rput(2.7, -2.){\pnode{FWE}}
 \ncline{->}{FW}{FWE}
-\naput[npos = 0.5]{Hunt}
-%%connection FW HD
-\ncangle[offsetA = 40pt, angleA = 90, angleB = 180, offsetB=-0pt, linestyle=dashed, border=2pt]{->}{FWE}{HA}
+\rput(2.3,-1.7){$\lambda_{HF_W}(H)$}
+%%connection FW HA
+\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
 \end{pspicture}
 \end{document}

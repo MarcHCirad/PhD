@@ -18,122 +18,31 @@
    \usepackage{multido}
 \end{psinputs}
 
-%\captionsetup{justification=justified}
-%\usepackage[toc,page]{appendix}
-%
-%\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
-%
-%\setcounter{secnumdepth}{4}
-%\titleformat{\paragraph}
-%{\normalfont\normalsize\bFWeries}{\theparagraph}{1em}{}
-%\titlespacing*{\paragraph}
-%{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-%
-%\newtheorem*{theo}{Theorem}
-%\newcommand{\marc}{\textcolor{magenta}}
-%\newcommand{\yves}{\textcolor{magenta}}
-%\newcommand{\gf}{(r_F - \omega f - \mu_F)}
-%\newcommand{\gv}{(r_V- \mu_V)}
-%\newcommand{\lf}{\lambda_{FH}}
-%\newcommand{\lv}{\lambda_{VH}}
-%\newcommand{\lfa}{\lambda_{FH, A}}
-%\newcommand{\lva}{\lambda_{VH, A}}
-%\newcommand{\RV}{R_0^V}
-%\newcommand{\RF}{R_0^F}
-%\newcommand{\NF}{\mathcal{N}_0^F}
-%\newcommand{\NV}{\mathcal{N}_0^V}
-%\newcommand{\NH}{\mathcal{N}_0^H}
-%\newcommand{\Fbeta}{F^*_\beta}
-%\newcommand{\Hbeta}{H^*_\beta}
-%\newcommand{\Vbeta}{V^*_\beta}
-%\newcommand{\VbetaF}{V^*_{\Fbeta, \beta}}
-%\newcommand{\FHterme}{\omega f + \lf}
-%\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
-
-\title{Rapport pour le Comité de Suivi Individuel \\
-Impact de l’anthropisation sur la dynamique de communauté de vecteurs: modélisation, analyse et simulation. Contrôle du risque épidémiologique en contexte péri-forestier au Cameroun.}
-\author{Menée par Marc Hétier \\ Encadrée par Yves Dumont et Valaire Yatat-Djeumen}
 
 \begin{document}
 
-\begin{figure}
-\begin{pdfpic}
-\psset{xunit=0.6cm,yunit=0.2cm}
-\begin{pspicture}(-5,-10)(5,10)
-\psaxes[linewidth=0.7pt,Dx=1,Dy=5](0,0)(-5,-10)(5,10)
-\psplot[algebraic,
-          plotpoints=500,
-          linecolor=blue,
-          linewidth=1.5pt,
-          yMinValue=-10,
-          yMaxValue=10]{7.1}{16}{(log(x-7))/(log(2))}
-\end{pspicture}
-\end{pdfpic}
-\end{figure}
-
-
-\begin{figure}
-\begin{pdfpic}
-\begin{pspicture}(0,0)(10,10)
-\newrgbcolor{mygreen}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-%%%%%%% Pour HA %%%%%%%
-\rput(4.7, 2.85){\pnode{HANW}}
-\rput(4.4, 2.85){\pnode{HANW2}}
-\rput(5.3, 2.85){\pnode{HANE}}
-\rput(5.6, 2.85){\pnode{HANE2}}
-\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Human Population\\ $H_A$ \end{tabular}}}}
-\ncangle[offsetA = 15pt, offsetB = 15pt, angleA=90, armA = 0.8, armB = 0.8, angleB=90]{<-}{HA}{HA}
-\naput*[npos=0.3]{Growth}
-%%%%%%% Pour FA %%%%%%%
-\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Fauna \\ $F_A$ \end{tabular}}}} %FA
-\rput(0,6.5){\pnode{FAN}}
-\ncline{->}{FA}{FAN} %muFA
-\naput{Mortality }
-\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
-\ncangle[offsetA = 5pt, offsetB = 5pt, angleA=180, angleB=180, armA=0.5, armB=0.5]{<-}{FA}{FA}
-\naput[npos=1.5]{Growth}
-\ncangle[angleB=90, armB =0, linestyle=dashed]{->}{FA}{HANW}
-\rput(1.5, 3.5){\pnode{FASE}}
-\ncangle[angleB = -90]{<-}{FASE}{FA}
-\ncput[npos=0.3]{\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
-\ncangle[offsetA =-15pt, offsetB = 0.2, angleA = -90, angleB = 180, linestyle=dashed]{FASE}{HA}
-%%%%%%% Pour VA %%%%%%%
-\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Vegetation \\ $V_A$ \end{tabular}}}}
-\rput(10,5){\pnode{VAL}}
-\rput(10,6.5){\pnode{VAN}}
-\ncline{->}{VA}{VAN}
-\nbput{Mortality}
-\ncloop[angleA = 90, angleB=180, loopsize=0, linestyle=dashed]{<-}{HANE}{VA}
-\ncloop[offsetA = 5pt, offsetB = 5pt, angleA=0, angleB=0, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-\naput[npos=3.5]{Growth}
-\ncangles[offsetA =-5pt, offsetB = 0.2, angleA = 0, angleB = 0, linestyle=dashed]{VA}{HA}
-\rput(8.5, 3.5){\pnode{VASW}}
-\ncangle[angleA = -90]{->}{VA}{VASW}
-\ncput[npos=1.8]{\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
-\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VASW}{HA}
-\end{pspicture}
-\end{pdfpic}
-\end{figure}
-
-\newpage
-
-%\begin{figure}[ht]
+%\begin{figure}
+%\begin{pdfpic}
+%\psset{xunit=0.6cm,yunit=0.2cm}
+%\begin{pspicture}(-5,-10)(5,10)
+%\psaxes[linewidth=0.7pt,Dx=1,Dy=5](0,0)(-5,-10)(5,10)
+%\psplot[algebraic,
+%          plotpoints=500,
+%          linecolor=blue,
+%          linewidth=1.5pt,
+%          yMinValue=-10,
+%          yMaxValue=10]{7.1}{16}{(log(x-7))/(log(2))}
+%\end{pspicture}
+%\end{pdfpic}
+%\end{figure}
+%
+%
+%\begin{figure}
 %\begin{pdfpic}
 %\begin{pspicture}(0,0)(10,10)
 %\newrgbcolor{mygreen}{0.52 0.753 0.49}
 %\newrgbcolor{mypink}{0.988 0.91 0.875}
 %\newrgbcolor{mybrown}{0.72 0.33 0.07}
-%\newrgbcolor{mygreen2}{0.18 0.5 0.38}
-%\newrgbcolor{mypink2}{0.78 0.71 0.675}
-%\newrgbcolor{mybrown2}{0.58 0.33 0.07}
-%%%%%%%% cadre zone A %%%%%%%
-%\psframe[linecolor=red, linestyle=solid, framearc=0.3](-3,0.5)(13.5,7)
-%\rput(5.25, 7.2){\textcolor{red}{Residential area}}
-%%%%%%%% cadre zone S %%%%%%%
-%\psframe[linecolor=blue, linestyle=solid, framearc=0.3](-3,-6)(13.5,0)
-%\rput(5.25, -6.2){\textcolor{blue}{Wild area}}
 %%%%%%%% Pour HA %%%%%%%
 %\rput(4.7, 2.85){\pnode{HANW}}
 %\rput(4.4, 2.85){\pnode{HANW2}}
@@ -169,421 +78,666 @@ Impact de l’anthropisation sur la dynamique de communauté de vecteurs: modél
 %\ncangle[angleA = -90]{->}{VA}{VASW}
 %\ncput[npos=1.8]{\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
 %\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VASW}{HA}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%% Pour HW %%%%%%%
-%\rput(5,-1){\rnode{HW}{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
-%\ncline[angleA=90, angleB=-90]{<->}{HW}{HA}
-%\nbput{Displacement}
-%%%%%%%% Pour FW %%%%%%%
-%\rput(0,-4.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Fauna \\ $F_W$ \end{tabular}}}} %FW
-%\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{<-}{FW}{FW}
-%\naput[npos=2]{Growth}
-%%%%% collecting %
-%\rput(1.5, -3.){\pnode{FWNE}}
-%\ncangle[angleA = 90, angleB=180, offsetA = -15pt]{->}{FW}{FWNE}
-%\ncangle[offsetA =-15pt, offsetB = +0.2, angleA = -90, angleB = 180, linestyle=dashed]{FWNE}{HW}
-%\nbput[npos=0.1]{\begin{tabular}{c} Collecting \\ (hunt) \end{tabular}}
-%%%connection FW HA
-%\ncangle[offsetA = 7pt, angleA = 90, angleB = 180, offsetB=-5pt, linestyle=dashed, border=2pt]{->}{FW}{HANW2}
-%%%%%%%% Pour VW %%%%%%%
-%\rput(10,-4.5){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Vegetation \\ $V_W$ \end{tabular}}}}
-%\ncloop[offsetA = 5pt, offsetB = 5pt, angleA=0, angleB=0, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
-%\naput[npos=3.5]{Growth}
-%%% contribue a FW
-%\ncangle[angleA=-90, angleB=-90, offsetB=-10pt, linestyle=dotted, linewidth=1.4pt]{VW}{FW}
-%%% herbivory
-%\rput(7.75, -3.75){\pnode{VWNW}}
-%\ncangle[offsetA = 10pt, angleA = 180, angleB = -90, linewidth=1pt]{->}{VW}{VWNW}
-%\naput[npos=1.5]{Herbivory}
-%\ncangle[offsetA = -5pt, angleB=-90, linestyle=dotted, linewidth=1.4pt]{->}{FW}{VWNW} %FW->VW
-%%% collecting
-%\rput(8.7, -3){\pnode{VWNW2}}
-%\ncangle[angleA = 90, offsetA = 10pt]{->}{VW}{VWNW2}
-%\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VWNW2}{HW}
-%\naput[npos=0.1]{\begin{tabular}{c} Collecting \\ (picking) \end{tabular}}
-%%%connection FW HA
-%\ncangle[offsetA = -7pt, angleA = 90, angleB = 0, offsetB=5pt, linestyle=dashed, border=2pt]{->}{VW}{HANE2}
 %\end{pspicture}
 %\end{pdfpic}
 %\end{figure}
-
-\newpage
+%
+%\newpage
+%
+%%\begin{figure}[ht]
+%%\begin{pdfpic}
+%%\begin{pspicture}(0,0)(10,10)
+%%\newrgbcolor{mygreen}{0.52 0.753 0.49}
+%%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%%\newrgbcolor{mygreen2}{0.18 0.5 0.38}
+%%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%%\newrgbcolor{mybrown2}{0.58 0.33 0.07}
+%%%%%%%%% cadre zone A %%%%%%%
+%%\psframe[linecolor=red, linestyle=solid, framearc=0.3](-3,0.5)(13.5,7)
+%%\rput(5.25, 7.2){\textcolor{red}{Residential area}}
+%%%%%%%%% cadre zone S %%%%%%%
+%%\psframe[linecolor=blue, linestyle=solid, framearc=0.3](-3,-6)(13.5,0)
+%%\rput(5.25, -6.2){\textcolor{blue}{Wild area}}
+%%%%%%%%% Pour HA %%%%%%%
+%%\rput(4.7, 2.85){\pnode{HANW}}
+%%\rput(4.4, 2.85){\pnode{HANW2}}
+%%\rput(5.3, 2.85){\pnode{HANE}}
+%%\rput(5.6, 2.85){\pnode{HANE2}}
+%%\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Human Population\\ $H_A$ \end{tabular}}}}
+%%\ncangle[offsetA = 15pt, offsetB = 15pt, angleA=90, armA = 0.8, armB = 0.8, angleB=90]{<-}{HA}{HA}
+%%\naput*[npos=0.3]{Growth}
+%%%%%%%%% Pour FA %%%%%%%
+%%\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Fauna \\ $F_A$ \end{tabular}}}} %FA
+%%\rput(0,6.5){\pnode{FAN}}
+%%\ncline{->}{FA}{FAN} %muFA
+%%\naput{Mortality }
+%%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
+%%\ncangle[offsetA = 5pt, offsetB = 5pt, angleA=180, angleB=180, armA=0.5, armB=0.5]{<-}{FA}{FA}
+%%\naput[npos=1.5]{Growth}
+%%\ncangle[angleB=90, armB =0, linestyle=dashed]{->}{FA}{HANW}
+%%\rput(1.5, 3.5){\pnode{FASE}}
+%%\ncangle[angleB = -90]{<-}{FASE}{FA}
+%%\ncput[npos=0.3]{\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
+%%\ncangle[offsetA =-15pt, offsetB = 0.2, angleA = -90, angleB = 180, linestyle=dashed]{FASE}{HA}
+%%%%%%%%% Pour VA %%%%%%%
+%%\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Vegetation \\ $V_A$ \end{tabular}}}}
+%%\rput(10,5){\pnode{VAL}}
+%%\rput(10,6.5){\pnode{VAN}}
+%%\ncline{->}{VA}{VAN}
+%%\nbput{Mortality}
+%%\ncloop[angleA = 90, angleB=180, loopsize=0, linestyle=dashed]{<-}{HANE}{VA}
+%%\ncloop[offsetA = 5pt, offsetB = 5pt, angleA=0, angleB=0, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
+%%\naput[npos=3.5]{Growth}
+%%\ncangles[offsetA =-5pt, offsetB = 0.2, angleA = 0, angleB = 0, linestyle=dashed]{VA}{HA}
+%%\rput(8.5, 3.5){\pnode{VASW}}
+%%\ncangle[angleA = -90]{->}{VA}{VASW}
+%%\ncput[npos=1.8]{\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
+%%\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VASW}{HA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Pour HW %%%%%%%
+%%\rput(5,-1){\rnode{HW}{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%%\ncline[angleA=90, angleB=-90]{<->}{HW}{HA}
+%%\nbput{Displacement}
+%%%%%%%%% Pour FW %%%%%%%
+%%\rput(0,-4.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Fauna \\ $F_W$ \end{tabular}}}} %FW
+%%\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{<-}{FW}{FW}
+%%\naput[npos=2]{Growth}
+%%%%%% collecting %
+%%\rput(1.5, -3.){\pnode{FWNE}}
+%%\ncangle[angleA = 90, angleB=180, offsetA = -15pt]{->}{FW}{FWNE}
+%%\ncangle[offsetA =-15pt, offsetB = +0.2, angleA = -90, angleB = 180, linestyle=dashed]{FWNE}{HW}
+%%\nbput[npos=0.1]{\begin{tabular}{c} Collecting \\ (hunt) \end{tabular}}
+%%%%connection FW HA
+%%\ncangle[offsetA = 7pt, angleA = 90, angleB = 180, offsetB=-5pt, linestyle=dashed, border=2pt]{->}{FW}{HANW2}
+%%%%%%%%% Pour VW %%%%%%%
+%%\rput(10,-4.5){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Vegetation \\ $V_W$ \end{tabular}}}}
+%%\ncloop[offsetA = 5pt, offsetB = 5pt, angleA=0, angleB=0, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
+%%\naput[npos=3.5]{Growth}
+%%%% contribue a FW
+%%\ncangle[angleA=-90, angleB=-90, offsetB=-10pt, linestyle=dotted, linewidth=1.4pt]{VW}{FW}
+%%%% herbivory
+%%\rput(7.75, -3.75){\pnode{VWNW}}
+%%\ncangle[offsetA = 10pt, angleA = 180, angleB = -90, linewidth=1pt]{->}{VW}{VWNW}
+%%\naput[npos=1.5]{Herbivory}
+%%\ncangle[offsetA = -5pt, angleB=-90, linestyle=dotted, linewidth=1.4pt]{->}{FW}{VWNW} %FW->VW
+%%%% collecting
+%%\rput(8.7, -3){\pnode{VWNW2}}
+%%\ncangle[angleA = 90, offsetA = 10pt]{->}{VW}{VWNW2}
+%%\ncangle[offsetA =15pt, offsetB = -0.2, angleA = -90, angleB = 0, linestyle=dashed]{VWNW2}{HW}
+%%\naput[npos=0.1]{\begin{tabular}{c} Collecting \\ (picking) \end{tabular}}
+%%%%connection FW HA
+%%\ncangle[offsetA = -7pt, angleA = 90, angleB = 0, offsetB=5pt, linestyle=dashed, border=2pt]{->}{VW}{HANE2}
+%%\end{pspicture}
+%%\end{pdfpic}
+%%\end{figure}
+%
+%\newpage
+%
+%\begin{figure}[ht]
+%\begin{pdfpic}
+%\begin{pspicture}
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(14,7)
+%\rput(5.25, 7.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%
+%%%%%%%% cadre zone W %%%%%%%
+%\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,-5.5)(14,-0.5)
+%\rput(5.25, -6.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
+%
+%
+%%%%%%%% Pour HA %%%%%%%
+%\rput(4.7, 2.85){\pnode{HANW}}
+%\rput(4.4, 2.85){\pnode{HANW2}}
+%\rput(5.3, 2.85){\pnode{HANE}}
+%\rput(5.6, 2.85){\pnode{HANE2}}
+%\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
+%\rput(5,3){Growth}
+%
+%
+%%%%%%%% Pour FD %%%%%%%
+%\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%\rput(-2.5,5){\pnode{FAW}}
+%\ncline{->}{FA}{FAW} %muFD
+%\nbput[npos=1]{Mortality}
+%%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
+%\naput[npos=1.5]{Growth}
+%\rput(3, 5){\pnode{FAE}}
+%\ncline{<-}{FAE}{FA}
+%\rput(2.7, 5){\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
+%\rput(1.5, 3.5){\pnode{FAS}}
+%\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
+%
+%%%%%%%% Pour VD %%%%%%%
+%\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%\rput(13,5){\pnode{VAE}}
+%\ncline{->}{VA}{VAE}
+%\naput[npos=1]{Mortality}
+%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
+%\naput[npos=3.5]{Growth}
+%\rput(6.5, 5){\pnode{VAW}}
+%\ncline{->}{VA}{VAW}
+%\rput(7,5){\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
+%\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pour HW %%%%%%%
+%\rput(5,-1){\pnode{HW}}
+%%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
+%\nbput{Displacement}
+%
+%%%%%%%% Pour FW %%%%%%%
+%\rput(0,-3.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
+%\naput[npos=1.5]{Growth}
+%%%%% collecting %
+%\rput(2.7, -2.7){\pnode{FWE}}
+%\ncline[offsetA = 0.15]{->}{FW}{FWE}
+%\rput(2.3,-2.7){\begin{tabular}{c} Collecting \\ (hunting) \end{tabular}}
+%%%connection FW HA
+%\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
+%
+%%%%%%%%% Pour VW %%%%%%%
+%\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
+%\naput[npos=1.5]{Growth}
+%
+%%% contribue a FW
+%\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
+%%% herbivory
+%\rput(12.75, -3){\pnode{VWE}}
+%\ncline{->}{VW}{VWE}
+%\naput[npos=1.]{Herbivory}
+%
+%%% collecting
+%\rput(7, -2.7){\pnode{VWW}}
+%\ncline[offsetA = -0.15]{->}{VW}{VWW}
+%\rput(7.3,-2.7){\begin{tabular}{c} Collecting \\ (picking) \end{tabular}}
+%%%connection VW HA
+%\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
+%\end{pspicture}
+%\end{pdfpic}
+%\caption{\centering Schematic diagram of the model. Dashed lines represent interactions between variables.}
+%\end{figure}
+%
+%
+%\newpage
+%
+%
+%
+%\begin{figure}[ht]
+%\begin{pdfpic}
+%\begin{pspicture}(0.,0)(14,14)
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,0.5)(13.5,7)
+%\rput(5.25, 7.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%
+%%%%%%%% cadre zone W %%%%%%%
+%\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-5.5)(13.5,-0.5)
+%\rput(5.25, -6.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
+%
+%
+%%%%%%%% Pour HA %%%%%%%
+%\rput(4.7, 2.85){\pnode{HANW}}
+%\rput(4.4, 2.85){\pnode{HANW2}}
+%\rput(5.3, 2.85){\pnode{HANE}}
+%\rput(5.6, 2.85){\pnode{HANE2}}
+%\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
+%\rput(5,3){$r_H(F_D, V_D, F_W, V_W)$}
+%
+%
+%%%%%%%% Pour FD %%%%%%%
+%\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%\rput(-2.5,5){\pnode{FAW}}
+%\ncline{->}{FA}{FAW} %muFD
+%\nbput{$\mu_{F_D}$}
+%%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
+%\naput[npos=1.5]{$r_{F_D}(H)$}
+%\rput(3, 5){\pnode{FAE}}
+%\ncline{<-}{FAE}{FA}
+%\rput(2.7, 5.3){$\lambda_{HF_D}(H)$}
+%\rput(1.5, 3.5){\pnode{FAS}}
+%\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
+%
+%%%%%%%% Pour VD %%%%%%%
+%\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%\rput(13,5){\pnode{VAE}}
+%\ncline{->}{VA}{VAE}
+%\naput{$\mu_{V_D}$}
+%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
+%\naput[npos=3.5]{$r_{V_D}(H)$}
+%\rput(6.5, 5){\pnode{VAW}}
+%\ncline{->}{VA}{VAW}
+%\rput(7.1,5.3){$\lambda_{HV_D}(H)$ }
+%\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pour HW %%%%%%%
+%\rput(5,-1){\pnode{HW}}
+%%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
+%\nbput{Displacement}
+%
+%%%%%%%% Pour FW %%%%%%%
+%\rput(0,-3.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
+%\naput[npos=1.5]{$r_{F_W}(V_W)$}
+%%%%% collecting %
+%\rput(2.7, -3.){\pnode{FWE}}
+%\ncline{->}{FW}{FWE}
+%\rput(2.3,-2.7){$\lambda_{HF_W}(H)$}
+%%%connection FW HA
+%\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
+%
+%%%%%%%%% Pour VW %%%%%%%
+%\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
+%\naput[npos=1.5]{$r_{V_W}$}
+%
+%%% contribue a FW
+%\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
+%%% herbivory
+%\rput(12.5, -3){\pnode{VWE}}
+%\ncline{->}{VW}{VWE}
+%\naput[npos=1]{$\lambda_{F_WV_W}$}
+%
+%%% collecting
+%\rput(7, -3){\pnode{VWW}}
+%\ncline{->}{VW}{VWW}
+%\rput(7.3,-2.7){$\lambda_{HV_W}(H)$}
+%%%connection VW HA
+%\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
+%\end{pspicture}
+%\end{pdfpic}
+%\caption{\centering Schematic diagram of the model. Dashed lines represent interactions between variables.}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{figure}[ht]
+%\caption{\centering Schema V2}
+%\begin{pdfpic}
+%\begin{pspicture}(0.,0)(14,14)
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
+%\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%
+%%%%%%%% cadre zone W %%%%%%%
+%\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-3.5)(10.5,-0.5)
+%\rput(3.75, -4.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
+%
+%
+%%%%%%%% Pour HA %%%%%%%
+%\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
+%%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
+%\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
+%
+%%%%%%%% Pour FD %%%%%%%
+%\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%\rput(-2.5,5){\pnode{FDW}}
+%\ncline{->}{FD}{FDW} %muFD
+%\nbput[npos = 1]{$\mu_{F_D}$}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
+%\naput[npos=1.5]{$r_{F_D}(H)$}
+%\rput(3, 5){\pnode{FDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
+%\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
+%\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
+%
+%%%%%%%% Pour VD %%%%%%%
+%\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%\rput(-2.8,3){\pnode{VDW}}
+%\ncline{->}{VD}{VDW}
+%\naput[npos = 1]{$\mu_{V_D}$}
+%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
+%\naput[npos=3.5]{$r_{V_D}(H)$}
+%\rput(3, 3){\pnode{VDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
+%\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
+%\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pour HW %%%%%%%
+%\rput(6,-2){\pnode{HW}}
+%%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt, offsetA=-15pt, offsetB=-15pt]{<->}{HW}{HD}
+%\nbput[npos=0.45]{Displacement}
+%
+%%%%%%%% Pour FW %%%%%%%
+%\rput(0,-1.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
+%\naput[npos=1.5]{$r_{F_W}$}
+%%%%% collecting %
+%\rput(2.7, -1.5){\pnode{FWSE}}
+%\ncline[offsetA = -0.2, offsetB = -0.2]{->}{FW}{FWSE}
+%\nbput[npos=1]{$\lambda_{HF_W}(H)$}
+%%%connection FW HA
+%\ncangle[offsetA = 0.2, angleA = 0, angleB = -90, offsetB=15pt, linestyle=dashed, border=2pt]{FW}{HD}
+%\end{pspicture}
+%\end{pdfpic}
+%
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{figure}[ht]
+%\caption{\centering Schema V2 texte}
+%\begin{pdfpic}
+%\begin{pspicture}(0.,0)(14,14)
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
+%\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%
+%%%%%%%% cadre zone W %%%%%%%
+%\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-3.5)(10.5,-0.5)
+%\rput(3.75, -4.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
+%
+%
+%%%%%%%% Pour HA %%%%%%%
+%\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
+%%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
+%\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
+%
+%%%%%%%% Pour FD %%%%%%%
+%\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%\rput(-2.5,5){\pnode{FDW}}
+%\ncline{->}{FD}{FDW} %muFD
+%\nbput[npos = 1]{$\mu_{F_D}$}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
+%\naput[npos=1.5]{$r_{F_D}(H)$}
+%\rput(3, 5){\pnode{FDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
+%\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
+%\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
+%
+%%%%%%%% Pour VD %%%%%%%
+%\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%\rput(-2.8,3){\pnode{VDW}}
+%\ncline{->}{VD}{VDW}
+%\naput[npos = 1]{$\mu_{V_D}$}
+%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
+%\naput[npos=3.5]{$r_{V_D}(H)$}
+%\rput(3, 3){\pnode{VDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
+%\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
+%\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pour HW %%%%%%%
+%\rput(6,-2){\pnode{HW}}
+%%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt, offsetA=-15pt, offsetB=-15pt]{<->}{HW}{HD}
+%\nbput[npos=0.45]{Displacement}
+%
+%%%%%%%% Pour FW %%%%%%%
+%\rput(0,-1.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
+%\naput[npos=1.5]{$r_{F_W}$}
+%%%%% collecting %
+%\rput(2.7, -1.5){\pnode{FWSE}}
+%\ncline[offsetA = -0.2, offsetB = -0.2]{->}{FW}{FWSE}
+%\nbput[npos=1]{$\lambda_{HF_W}(H)$}
+%%%connection FW HA
+%\ncangle[offsetA = 0.2, angleA = 0, angleB = -90, offsetB=15pt, linestyle=dashed, border=2pt]{FW}{HD}
+%\end{pspicture}
+%\end{pdfpic}
+%
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{figure}[ht]
+%\caption{\centering Schéma chasse}
+%\begin{pdfpic}
+%\begin{pspicture}(0.,0)(14,14)
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,0.5)(7.5,4)
+%\rput(3., 4.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%
+%%%%%%%% cadre zone W %%%%%%%
+%\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,-4)(7.5,-0.5)
+%\rput(3, -4.5){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
+%
+%
+%%%%%%%% Pour HA %%%%%%%
+%\rput(4.7, 2.85){\pnode{HANW}}
+%\rput(4.4, 2.85){\pnode{HANW2}}
+%\rput(5.3, 2.85){\pnode{HANE}}
+%\rput(5.6, 2.85){\pnode{HANE2}}
+%\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
+%\rput(5,3){$r_H(F_W)$}
+%
+%
+%%%%%%%% Pour FD %%%%%%%
+%%\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%%\rput(-2.5,5){\pnode{FAW}}
+%%\ncline{->}{FA}{FAW} %muFD
+%%\nbput{$\mu_{F_D}$}
+%%%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
+%%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
+%%\naput[npos=1.5]{$r_{F_D}(H)$}
+%%\rput(3, 5){\pnode{FAE}}
+%%\ncline{<-}{FAE}{FA}
+%%\rput(2.7, 5.3){$\lambda_{HF_D}(H)$}
+%%\rput(1.5, 3.5){\pnode{FAS}}
+%%\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
+%
+%%%%%%%% Pour VD %%%%%%%
+%%\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%%\rput(13,5){\pnode{VAE}}
+%%\ncline{->}{VA}{VAE}
+%%\naput{$\mu_{V_D}$}
+%%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
+%%\naput[npos=3.5]{$r_{V_D}(H)$}
+%%\rput(6.5, 5){\pnode{VAW}}
+%%\ncline{->}{VA}{VAW}
+%%\rput(7.1,5.3){$\lambda_{HV_D}(H)$ }
+%%\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pour HW %%%%%%%
+%\rput(5,-1){\pnode{HW}}
+%%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+%\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
+%\nbput{Displacement}
+%
+%%%%%%%% Pour FW %%%%%%%
+%\rput(0,-2.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
+%\naput[npos=1.5]{$r_{F_W}$}
+%%%%% collecting %
+%\rput(2.7, -2.){\pnode{FWE}}
+%\ncline{->}{FW}{FWE}
+%\rput(2.3,-1.7){$\lambda_{HF_W}(H)$}
+%%%connection FW HA
+%\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
+%
+%%%%%%%%% Pour VW %%%%%%%
+%%\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
+%%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
+%%\naput[npos=1.5]{$r_{V_W}$}
+%
+%%% contribue a FW
+%%\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
+%%%% herbivory
+%%\rput(12.5, -3){\pnode{VWE}}
+%%\ncline{->}{VW}{VWE}
+%%\naput[npos=1]{$\lambda_{F_WV_W}$}
+%
+%%% collecting
+%%\rput(7, -3){\pnode{VWW}}
+%%\ncline{->}{VW}{VWW}
+%%\rput(7.3,-2.7){$\lambda_{HV_W}(H)$}
+%%%%connection VW HA
+%%\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
+%\end{pspicture}
+%\end{pdfpic}
+%\end{figure}
+%
+%
+%\begin{figure}[ht]
+%\caption{\centering Schema Agriculture}
+%\begin{pdfpic}
+%\begin{pspicture}(0.,0)(14,14)
+%\newrgbcolor{mygreen2}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{mygreen}{0.66 0.8 0.4}
+%\newrgbcolor{mypink2}{0.78 0.71 0.675}
+%\newrgbcolor{mybrown2}{0.68 0.43 0.1}
+%\newrgbcolor{myblue}{0.1 0.2 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% cadre zone D %%%%%%%
+%\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
+%\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
+%
+%%%%%%%% Pour HD %%%%%%%
+%\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
+%%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
+%\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
+%
+%%%%%%%% Pour FD %%%%%%%
+%\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
+%\rput(-2.5,5){\pnode{FDW}}
+%\ncline{->}{FD}{FDW} %muFD
+%\nbput[npos = 1]{$\mu_{F_D}$}
+%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
+%\naput[npos=1.5]{$r_{F_D}(H)$}
+%\rput(3, 5){\pnode{FDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
+%\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
+%\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
+%
+%%%%%%%% Pour VD %%%%%%%
+%\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
+%\rput(-2.8,3){\pnode{VDW}}
+%\ncline{->}{VD}{VDW}
+%\naput[npos = 1]{$\mu_{V_D}$}
+%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
+%\naput[npos=3.5]{$r_{V_D}(H)$}
+%\rput(3, 3){\pnode{VDE}}
+%\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
+%\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
+%\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
+%
+%\end{pspicture}
+%\end{pdfpic}
+%\end{figure}
+%
+%\newpage
+%
+%\begin{figure}
+%\begin{pdfpic}
+%\begin{pspicture}(-5,5)
+%\newrgbcolor{mygreen}{0.52 0.753 0.49}
+%\newrgbcolor{mypink}{0.988 0.91 0.875}
+%\newrgbcolor{mybrown}{0.72 0.33 0.07}
+%\newrgbcolor{myorange}{0.9 0.59 0.28}
+%\newrgbcolor{myblue}{0 0.48 0.8}
+%\psset{arrowscale=1.5, arrowinset=0}
+%\psset{framearc = 0.3}
+%\sffamily
+%\large
+%%%%%%%% Up %%%%%%%
+%\pscircle[linewidth = 0.1, linecolor=myblue](0,0){5}
+%\psarc[linewidth = 0.1, linecolor=myblue]{<-}(0,0){5}{130}{180}
+%\rput(0,4.5){\rnode{Up}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Biological/Ecological \\ Problems \& Questions \end{tabular}}}}
+%\rput(5,0){\rnode{Right}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Mathematical \\ Model(s) \end{tabular}}}}
+%\rput(0,-4.3){\rnode{Down}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Theoretical Analysis \\ \normalsize{Exisentence and unicity of solutions ?} \\ \normalsize{Well condtioned ?} \end{tabular}}}}
+%\rput(-5, 0){\rnode{Left}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Numerical \\ Implementation \\ \& Simulations \end{tabular}}}}
+%
+%\rput(0,3.8){\pnode{UpS}}
+%\rput(3.4,0){\pnode{RightW}}
+%\rput(0,-3.3){\pnode{DownN}}
+%\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{RightW}{UpS}
+%\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{DownN}{UpS}
+%\nbput[npos=0.4]{\textcolor{mygreen}{\begin{tabular}{c} Discussion \\ with Biologists \\ \normalsize{Is it biologicall} \\ \normalsize{coherent ?}\end{tabular}}}
+%\end{pspicture}
+%\end{pdfpic}
+%\end{figure}
+%
+%\newpage
 
 \begin{figure}[ht]
-\begin{pdfpic}
-\begin{pspicture}
-\newrgbcolor{mygreen2}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{mygreen}{0.66 0.8 0.4}
-\newrgbcolor{mypink2}{0.78 0.71 0.675}
-\newrgbcolor{mybrown2}{0.68 0.43 0.1}
-\newrgbcolor{myblue}{0.1 0.2 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(14,7)
-\rput(5.25, 7.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-
-%%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,-5.5)(14,-0.5)
-\rput(5.25, -6.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-
-
-%%%%%%% Pour HA %%%%%%%
-\rput(4.7, 2.85){\pnode{HANW}}
-\rput(4.4, 2.85){\pnode{HANW2}}
-\rput(5.3, 2.85){\pnode{HANE}}
-\rput(5.6, 2.85){\pnode{HANE2}}
-\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
-\rput(5,3){Growth}
-
-
-%%%%%%% Pour FD %%%%%%%
-\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-\rput(-2.5,5){\pnode{FAW}}
-\ncline{->}{FA}{FAW} %muFD
-\nbput[npos=1]{Mortality}
-%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
-\naput[npos=1.5]{Growth}
-\rput(3, 5){\pnode{FAE}}
-\ncline{<-}{FAE}{FA}
-\rput(2.7, 5){\begin{tabular}{c} Collecting \\ (breeding) \end{tabular}}
-\rput(1.5, 3.5){\pnode{FAS}}
-\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
-
-%%%%%%% Pour VD %%%%%%%
-\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-\rput(13,5){\pnode{VAE}}
-\ncline{->}{VA}{VAE}
-\naput[npos=1]{Mortality}
-\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-\naput[npos=3.5]{Growth}
-\rput(6.5, 5){\pnode{VAW}}
-\ncline{->}{VA}{VAW}
-\rput(7,5){\begin{tabular}{c} Collecting \\ (harvest) \end{tabular}}
-\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Pour HW %%%%%%%
-\rput(5,-1){\pnode{HW}}
-%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
-\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
-\nbput{Displacement}
-
-%%%%%%% Pour FW %%%%%%%
-\rput(0,-3.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{Growth}
-%%%% collecting %
-\rput(2.7, -2.7){\pnode{FWE}}
-\ncline[offsetA = 0.15]{->}{FW}{FWE}
-\rput(2.3,-2.7){\begin{tabular}{c} Collecting \\ (hunting) \end{tabular}}
-%%connection FW HA
-\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
-
-%%%%%%%% Pour VW %%%%%%%
-\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
-\naput[npos=1.5]{Growth}
-
-%% contribue a FW
-\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
-%% herbivory
-\rput(12.75, -3){\pnode{VWE}}
-\ncline{->}{VW}{VWE}
-\naput[npos=1.]{Herbivory}
-
-%% collecting
-\rput(7, -2.7){\pnode{VWW}}
-\ncline[offsetA = -0.15]{->}{VW}{VWW}
-\rput(7.3,-2.7){\begin{tabular}{c} Collecting \\ (picking) \end{tabular}}
-%%connection VW HA
-\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
-\end{pspicture}
-\end{pdfpic}
-\caption{\centering Schematic diagram of the model. Dashed lines represent interactions between variables.}
-\end{figure}
-
-
-\newpage
-
-
-
-\begin{figure}[ht]
-\begin{pdfpic}
-\begin{pspicture}(0.,0)(14,14)
-\newrgbcolor{mygreen2}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{mygreen}{0.66 0.8 0.4}
-\newrgbcolor{mypink2}{0.78 0.71 0.675}
-\newrgbcolor{mybrown2}{0.68 0.43 0.1}
-\newrgbcolor{myblue}{0.1 0.2 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,0.5)(13.5,7)
-\rput(5.25, 7.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-
-%%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-5.5)(13.5,-0.5)
-\rput(5.25, -6.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-
-
-%%%%%%% Pour HA %%%%%%%
-\rput(4.7, 2.85){\pnode{HANW}}
-\rput(4.4, 2.85){\pnode{HANW2}}
-\rput(5.3, 2.85){\pnode{HANE}}
-\rput(5.6, 2.85){\pnode{HANE2}}
-\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
-\rput(5,3){$r_H(F_D, V_D, F_W, V_W)$}
-
-
-%%%%%%% Pour FD %%%%%%%
-\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-\rput(-2.5,5){\pnode{FAW}}
-\ncline{->}{FA}{FAW} %muFD
-\nbput{$\mu_{F_D}$}
-%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
-\naput[npos=1.5]{$r_{F_D}(H)$}
-\rput(3, 5){\pnode{FAE}}
-\ncline{<-}{FAE}{FA}
-\rput(2.7, 5.3){$\lambda_{HF_D}(H)$}
-\rput(1.5, 3.5){\pnode{FAS}}
-\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
-
-%%%%%%% Pour VD %%%%%%%
-\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-\rput(13,5){\pnode{VAE}}
-\ncline{->}{VA}{VAE}
-\naput{$\mu_{V_D}$}
-\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-\naput[npos=3.5]{$r_{V_D}(H)$}
-\rput(6.5, 5){\pnode{VAW}}
-\ncline{->}{VA}{VAW}
-\rput(7.1,5.3){$\lambda_{HV_D}(H)$ }
-\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Pour HW %%%%%%%
-\rput(5,-1){\pnode{HW}}
-%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
-\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
-\nbput{Displacement}
-
-%%%%%%% Pour FW %%%%%%%
-\rput(0,-3.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{$r_{F_W}(V_W)$}
-%%%% collecting %
-\rput(2.7, -3.){\pnode{FWE}}
-\ncline{->}{FW}{FWE}
-\rput(2.3,-2.7){$\lambda_{HF_W}(H)$}
-%%connection FW HA
-\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
-
-%%%%%%%% Pour VW %%%%%%%
-\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
-\naput[npos=1.5]{$r_{V_W}$}
-
-%% contribue a FW
-\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
-%% herbivory
-\rput(12.5, -3){\pnode{VWE}}
-\ncline{->}{VW}{VWE}
-\naput[npos=1]{$\lambda_{F_WV_W}$}
-
-%% collecting
-\rput(7, -3){\pnode{VWW}}
-\ncline{->}{VW}{VWW}
-\rput(7.3,-2.7){$\lambda_{HV_W}(H)$}
-%%connection VW HA
-\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
-\end{pspicture}
-\end{pdfpic}
-\caption{\centering Schematic diagram of the model. Dashed lines represent interactions between variables.}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[ht]
-\caption{\centering Schema V2}
-\begin{pdfpic}
-\begin{pspicture}(0.,0)(14,14)
-\newrgbcolor{mygreen2}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{mygreen}{0.66 0.8 0.4}
-\newrgbcolor{mypink2}{0.78 0.71 0.675}
-\newrgbcolor{mybrown2}{0.68 0.43 0.1}
-\newrgbcolor{myblue}{0.1 0.2 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
-\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-
-%%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-3.5)(10.5,-0.5)
-\rput(3.75, -4.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-
-
-%%%%%%% Pour HA %%%%%%%
-\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
-\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
-%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
-\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
-
-%%%%%%% Pour FD %%%%%%%
-\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-\rput(-2.5,5){\pnode{FDW}}
-\ncline{->}{FD}{FDW} %muFD
-\nbput[npos = 1]{$\mu_{F_D}$}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
-\naput[npos=1.5]{$r_{F_D}(H)$}
-\rput(3, 5){\pnode{FDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
-\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
-\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
-
-%%%%%%% Pour VD %%%%%%%
-\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-\rput(-2.8,3){\pnode{VDW}}
-\ncline{->}{VD}{VDW}
-\naput[npos = 1]{$\mu_{V_D}$}
-\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
-\naput[npos=3.5]{$r_{V_D}(H)$}
-\rput(3, 3){\pnode{VDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
-\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
-\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Pour HW %%%%%%%
-\rput(6,-2){\pnode{HW}}
-%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
-\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt, offsetA=-15pt, offsetB=-15pt]{<->}{HW}{HD}
-\nbput[npos=0.45]{Displacement}
-
-%%%%%%% Pour FW %%%%%%%
-\rput(0,-1.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{$r_{F_W}$}
-%%%% collecting %
-\rput(2.7, -1.5){\pnode{FWSE}}
-\ncline[offsetA = -0.2, offsetB = -0.2]{->}{FW}{FWSE}
-\nbput[npos=1]{$\lambda_{HF_W}(H)$}
-%%connection FW HA
-\ncangle[offsetA = 0.2, angleA = 0, angleB = -90, offsetB=15pt, linestyle=dashed, border=2pt]{FW}{HD}
-\end{pspicture}
-\end{pdfpic}
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[ht]
-\caption{\centering Schema V2 texte}
-\begin{pdfpic}
-\begin{pspicture}(0.,0)(14,14)
-\newrgbcolor{mygreen2}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{mygreen}{0.66 0.8 0.4}
-\newrgbcolor{mypink2}{0.78 0.71 0.675}
-\newrgbcolor{mybrown2}{0.68 0.43 0.1}
-\newrgbcolor{myblue}{0.1 0.2 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
-\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-
-%%%%%%% cadre zone W %%%%%%%
-\psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3,-3.5)(10.5,-0.5)
-\rput(3.75, -4.0){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-
-
-%%%%%%% Pour HA %%%%%%%
-\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
-\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
-%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
-\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
-
-%%%%%%% Pour FD %%%%%%%
-\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-\rput(-2.5,5){\pnode{FDW}}
-\ncline{->}{FD}{FDW} %muFD
-\nbput[npos = 1]{$\mu_{F_D}$}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
-\naput[npos=1.5]{$r_{F_D}(H)$}
-\rput(3, 5){\pnode{FDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
-\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
-\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
-
-%%%%%%% Pour VD %%%%%%%
-\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-\rput(-2.8,3){\pnode{VDW}}
-\ncline{->}{VD}{VDW}
-\naput[npos = 1]{$\mu_{V_D}$}
-\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
-\naput[npos=3.5]{$r_{V_D}(H)$}
-\rput(3, 3){\pnode{VDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
-\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
-\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Pour HW %%%%%%%
-\rput(6,-2){\pnode{HW}}
-%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
-\ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt, offsetA=-15pt, offsetB=-15pt]{<->}{HW}{HD}
-\nbput[npos=0.45]{Displacement}
-
-%%%%%%% Pour FW %%%%%%%
-\rput(0,-1.5){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{$r_{F_W}$}
-%%%% collecting %
-\rput(2.7, -1.5){\pnode{FWSE}}
-\ncline[offsetA = -0.2, offsetB = -0.2]{->}{FW}{FWSE}
-\nbput[npos=1]{$\lambda_{HF_W}(H)$}
-%%connection FW HA
-\ncangle[offsetA = 0.2, angleA = 0, angleB = -90, offsetB=15pt, linestyle=dashed, border=2pt]{FW}{HD}
-\end{pspicture}
-\end{pdfpic}
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[ht]
-\caption{\centering Schéma chasse}
+\caption{\centering Schéma HunterRC}
 \begin{pdfpic}
 \begin{pspicture}(0.,0)(14,14)
 \newrgbcolor{mygreen2}{0.52 0.753 0.49}
@@ -600,174 +754,38 @@ Impact de l’anthropisation sur la dynamique de communauté de vecteurs: modél
 %%%%%%% cadre zone D %%%%%%%
 \psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,0.5)(7.5,4)
 \rput(3., 4.5){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-
 %%%%%%% cadre zone W %%%%%%%
 \psframe[linecolor=myblue, linestyle=solid, linewidth=1.5pt, framearc=0.3](-2,-4)(7.5,-0.5)
 \rput(3, -4.5){\psframebox[framearc=0.5, linewidth=1.5pt, linecolor=myblue]{Wild area}}
-
-
-%%%%%%% Pour HA %%%%%%%
-\rput(4.7, 2.85){\pnode{HANW}}
-\rput(4.4, 2.85){\pnode{HANW2}}
-\rput(5.3, 2.85){\pnode{HANE}}
-\rput(5.6, 2.85){\pnode{HANE2}}
-\rput(5,1.5){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Pour HD %%%%%%%
+\rput(5.5,1.7){\rnode{HA}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, armA = 0.5, armB = 0.5, angleB=90]{<-}{HA}{HA}
-\rput(5,3){$r_H(F_W)$}
-
-
-%%%%%%% Pour FD %%%%%%%
-%\rput(0,5){\rnode{FA}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-%\rput(-2.5,5){\pnode{FAW}}
-%\ncline{->}{FA}{FAW} %muFD
-%\nbput{$\mu_{F_D}$}
-%%\ncangles[offsetA =5pt, offsetB = -0.2, angleA = 180, angleB = 180, linestyle=dashed]{FA}{HA} 
-%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FA}{FA}
-%\naput[npos=1.5]{$r_{F_D}(H)$}
-%\rput(3, 5){\pnode{FAE}}
-%\ncline{<-}{FAE}{FA}
-%\rput(2.7, 5.3){$\lambda_{HF_D}(H)$}
-%\rput(1.5, 3.5){\pnode{FAS}}
-%\ncangle[offsetA =0pt, offsetB = 8pt, angleA = -90, angleB = 180, linestyle=dashed]{FA}{HA}
-
-%%%%%%% Pour VD %%%%%%%
-%\rput(10,5){\rnode{VA}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-%\rput(13,5){\pnode{VAE}}
-%\ncline{->}{VA}{VAE}
-%\naput{$\mu_{V_D}$}
-%\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, loopsize=0, armA=0.5, armB=0.5]{->}{VA}{VA}
-%\naput[npos=3.5]{$r_{V_D}(H)$}
-%\rput(6.5, 5){\pnode{VAW}}
-%\ncline{->}{VA}{VAW}
-%\rput(7.1,5.3){$\lambda_{HV_D}(H)$ }
-%\ncangle[offsetA =8pt, offsetB = 0, angleA = 0, angleB = -90, linestyle=dashed]{HA}{VA}
-
+\rput(5.5,3.2){\rnode{rH}{Growth}}
+\rput(4.6,3.2){\pnode{rHW}}
+\rput(8.5,1.7){\pnode{I}}
+\ncline[border=2pt]{->}{I}{HA}
+\nbput[npos = 0.2]{Immigration}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% Pour HW %%%%%%%
-\rput(5,-1){\pnode{HW}}
-%{\psframebox[fillcolor=mypink2, fillstyle=solid]{\begin{tabular}{c} Human Population \\ $H_W$ \end{tabular}}}}
+\rput(5.5,-1.2){\pnode{HW}}
 \ncline[angleA=90, angleB=-90, linestyle = dashed, border=2pt]{<->}{HW}{HA}
 \nbput{Displacement}
 
 %%%%%%% Pour FW %%%%%%%
 \rput(0,-2.){\rnode{FW}{\psframebox[fillcolor=mybrown2, fillstyle=solid]{\begin{tabular}{c} Wild fauna \\ $F_W$ \end{tabular}}}} %FW
 \ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, armA=0.5, armB=0.5]{->}{FW}{FW}
-\naput[npos=1.5]{$r_{F_W}$}
+\naput[npos=1.5]{Growth}
 %%%% collecting %
-\rput(2.7, -2.){\pnode{FWE}}
+\rput(3, -2.){\pnode{FWE}}
+\rput(2.7, -1.5){\pnode{FWEN}}
 \ncline{->}{FW}{FWE}
-\rput(2.3,-1.7){$\lambda_{HF_W}(H)$}
-%%connection FW HA
-\ncangle[offsetA = 0pt, angleA = 90, angleB = 180, offsetB=-8pt, linestyle=dashed, border=2pt]{FW}{HA}
-
-%%%%%%%% Pour VW %%%%%%%
-%\rput(10,-3.){\rnode{VW}{\psframebox[fillcolor=mygreen2, fillstyle=solid]{\begin{tabular}{c} Wild vegetation \\ $V_W$ \end{tabular}}}}
-%\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{<-}{VW}{VW}
-%\naput[npos=1.5]{$r_{V_W}$}
-
-%% contribue a FW
-%\ncline[offsetA = 10pt, offsetB=10pt, linestyle=dashed]{VW}{FW}
-%%% herbivory
-%\rput(12.5, -3){\pnode{VWE}}
-%\ncline{->}{VW}{VWE}
-%\naput[npos=1]{$\lambda_{F_WV_W}$}
-
-%% collecting
-%\rput(7, -3){\pnode{VWW}}
-%\ncline{->}{VW}{VWW}
-%\rput(7.3,-2.7){$\lambda_{HV_W}(H)$}
-%%%connection VW HA
-%\ncangle[offsetA = 0pt, angleA = 90, angleB = 0, offsetB=8pt, linestyle=dashed, border=2pt]{VW}{HA}
+\naput[npos = 0.5]{Hunt}
+%%connection FW HD
+\ncangle[offsetA = 40pt, angleA = 90, angleB = 180, offsetB=-0pt, linestyle=dashed, border=2pt]{->}{FWE}{HA}
 \end{pspicture}
 \end{pdfpic}
 \end{figure}
 
-
-\begin{figure}[ht]
-\caption{\centering Schema Agriculture}
-\begin{pdfpic}
-\begin{pspicture}(0.,0)(14,14)
-\newrgbcolor{mygreen2}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{mygreen}{0.66 0.8 0.4}
-\newrgbcolor{mypink2}{0.78 0.71 0.675}
-\newrgbcolor{mybrown2}{0.68 0.43 0.1}
-\newrgbcolor{myblue}{0.1 0.2 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% cadre zone D %%%%%%%
-\psframe[linecolor=red, linestyle=solid, linewidth=1.5pt, framearc=0.3](-3.5,0.5)(10.5,7.5)
-\rput(3.75, 8){\psframebox[framearc=0.5,linewidth=1.5pt, linecolor=red]{Domestic area}}
-
-%%%%%%% Pour HD %%%%%%%
-\rput(6,3){\rnode{HD}{\psframebox[fillcolor=mypink, fillstyle=solid]{\begin{tabular}{c} Humans\\ $H$ \end{tabular}}}}
-\ncangle[offsetA = 10pt, offsetB = 10pt, angleA=0, armA = 0.5, armB = 0.5, angleB=0]{<-}{HD}{HD}
-%\naput{\begin{tabular}{c} $r_H\Big(F_D,$ \\ $V_D, F_W\Big)$ \end{tabular}}
-\rput(8.5,3.75){$r_H\Big(F_D,V_D, F_W\Big)$}
-
-%%%%%%% Pour FD %%%%%%%
-\rput(0,5){\rnode{FD}{\psframebox[fillcolor=mybrown, fillstyle=solid]{\begin{tabular}{c} Domestic fauna \\ $F_D$ \end{tabular}}}} %FA
-\rput(-2.5,5){\pnode{FDW}}
-\ncline{->}{FD}{FDW} %muFD
-\nbput[npos = 1]{$\mu_{F_D}$}
-\ncangle[offsetA = 20pt, offsetB = 20pt, angleA=90, angleB=90, armA=0.5, armB=0.5]{<-}{FD}{FD}
-\naput[npos=1.5]{$r_{F_D}(H)$}
-\rput(3, 5){\pnode{FDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{FD}{FDE}
-\naput[npos=0.9]{$\lambda_{HF_D}(H)$}
-\ncangle[offsetA = -0.2, offsetB = -15pt, angleA = 0, angleB = 90, linestyle=dashed]{FD}{HD}
-
-%%%%%%% Pour VD %%%%%%%
-\rput(0,3){\rnode{VD}{\psframebox[fillcolor=mygreen, fillstyle=solid]{\begin{tabular}{c} Domestic vegetation \\ $V_D$ \end{tabular}}}}
-\rput(-2.8,3){\pnode{VDW}}
-\ncline{->}{VD}{VDW}
-\naput[npos = 1]{$\mu_{V_D}$}
-\ncloop[offsetA = 20pt, offsetB = 20pt, angleA=-90, angleB=-90, loopsize=0, armA=0.5, armB=0.5]{->}{VD}{VD}
-\naput[npos=3.5]{$r_{V_D}(H)$}
-\rput(3, 3){\pnode{VDE}}
-\ncline[offsetA = 0.2, offsetB = 0.2]{->}{VD}{VDE}
-\naput[npos=1.1]{$\lambda_{HV_D}(H)$ }
-\ncline[offsetA = -0.2, offsetB = -0.2, angleA = 0, angleB = 0, linestyle=dashed]{VD}{HD}
-
-\end{pspicture}
-\end{pdfpic}
-
-\end{figure}
-
-\newpage
-
-\begin{figure}
-\begin{pdfpic}
-\begin{pspicture}(-5,5)
-\newrgbcolor{mygreen}{0.52 0.753 0.49}
-\newrgbcolor{mypink}{0.988 0.91 0.875}
-\newrgbcolor{mybrown}{0.72 0.33 0.07}
-\newrgbcolor{myorange}{0.9 0.59 0.28}
-\newrgbcolor{myblue}{0 0.48 0.8}
-\psset{arrowscale=1.5, arrowinset=0}
-\psset{framearc = 0.3}
-\sffamily
-\large
-%%%%%%% Up %%%%%%%
-\pscircle[linewidth = 0.1, linecolor=myblue](0,0){5}
-\psarc[linewidth = 0.1, linecolor=myblue]{<-}(0,0){5}{130}{180}
-\rput(0,4.5){\rnode{Up}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Biological/Ecological \\ Problems \& Questions \end{tabular}}}}
-\rput(5,0){\rnode{Right}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Mathematical \\ Model(s) \end{tabular}}}}
-\rput(0,-4.3){\rnode{Down}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Theoretical Analysis \\ \normalsize{Exisentence and unicity of solutions ?} \\ \normalsize{Well condtioned ?} \end{tabular}}}}
-\rput(-5, 0){\rnode{Left}{\psframebox[fillcolor=myorange, fillstyle=solid]{\begin{tabular}{c} Numerical \\ Implementation \\ \& Simulations \end{tabular}}}}
-
-\rput(0,3.8){\pnode{UpS}}
-\rput(3.4,0){\pnode{RightW}}
-\rput(0,-3.3){\pnode{DownN}}
-\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{RightW}{UpS}
-\ncline[linestyle = dashed, linecolor=mygreen, linewidth=0.08]{<->}{DownN}{UpS}
-\nbput[npos=0.4]{\textcolor{mygreen}{\begin{tabular}{c} Discussion \\ with Biologists \\ \normalsize{Is it biologicall} \\ \normalsize{coherent ?}\end{tabular}}}
-\end{pspicture}
-\end{pdfpic}
-\end{figure}
 
 \end{document}

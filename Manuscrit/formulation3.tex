@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{graphicx} 
+\usepackage{graphicx,ulem} 
 \usepackage{color}
 \usepackage{amsfonts,amsmath}
 \usepackage{amsthm}
@@ -9,16 +9,16 @@
 %\usepackage{tikz}
 \usepackage{titlesec}
 \usepackage{caption}
-\usepackage{lscape}
+%\usepackage{lscape}
 \usepackage{graphicx}
 \captionsetup{justification=justified}
 \usepackage[toc,page]{appendix}
 \usepackage{hyperref}
 \usepackage{subcaption}
 \usepackage{pdftricks}
+\usepackage{xcolor}
 \begin{psinputs}
 \usepackage{amsfonts,amsmath}
-\usepackage{amsthm}
 	\usepackage{pstricks-add}
    \usepackage{pstricks, pst-node}
    \usepackage{multido}
@@ -27,8 +27,8 @@
 
 \textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
 
-\graphicspath{{./Images/}{./Images/ComparisonBifurcationFAHA}{../Schema}}
-
+  \graphicspath{{./Images/}{../Schema}}
+%\graphicspath{{Figures}}
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
@@ -36,49 +36,51 @@
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \newcommand{\lfd}{\lambda_{F, D}}
-\newcommand{\lva}{\lambda_{V, A}}
 \newcommand{\lfw}{\lambda_{F}}
-\newcommand{\lvw}{\lambda_{V}}
-\newcommand{\df}{\delta_0^F}
-\newcommand{\dv}{\delta_0^V}
-\newcommand{\RV}{R_0^V}
-\newcommand{\RF}{R_0^F}
+\newcommand{\Kfa}{K_{F,\alpha}}
+\newcommand{\cI}{c \mathcal{I}}
 
-\newcommand{\marc}[1]{\textcolor{red}{#1}}
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
 
 \DeclareMathOperator{\Tr}{Tr}
 \newtheorem{theorem}{Theorem}
-
+\newtheorem{prop}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corollary}
 \newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
 
-\title{Suivi Thèse Marc}
+\title{Modèle Chasseur}
 \author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
 
 \begin{document}
 
 \maketitle
-{\hypersetup{hidelinks}
-\tableofcontents}
-\newpage
+%{\hypersetup{hidelinks}
+%\tableofcontents}
+%\newpage
 
 
-\section{Model Consumer-Resource}
+\section{Hunter Model}
 
-We decide to model the human-wild interactions by a consumer-resource model. We still consider two areas, one corresponding to a domestic area, the other to a wild area.
+We \sout{decide to} model the human-wild interactions by a consumer-resource model. We still consider two areas, one corresponding to a domestic area \YD{(villages, etc)}, the other to a wild area \YD{(Savana, Forest, etc)}.
 
-On the wild area, are present wild fauna $F_W$. The dynamic of $F_W$ follows a logistic equation, which carrying capacity $K_F$, depends on the environment. To take into account the possible anthropization of the environment, we introduce the non-negative parameter $\alpha \in [0, 1)$. When $\alpha > 0$, the carrying capacity of the environment is reduced of $\alpha \%$ from its original value.
 
-Moreover, wild fauna is hunted by human present in the wild area. The collecting rate is $\lfw H_W$. It is unbounded, to take into account the possibility of over-hunt. Therefore, the level of anthropization is also taken into account by parameter $\lfw$.
+On the wild area, are present wild fauna $F_W$. The dynamic of $F_W$ follows a logistic equation, \YD{with a} carrying capacity, $K_F$, \YD{dependant} on the environment. To take into account the possible anthropization of the environment, we introduce the non-negative parameter $\alpha \in [0, 1)$. When $\alpha > 0$, the carrying capacity of the environment is reduced of $\alpha \%$ from its original value.
 
-Human present in the domestic, $H_D$, area follow a consumer equation.  The dynamic followed by $H_D$ can be separated in three groups of term. First there is a growth due to food: a constant importation of food $cI$ and food coming from hunt, $e \lfw H_W F_W$, where $e$ is a conversion rate. Second, $H_D$ is subject to natural growth and mortality $(r_D - \mu_D) H_D$. Note that $r_D$ can be understand as $r_D = e \lfd F_D$ where $F_D$ is a constant amount of domestic animals. Third, there is migration between domestic and wild area, modeled by linear functions: $-m_D H_D + m_W H_W$.
+Moreover, wild fauna is hunted by human\YD{s} present in the wild area. The \YD{hunting} rate is $\lfw H_W$. It is unbounded, to take into account the possibility of over-hunt. Therefore, the level of anthropization \YD{(peut-on parler d'anthropisation?)} is also taken into account by parameter $\lfw$.
 
-The dynamic of human present in the wild area corresponds simply to the migration terms. Note that we assume that the migration rate from the domestic area to the wild area is such that $m = \dfrac{m_D}{m_W} < 1$.
+Human present in the domestic area, $H_D$, follow a consumer equation. \YD{Its growth will depend on the available resources}. The dynamic followed by $H_D$ can be separated in three groups of term. First there is a growth due to food: a constant importation of food $\cI$ and food coming from hunt, $e \lfw H_W F_W$, where $e$ is a conversion rate. \sout{Second, $H_D$ is subject to natural growth and mortality $(f_D - \mu_D) H_D$.} \YD{We assume that $H_D$ has a natural death-rate, $\mu_D$. We also consider that the Human population, $H_D$, is able to produce a certain amount of food at the rate $f_D$} Note that $f_D$ can be understand as $f_D = e \lfd F_D$ where $F_D$ is a constant amount of domestic animals. Third, there is migration between domestic and wild area, modeled by linear functions: $-m_D H_D + m_W H_W$.
+
+The dynamic of human present in the wild area corresponds simply to the migration terms. Note that we assume that the migration rate from the domestic area to the wild area is such that $m = \dfrac{m_D}{m_W} < 1$ \YD{. This assumption makes sense, because humans stay a short amount of time in the Wild area than in the Domestic Area.}
 
 Finally, the model is given by the following equations:
 \begin{subequations}
 \begin{equation}
 \left\{ \begin{array}{l}
-\dfrac{dH_D}{dt}= cI + e\lfw H_W F_W + (r_D - \mu_D) H_D - m_D H_D + m_W H_W.
+\dfrac{dH_D}{dt}= \cI + e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W.
 \end{array}\right.
 \end{equation}
 \begin{equation}
@@ -90,203 +92,1387 @@ Finally, the model is given by the following equations:
 \label{equationsHDFWHW}
 \end{subequations}
 
+\section{Existence and uniqueness of global solutions}
+In this section, we state general results on system \eqref{equationsHDFWHW}:  existence of an invariant region, existence and uniqueness of global solutions.
 
-\section{Model analysis}
-An analysis of model \eqref{equationsHDFWHW} is proposed on the following.
+We begin by proving the local existence and uniqueness of solutions of system \eqref{equationsHDFWHW}. The right hand side of equations \eqref{equationsHDFWHW} defines a function $f(y)$ (with $y = (H_D, F_W, H_W)$) which is of class $\mathcal{C}^1$ on $\mathbf{R}^3$. The theorem of Cauchy-Lipschitz ensures that model \eqref{equationsHDFWHW} admits a unique solution, at least locally, for any given initial condition, see \cite{walter_ordinary_1998}.
 
-First, we can note that if $r_D \geq \mu_D + m_D$, we always have $\dfrac{dH_D}{dt} > 0$. Therefore, to avoid infinite growth of $H_D$, we assume $r_D < \mu_D + m_D$. In fact, a majority of the interesting equilibrium requires $r_D < \mu_D$ to exist. We develop this in the following theorem:
+Second, one can notice that having $f_D - \mu_D > 0$ implies $\dfrac{dH_D}{dt} > 0$ for all values of $t$, $F_W$ and $H_W$. This means that the human population will infinitely grow, which is not realistic. Then, on the following, we assume $f_D - \mu_D < 0$. This is only a necessary condition to avoid infinite growth. The following proposition \ref{Invariant region} indicates a compact and invariant subset of $\mathbf{R}_+^3$, on which the solutions are bounded.
 
-\begin{theorem} Model \eqref{equationsHDFWHW} admits the following equilibrium:\\
-\begin{itemize}
-\item When $cI = 0$, a trivial  equilibrium $TE = \Big(0,0,0\Big)$ which is unstable.
-\item When $cI = 0$, a equilibrium of fauna only $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$. \\
-This equilibrium is asymptotically stable if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - r_D} < 1 $
-\item When $0 < \mu_D - r_D$, an equilibrium of Human only $EE^{H} = \Big(\dfrac{cI}{\mu_D - r_D}, 0, \dfrac{m cI}{\mu_D - r_D} \Big)$. \\
-This equilibrium is asymptotically stable if $\dfrac{r_F (\mu_D -r_D) }{m \lfw cI} < 1$
-\item When $1 < \dfrac{r_F (\mu_D -r_D) }{m \lfw cI}$ (which implies $0 < \mu_D - r_D $), an equilibrium of coexistence $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, m H^*_{D} \Big)$. \\
-This equilibrium is asymptotically stable if a quantity $\Delta_{stab} > 0$. More details are given below.
-\end{itemize}
-\end{theorem}
-
-\subsection{Analysis of the existence and stability of the coexistence equilibrium}
-
-Equilibrium $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, H^*_{W} \Big)$ is characterized by (for simplicity we do not note the subscript):
-\begin{equation*}
-H_W^* =  \dfrac{m_D}{m_W} H_D^* = m H_D^*
-\end{equation*}
-
-\begin{equation*}
-H_D^* = \dfrac{r_F}{\lfw m} \left(1 - \dfrac{F_W^*}{K_F(1-\alpha)} \right)
-\end{equation*}
-
-and $F_W^*$ is solution of
-
-\begin{equation*}
-P_F(X) := X^2 \left(\dfrac{er_F}{K_F(1-\alpha)} \right) - X \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right) + \left(\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \right) = 0
-\end{equation*}
-
-
-We note $\Delta_F$ the discriminant of this equation. $\Delta_F$ is positive. Indeed, we have:
-\begin{align*}
-\Delta_F &= \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 - 4\dfrac{er_F}{K_F(1-\alpha)}  \left(\dfrac{(\mu_D -r_D) r_F}{\lfw m} - cI \right) \\
-\Delta_F &= \left(er_F - \dfrac{(\mu_D - r_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  cI \\
-\Delta_F &> 0
-\end{align*}
-
-\begin{figure}[!ht]
-\begin{pdfpic}
-\psset{xunit=0.9cm,yunit=0.9cm}
-\begin{pspicture}(-5,-10)(5,10)
-\psaxes[linewidth=0.7pt, ticks=none, labels=none]{->}(0,0)(-1,-2)(9,4)[$F$, -90][$y$, 180]
-\psplot[algebraic,
-          plotpoints=500,
-          linecolor=blue,
-          linewidth=1.5pt,
-          yMinValue=-10,
-          yMaxValue=10]{-0.1}{10}{0.2*(x-2)*(x-8)}
-\uput{2pt}[50](9.5, 3.2){\textcolor{blue}{$P_F(F)$}}
-
-\rput(3,-0.2){\pnode{Mu}}
-\ncangle[angleA = 90, angleB = 90]{Mu}{Mu}
-\naput[npos = 1.5]{$\dfrac{(\mu_D -r_D)}{m e \lfw}$}
-
-\rput(7,-0.2){\pnode{KF}}
-\ncangle[angleA = 90, angleB = 90]{KF}{KF}
-\naput[npos = 1.5]{$K_F(1-\alpha)$}
-
-\rput(2,0.2){\pnode{F1}}
-\ncangle[angleA = -90, angleB = -90]{F1}{F1}
-\nbput{$F_{W, 1}$}
-
-\rput(8,0.2){\pnode{F2}}
-\ncangle[angleA = -90, angleB = -90]{F2}{F2}
-\nbput{$F_{W, 2}$}
-\end{pspicture}
-\end{pdfpic}
-\caption{Graph of $P_F(F)$.}
-\end{figure}
-
-Therefore, $P_F$ admits:
-\begin{itemize}
-\item One negative root $F^*_1$ and one positive root $F^*_2$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \leq 0 \Leftrightarrow \dfrac{(\mu_D - r_D) r_F}{\lfw m cI} \leq 1$
-\item Two positive roots $F^*_1, F^*_2$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$
-\end{itemize}
-They are given by:
-%\begin{equation*}
-%F_i^* = \dfrac{er_F + \dfrac{(\mu_D-r_D) r_F}{\lfw m K_F(1-\alpha)}}{2\dfrac{er_F}{K_F(1-\alpha)}} \pm \dfrac{\sqrt{\Delta_F}}{2\dfrac{er_F}{K_F(1-\alpha)}}
-%\end{equation*}
-
-\begin{equation*}
-F_i^* = \dfrac{K_F(1-\alpha)}{2}\left(1 \pm \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - r_D}{2\lfw m e}
-\end{equation*}
-
-Moreover, $P_F$ is positive on $(0, F_1^*)$, negative on $(F^*_1, F^*_2)$ and positive on $(F^*_2, +\infty)$. Lets compute $P_F(K_{F,\alpha})$ (where $ K_{F,\alpha} = K_F(1-\alpha)$):
-
-
-
-\begin{align*}
-P_F(K_{F,\alpha}) &= K_{F,\alpha}^2 \left(\dfrac{er_F}{K_{F,\alpha}} \right) - K_{F,\alpha} \left(er_F + \dfrac{(\mu_D - r_D) r_F}{\lfw m K_{F,\alpha}} \right) + \left(\dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \right) \\
-&= K_{F,\alpha}er_F - K_{F,\alpha}er_F - \dfrac{(\mu_D - r_D) r_F}{\lfw m} + \dfrac{(\mu_D - r_D) r_F}{\lfw m} - cI \\
-&= -cI\\
-& < 0
-\end{align*}
-
-Therefore, $F_1^* < K_{F, \alpha} < F_2^*$. 
-
-This means that $F_2^*$ is biologically incoherent, and can not defined a equilibrium. Since a negative value for $F^*$ is also biologically incoherent, we obtained that
-
-\textbf{the system admits one endemic equilibrium $EE^{HF_W}$ if $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$} (which implies $\mu_D > r_D$).
-
-\begin{theorem}[Hunt Limitaion]
-Co-existence between human and fauna is possible only if the hunt parameter $\lfw$ is such that
+\begin{prop}\label{Invariant region}
+The region
+$$\Omega = \Big\{\Big(H_D, F_W, H_W \Big) \in (\mathbb{R}_+)^3  \Big|H_D + H_W + eF_W \leq S^{max}, F_W \leq F_W^{max}, H_W \leq H_W^{max} \Big\},$$
+where
 $$
-\lambda_{F, max} := \dfrac{(\mu_D - r_D) r_F}{m cI} > \lfw
+S^{max} = \Big(1 + \dfrac{m_D}{m_W} \Big) \dfrac{cI + e K_F (1-\alpha) (r_F + \mu_D - f_D)}{\mu_D - f_D},
+\quad
+F_W^{max} = K_F(1-\alpha),
+\quad
+H_W^{max} = \dfrac{m_D}{m_D + m_W} S^{max}
+$$
+is a compact and invariant set for system \eqref{equationsHDFWHW}. In particular, this means that any solutions of equations \eqref{equationsHDFWHW} with initial condition in $\Omega$ remains bounded.
+\end{prop}
+
+\begin{proof}
+To prove this, we will use the notion of invariant region, see \cite{smoller_shock_1994}. Before, we introduce the variable $S = H_D + H_W + e F_W$. We have:
+
+\begin{equation}
+\dfrac{dS}{dt} = \cI + (f_D - \mu_D) \Big(S - H_W - eF_W \Big) + e r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W.
+\end{equation}
+
+With this new variable, the model writes:
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dS}{dt} = \cI + (f_D - \mu_D) \Big(S - H_W - eF_W \Big) + e r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D (S - eF_W) - (m_W + m_D) H_W 
+\end{array} \right.
+\end{equation}
+\label{equationsSFWHW}
+\end{subequations}
+
+We define the function $g(z)$ as the right hand side of this equations. We also introduce the following functions:
+$$
+G_1(z) = S - S^{max},
+\quad
+G_2(z) = F_W - F_W^{max},
+\quad
+G_3(z) = H_W - H_W^{max}
 $$
 
-\end{theorem}
+Following \cite{smoller_shock_1994}, we will show that quantities $(\nabla G_1 \cdot g)|_{S = S^{max}}$, $(\nabla G_2 \cdot g)|_{F_W = F_W^{max}}$ and $(\nabla G_3 \cdot g)|_{H_W = H_W^{max}}$ are non-positive for $z \in \Omega_S = \Big\{ \Big(S, F_W, H_W \Big) \in (\mathbb{R})^3  \Big|S \leq S^{max}, F_W \leq F_W^{max}, H_W \leq H_W^{max} \Big\}$.
+
+Using the fact that $\mu_D - f_D >0$ and $z\in \Omega_S$, we have:
+
+\begin{align*}
+(\nabla G_1 \cdot g)|_{S = S^{max}} &= \cI + (f_D - \mu_D) \Big(S^{max} - H_W - eF_W \Big) + e r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W, \\
+&= \cI + (f_D - \mu_D) S^{max} + (\mu_D - f_D) H_W + (\mu_D - f_D + r_F)eF_W - e r_F \dfrac{F_W^2}{K_F(1-\alpha)}, \\
+&\leq  \cI + (f_D - \mu_D) S^{max} +(\mu_D - f_D) \dfrac{m_D}{m_D + m_W} S^{max} +e (\mu_D - f_D + r_F) K_F(1-\alpha), \\
+&\leq  \cI + (\mu_D - f_D)\big(\dfrac{m_D}{m_D + m_W} - 1\Big)S^{max} +e (\mu_D - f_D + r_F) K_F(1-\alpha), \\
+&\leq  - \dfrac{m_W}{m_D + m_W}(\mu_D - f_D)S^{max} +\cI +e (\mu_D - f_D + r_F) K_F(1-\alpha), \\
+&\leq \left(-\dfrac{m_W}{m_D + m_W} \Big(1+ \dfrac{m_D}{m_W}\Big) + 1 \right) \Big(\cI +e (\mu_D - f_D + r_F) K_F(1-\alpha)\Big),\\
+&\leq \left(-\dfrac{m_D + m_W}{m_D + m_W} + 1 \right) \Big(\cI +e (\mu_D - f_D + r_F) K_F(1-\alpha)\Big),
+\end{align*}
+
+that is $(\nabla G_1 \cdot g)|_{S = S^{max}} \leq 0$. The two others inequalities are straightforward to obtain. We have:
+\begin{align*}
+(\nabla G_2 \cdot g)|_{F_W = F_W^{max}} &= r_F  \left(1 - \dfrac{K_F (1-\alpha)}{K_F (1-\alpha)}\right)K_F (1-\alpha)  - \lfw H_W K_F (1-\alpha), \\
+(\nabla G_2 \cdot g)|_{F_W = F_W^{max}} & = - \lfw H_W K_F (1-\alpha), \\
+(\nabla G_2 \cdot g)|_{F_W = F_W^{max}} & \leq 0.
+\end{align*}
+
+The computations for $(\nabla G_3 \cdot g)|_{H_W = H_W^{max}}$ give:
+
+\begin{align*}
+(\nabla G_3 \cdot g)|_{H_W = H_W^{max}} &= m_D (S - eF_W) - (m_W + m_D) H_W^{max} \\
+(\nabla G_3 \cdot g)|_{H_W = H_W^{max}} &= m_D (S - eF_W) - m_D S^{max} \\
+(\nabla G_3 \cdot g)|_{H_W = H_W^{max}} & \leq m_D (S - S^{max} -  eF_W) \\
+(\nabla G_3 \cdot g)|_{H_W = H_W^{max}} & \leq 0
+\end{align*}
+
+We have shown that $(\nabla G_1 \cdot g)|_{S = S^{max}} \leq 0$, $(\nabla G_2 \cdot g)|_{F_W = F_W^{max}} \leq 0$ and $(\nabla G_3 \cdot g)|_{H_W = H_W^{max}} \leq 0$ in  $\Omega_S$.  According to \cite{smoller_shock_1994}, this prove that $\Omega_S$ is an invariant region for system \eqref{equationsSFWHW}.
+
+This also shows that the set  $\Big\{\Big(H_D, F_W, H_W \Big) \in \mathbb{R}^3  \Big|H_D + H_W + eF_W \leq S^{max}, F_W \leq F_W^{max}, H_W \leq H_W^{max} \Big\}$ is invariant for system \eqref{equationsHDFWHW}. 
+
+Moreover, for any point $y \in \partial (\mathbb{R}_+)^3$, the vector field defined by $f(y)$ is either tangent or directed inward. Then, $\Omega$ is an invariant region for equations \eqref{equationsHDFWHW}. 
+\end{proof}
+
+We finally conclude this section by proving that equations \eqref{equationsHDFWHW} define a dynamical system on $\Omega$.
+
+\begin{prop}
+Equations \eqref{equationsHDFWHW} define a dynamical system on $\Omega$, that is, for any initial condition $(t_0, y)$ with $t_0 \in \mathbf{R}$ and $y \in \Omega$, it exists a unique solution of equations \eqref{equationsHDFWHW}, and this solution is defined for all $t \geq t_0$.
+\end{prop}
+
+\begin{proof}
+We already prove that equations \eqref{equationsHDFWHW} admit, at least locally, a unique solution for every initial condition. Moreover, since $\Omega$ is an invariant region, the solutions with initial condition on $\Omega$ are bounded. Based on uniform boundedness, we deduce that solutions of system $\eqref{equationsHDFWHW}$ with initial condition on $\Omega$ exists globally, for all $t\geq t_0$. Therefore, $\eqref{equationsHDFWHW}$ defines a dynamical system on $\Omega$.
+\end{proof}
+
+\section{Model analysis in the case $\cI = 0$}
+In this section, we study the specific case where $\cI = 0$. This mean that there is no importation of resources and the human population mainly dependents on hunt to subsist. The system rewrites:
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{dF_W}{dt} = r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\end{equation}
+\label{equationsHDFWHW, cI=0}
+\end{subequations}
+
+\subsection{Theoretical analysis}
+On the following, we state and prove results dealing with existence of equilibrium points of this system as well as with their stability. We start by a proposition concerning their existence.
 
 
+\begin{prop}
+\label{theoremEquilibre, cI=0}
+The following results hold:
+\begin{itemize}
+\item System \eqref{equationsHDFWHW, cI=0} admits a trivial equilibrium $TE = \Big(0,0,0\Big)$ that always exists.
+\item System \eqref{equationsHDFWHW, cI=0} admits a fauna-only equilibrium $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$ that always exists.
+\item If 
+$$\dfrac{\mu_D - f_D}{\lfw m e}< K_F(1-\alpha),$$ 
+then system \eqref{equationsHDFWHW, cI=0} admits a unique coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D, \cI = 0}, F^*_{W, \cI = 0}, H^*_{W, \cI = 0} \Big)$ \\ 
+where 
+$$F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad 
+H^*_{D, \cI = 0} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, \cI = 0}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W, \cI = 0} = m H^*_{D, \cI = 0}.$$
+\end{itemize}
+\end{prop}
 
-We can now look for the stability of this equilibrium. We are thus in the case where $\dfrac{(\mu_D - r_D) r_F}{\lfw m cI} > 1$
+\begin{proof}
+An equilibrium of system \eqref{equationsHDFWHW, cI=0} satisfies the system of equations:
+\begin{equation}\label{system-equilibre, cI=0}
+\left\lbrace \begin{array}{cll}
+ e \lfw m F_W^* + f_D - \mu_D = 0& \mbox{or} & H_D^* = 0,\\
+F_W^* - K_F(1-\alpha) \Big(1 - \dfrac{\lfw m H^*_D}{r_F} \Big) = 0& \mbox{or} & F^*_W = 0,\\
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*.&&
+\end{array} \right.
+\end{equation}
+When $H_D^*=0$ and $F_W^*=0$, we recover the trivial equilibrium $TE = \Big(0,0,0\Big)$. When $H_D^*=0$ and $F_W^*\neq0$, we obtain the fauna-only equilibrium $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$. Finally, when $H_D^*\neq0$ and $F_W^*\neq0$, direct computations lead to a unique coexistence equilibrium 
+$EE^{HF_W}_{\cI = 0} = \Big(H^*_{D, \cI = 0}, F^*_{W, \cI = 0}, H^*_{W, \cI = 0} \Big)$ \\ 
+where 
+$$
+F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad
+H^*_{D, \cI = 0} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, \cI = 0}}{K_F(1-\alpha)} \Big),
+\quad
+H^*_{W, \cI = 0} = m H^*_{D, \cI = 0}
+$$
+which is biologically meaningful whenever $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha).$
+\end{proof}
 
-The system's Jacobian is given by:
+Now, we look for the local asymptotic stability of the equilibrium.
+
+\begin{prop}\label{propLAS, cI=0} The following results are valid.
+\begin{itemize}
+\item The trivial equilibrium $TE$ is unstable.
+\item Equilibrium of fauna only $EE^{F_W}$ is Locally Asymptotically Stable (LAS) if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} < 1 $.
+\item When it exists, equilibrium of coexistence $EE^{HF_W}_{\cI =0}$ is LAS if the quantity $\Delta_{Stab, \cI =0} > 0$ is positive, where
+\begin{multline*}
+\Delta_{Stab, \cI=0} = \left(\mu_D -f_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
+\left(\big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}} \right) - m_D \lfw \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)}\right)  F^*_{W} 
+\end{multline*}
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+To prove this theorem, we look at the Jacobian of system \eqref{equationsHDFWHW, cI=0}. It is given by:
+
 \begin{equation*}
-\mathcal{J} = \begin{bmatrix}
-r_D-\mu_D - m_D & e \lfw H_W & e\lfw F_W + m_W \\
+\mathcal{J}(H_D, F_W, H_W) = \begin{bmatrix}
+f_D-\mu_D - m_D & e \lfw H_W & e\lfw F_W + m_W \\
 0 & r_F \left( 1 - \dfrac{2F_W}{K_F(1-\alpha)} \right) - \lfw H_W & - \lfw F_W \\
 m_D & 0 & -m_W
-\end{bmatrix}
+\end{bmatrix}.
 \end{equation*}
 
-Note that by assumption $r_D-\mu_D - m_D < 0$.
+\begin{itemize}
+\item At equilibrium $TE$, we have:
+\begin{equation*}
+\mathcal{J}(TE) = \begin{bmatrix}
+f_D-\mu_D - m_D & 0 &  m_W \\
+0 & r_F  &  0\\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+and $r_F > 0$ is an eigenvalue of $\mathcal{J}(TE)$. So, $TE$ is unstable.
+\item At equilibrium $EE^{F_W}$, we have
+\begin{equation*}
+\mathcal{J}(EE^{F_W}) = \begin{bmatrix}
+f_D-\mu_D - m_D & 0 & e\lfw K_F(1-\alpha) + m_W \\
+0 & -r_F  & -\lfw K_F(1-\alpha)  \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
 
-At equilibrium $EE^{H_D F_W}$, we have:
+The characteristic polynomial of $\mathcal{J}(EE^{F_W})$ is given by:
+\begin{equation*}
+\chi(X) = (X +r_F) \times \left(X^2 - X\Big(f_D - \mu_D - m_D - m_W \Big) + m_W(\mu_D - f_D) - m_D e \lfw K_F(1-\alpha) \right).
+\end{equation*}
+
+We need to determine the sign of the roots' real part of the second factor. Since the coefficient in $X$ is positive, the sign of their real part is determined by the sign of the constant coefficient.
+The roots have a negative real part if the constant coefficient is positive \textit{ie} if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} < 1 $, and a positive real part if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} > 1 $. Stability of $\mathcal{J}(EE^{F_W})$ follows.
+\item The proof of the last point, concerning the asymptotic stability of equilibrium $EE^{HF_W}$ is done in the same way than for the case $\cI > 0$. We refer to the proof of proposition \ref{propLAS}.
+\end{itemize}
+\end{proof}
+
+
+The following intermediate table gives an overview of the long term behavior:
+
+\begin{table}[!ht]
+\centering
+\def\arraystretch{2}
+\begin{tabular}{c|c|c|c}
+$\cI$ & $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)}$ &  $\Delta_{Stab}$ & \\
+\hline
+\multirow{3}{*}{$=0$} & $ > 1$ & &$EE^{F_W}$ exists and is LAS.  \\
+\cline{2-4}
+ & \multirow{2}{*}{$< 1$} & $>0$ &$EE^{HF_W}_{\cI=0}$ exists and is LAS.\\
+ \cline{3-4}
+ & & $ < 0$ &$EE^{HF_W}_{\cI=0}$ exists and is unstable.
+\end{tabular}
+\caption{\centering Intermediate table giving the known conditions of existence and asymptotic stability of equilibrium for system \eqref{equationsHDFWHW, cI=0}}
+\end{table}
+
+We can complete this table by looking for global asymptotic stability and existence of limit cycle. We will use the following theorem:
+
+\begin{theorem}\label{theoremVidyasagar} \cite{vidyasagar_decomposition_1980, dumont_mathematical_2012}
+Consider the following $\mathcal{C}^1$ system
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dx}{dt} = f(x), \\
+\dfrac{dy}{dt} = g(x, y) 
+\end{array} \right.
+\label{equationVidyasagar}
+\end{equation}
+
+with $(x, y) \in \mathbf{R}^n \times\mathbf{R}^m$. Let $(x^*, y^*)$ be an equilibrium point.
+If $x^*$ is GAS in $\mathbf{R}^n$ for the system $\dfrac{dx}{dt} = f(x)$, and if $y^*$ is GAS in $\mathbf{R}^m$ for the system $\dfrac{dy}{dt} = g(x^*, y)$, then $(x^*, y^*)$ is (locally) asymptotically stable for system \eqref{equationVidyasagar}. Moreover, if all trajectories of \eqref{equationVidyasagar} are forward bounded, then $(x^*, y^*)$ is GAS for \eqref{equationVidyasagar}.
+\end{theorem}
+
+The following proposition holds true:
+
+\begin{prop}\label{propEEFGAS}If 
+$$
+\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1,
+$$
+that is if equilibrium $EE^{F_W}$ is LAS, then it is globally asymptotically stable (GAS) on $\Omega$ for system \eqref{equationsHDFWHW, cI=0}.
+\end{prop}
+
+\begin{proof}
+In the following, we assume $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1$. We consider a solution $(H_D^s, F_W^s, H_W^s)$ of equations \eqref{equationsHDFWHW, cI=0} with initial conditions in $\Omega$. Using the fact that $\Omega$ is an invariant region, we have:
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH^s_D}{dt} \leq e\lfw H^s_W K_F(1-\alpha) + (f_D - \mu_D) H^s_D - m_D H^s_D + m_W H^s_W , \\
+\dfrac{dF^s_W}{dt} = r_F \left(1 - \dfrac{F^s_W}{K_F(1-\alpha)} \right) F^s_W - \lfw F^s_W H^s_W \\
+\dfrac{dH^s_W}{dt}= m_D H^s_D - m_W H^s_W 
+\end{array} \right.
+\end{equation}
+
+We can study the limit system, given by:
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt} = \Big(e\lfw K_F(1-\alpha) + m_W\Big)H_W + (f_D - \mu_D - m_D) H_D \\
+\dfrac{dF_W}{dt} = r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{limitSystem}
+\end{equation}
+
+We will apply theorem \ref{theoremVidyasagar} on this system, with $x = (H_D, H_W)$, $y = F_W$, $x^* = (0,0)$ and $y^* = K_F(1- \alpha)$.
+
+We have that $x^*$ is GAS for system $\dfrac{dx}{dt} = f_{[1,3]}(x)$. Indeed, $x^*$ is the unique equilibrium of this system, and it is LAS since $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1$. By applying the Bendixson-Dulac theorem \marc{ref}, we show that $\dfrac{dx}{dt} = f_{[1,3]}(x)$ does not admit any limit cycle. Therefore, the Poincarré theorem \marc{ref} shows that $(0, 0)$ is GAS for $\dfrac{dx}{dt} = f_{[1,3]}(x)$.
+
+It is quite immediate to show that $y^*$ is GAS for system $\dfrac{dy}{dt} = f_{[2]}(x^*, y)$. 
+
+Moreover, the trajectories of the solution of limit-system \eqref{limitSystem} with initial condition in $\Omega$ are bounded (theorem \ref{Invariant region}). So, we can apply theorem \ref{theoremVidyasagar}, and we obtain that equilibrium $\Big(0, K_F(1-\alpha), 0 \Big)$ is GAS on $\Omega$ for the limit system, and therefore for the original system \eqref{equationsHDFWHW}
+\end{proof}
+
+
+On the following, we will show the existence of limit cycle. The following theorem will be useful:
+
+\begin{theorem}\cite{zhu_stable_1994}\label{periodicASOrbit}
+We consider the system of differential equations
+$$
+\dfrac{dx}{dt} = g(x), \quad x \in \mathcal{D}.
+$$
+If
+\begin{itemize}
+\item $\mathcal{D}$ is an open, $p$-convex subset of $\mathbf{R}^3$,
+\item $g$ is analytic in $\mathcal{D}$,
+\item $\mathcal{D}$ contains a unique equilibrium point $x^*$ and $\det(\mathcal{J}_g(x^*)) < 0$,
+\item the system is competitive and irreducible in $\mathcal{D}$,
+\item the system is dissipative: For each $x_0 \in \mathcal{D}$, the positive semi-orbit through $x_0$, $\phi^+(x_0)$ has a compact closure in $\mathcal{D}$ . Moreover, there exists a compact subset $\mathcal{B}$ of $\mathcal{D}$ with the property that for each $x_0 \in \mathcal{D}$, there exists $T(x_0) > 0$ such that $x(t, x_0) \in \mathcal{B}$ for $t \geq T(x_0)$.
+\end{itemize}
+
+then either $x^*$ is stable, or there exists at least one non-trivial orbitally asymptotically stable  periodic orbit in $\mathcal{D}$.
+\end{theorem}
+
+The following proposition holds true:
+
+\begin{prop}\label{LimitCycle, cI=0}
+If $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} < 1$ and $\Delta_{Stab} < 0$, system \eqref{equationsHDFWHW, cI=0} admits an orbitally asymptotically stable periodic solution.
+\end{prop}
+
+\begin{proof}
+Following \cite{wang_predator-prey_1997}, we do the following change of variables: $h_D =  H_D$, $f_W = -F_W$ and $h_W = -H_W$.  The system \eqref{equationsHDFWHW, cI=0} is transformed into:
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dh_D}{dt}= e\lfw h_W f_W + (f_D - \mu_D) h_D - m_D h_D - m_W h_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{df_W}{dt} = r_F \left(1 + \dfrac{f_W}{K_F(1-\alpha)} \right) f_W + \lfw f_W h_W \\
+\dfrac{dh_W}{dt}= -m_D h_D - m_W h_W 
+\end{array} \right.
+\end{equation}
+\label{equationshDfWhW, cI=0}
+\end{subequations}
+
+We note $\mathcal{D} = \Big\{z = (h_D, f_W, h_W) | 0 < h_D, f_W < 0, h_W < 0 \Big\}$, and $g(z)$ the right hand side of the system. It is clear that $\mathcal{D}$ is a $p$-convex set, in which $g$ is analytic, and irreducible.
+
+The Jacobian of $g$ is given by:
 
 \begin{equation*}
-\mathcal{J}(EE^{H_D F_W}) = \begin{bmatrix}
-r_D -\mu_D - m_D & e \lfw m H_D^* & e \lfw F^*_W +m_W \\
+\mathcal{J}_g(z) = \begin{bmatrix}
+f_D -\mu_D - m_D & e \lfw h_W & e \lfw f_W - m_W \\
+0 & r_F \Big(1 + \dfrac{2 f_W}{K_F(1-\alpha)} + \lfw h_W & \lfw f_W \\
+-m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+The non diagonal term are non positive for $z \in \mathcal{D}$. Thus, system \eqref{equationshDfWhW, cI=0} is competitive in $\mathcal{D}$.
+
+We note $h_D^* = H_D^*$, $f_W^* = -F_W^*$ and $h_W^* = -H_W^*$. According to propositions \ref{theoremEquilibre, cI=0} and \ref{propLAS, cI=0}  $\Big(h_D^*, f_W^*, h_W^* \Big)$, is the unique equilibrium of system \eqref{equationshDfWhW, cI=0}, and $\det(\mathcal{J}_g((h_D^*, f_W^*,h_W^*)) < 0$. Moreover, if $\Delta_{stab} < 0$ it is unstable.
+
+Since it exists a compact and invariant region for system \eqref{equationsHDFWHW}, it is also the case for system \eqref{equationshDfWhW, cI=0}. Thus, system \eqref{equationshDfWhW, cI=0} is also dissipative, and according to theorem \ref{periodicASOrbit}, if $\Delta_{stab} < 0$, system \eqref{equationshDfWhW, cI=0} admits a non-trivial orbitally asymptotically stable  periodic orbit in $\mathcal{D}$. Since the change of variable we have done is an automorphism, this result is also true for system \eqref{equationsHDFWHW, cI=0}.
+\end{proof}
+
+The results we obtained are summarized in the following table:
+\begin{table}[!ht]
+\centering
+\def\arraystretch{2}
+\begin{tabular}{c|c|c|c}
+$\cI$ & $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)}$ &  $\Delta_{Stab}$ & \\
+\hline
+\multirow{3}{*}{$=0$} & $ > 1$ & &$EE^{F_W}$ exists and is GAS.  \\
+\cline{2-4}
+ & \multirow{3}{*}{$< 1$} & $>0$ &$EE^{HF_W}_{\cI=0}$ exists and is LAS.\\
+ \cline{3-4}
+ & & \multirow{2}{*}{$ < 0$} & $EE^{HF_W}_{\cI=0}$ exists and is unstable ; there is an asymptotically \\
+ & & &  stable periodic solution.
+\end{tabular}
+\caption{\centering Conditions of existence and asymptotic stability of equilibrium for system \eqref{equationsHDFWHW, cI=0}}
+\end{table}
+
+
+\subsection{Interpretation}
+Inside this model, the parameters $\alpha$ and $\lfw$ represents the impact of human activities on their environment. It is interesting to interpret the previous results as a function of this parameters, in order to understand the consequences of an increase (or decrease) of hunt activities or environment destruction.
+
+First, we start by condition $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} < 1$, which is required for $EE^{HF_W}$ to exist. We propose the following definition:
+
+\begin{definition} We define 
+$$\lambda_{F, \cI=0}^{Min} := \dfrac{\mu_D - f_D}{m e K_F(1-\alpha)}$$
+such that 
+$$
+\text{$EE^{HF_W}$ exists} \Leftrightarrow \lambda_{F, \cI=0}^{Min}  <  \lfw.
+$$
+\end{definition}
+\begin{proof}
+The proof is straightforward: $EE^{HF_W}$ exists if $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} < 1 \Leftrightarrow \dfrac{\mu_D - f_D}{ m e K_F(1-\alpha)} < \lfw$.
+\end{proof}
+
+This means that if the hunting rate is not sufficient, there is no co-existence possible, and even no steady state with human population. This is due to the fact that when $\cI = 0$, only hunting activities ensure food intake. Consequently, if there is not enough hunt, the human population can not subsist.
+
+We can note that $\lambda_{F, \cI=0}^{Min}$ is a increasing function of the antrhopization parameter $\alpha$ : the more anthropized the environment, the fewer wild animals there are, and the greater the hunting rate required. 
+
+\medskip
+Now, we can rewrite the condition $\Delta_{Stab} > 0$ which is required for $EE^{HF_W}$ to be stable.
+
+\begin{definition}
+We define
+\begin{multline*}
+\lambda_{F, \cI =0}^{Max}  = \\
+ \dfrac{\left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]\left(1+\sqrt{1+4\dfrac{m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D K_F(1- \alpha)}
+\end{multline*}
+
+such that $\Delta_{Stab} > 0 \Leftrightarrow \lfw < \lambda_{F, \cI =0}^{Max}$.
+\end{definition}
+\begin{proof}
+Using the value of $F^*_{W, \cI = 0}$,  and the notation $\Kfa = K_F(1-\alpha)$, we have:
+\begin{multline*}
+\Delta_{Stab, \cI = 0} > 0 \\
+\Leftrightarrow \left(\mu_D - f_D + m_D + m_W + \dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) \times  \left(\big( \mu_D -f_D + m_D + m_W)\dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) > \\ m_D\left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m \Kfa} \right) \dfrac{\mu_D - f_D}{m e}, \\
+\Leftrightarrow \left(\mu_D - f_D + m_D + m_W \right)^2 \dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} + \left(\mu_D - f_D + m_D + m_W \right)\left(\dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right)^2 > \\ \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m \Kfa} \right) \dfrac{m_W(\mu_D - f_D)}{e}, \\
+\Leftrightarrow \lfw \Kfa \left(\mu_D - f_D + m_D + m_W \right)^2 \dfrac{r_F(\mu_D-f_D)}{m e} + \left(\mu_D - f_D + m_D + m_W \right)\left(\dfrac{r_F(\mu_D-f_D)}{m e} \right)^2 > \\m_D \left((\lfw \Kfa)^2 er_F - \dfrac{(\mu_D - f_D) r_F}{m}\lfw \Kfa  \right) \dfrac{(\mu_D - f_D)}{me}, \\
+\Leftrightarrow \lfw \Kfa \left(\mu_D - f_D + m_D + m_W \right)^2 + \left(\mu_D - f_D + m_D + m_W \right)\dfrac{r_F(\mu_D-f_D)}{m e} >  m_D\left((\lfw \Kfa)^2 e - \dfrac{(\mu_D - f_D) }{m}\lfw \Kfa  \right), \\
+\Leftrightarrow 0 > \Big(\lfw \Kfa \Big)^2 em_D -  \Big(\lfw \Kfa \Big) \left(m_W (\mu_D - f_D) + \big(\mu_D - f_D + m_D + m_W\big)^2 \right) \\ - \big(\mu_D - f_D + m_D + m_W\big) \dfrac{r_F (\mu_D - f_D)m_W}{m_D e}.
+\end{multline*}
+
+We define 
+\begin{multline*}
+P_{\Delta_{Stab, \cI = 0}}(X) := X^2 em_D -  X \left(m_W (\mu_D - f_D) + \big(\mu_D - f_D + m_D + m_W\big)^2 \right) \\ - \big(\mu_D - f_D + m_D + m_W\big) \dfrac{r_F (\mu_D - f_D)m_W}{m_D e},
+\end{multline*} 
+
+such that we have 
+\begin{equation}
+\Delta_{Stab, \cI = 0} > 0 \Leftrightarrow P_{\Delta_{Stab, \cI = 0}}(K_F(1-\alpha)\lfw) < 0.
+\label{equivalenceDeltaStabP}
+\end{equation}
+
+$P_{\Delta_{Stab, \cI = 0}}$ has a positive dominant coefficient, and its other coefficients are negative. So,  $P_{\Delta_{Stab, \cI = 0}}$ admits a unique positive root, noted $\Big(\Kfa \lfw \Big)^*$, given by:
+\begin{multline}
+\Big(\Kfa \lfw \Big)^* = \\
+ \dfrac{\left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]\left(1+\sqrt{1+4\dfrac{m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D}
+\end{multline}
+
+Moreover, $P_{\Delta_{Stab}}$ is negative on $\left[0, \Big(\Kfa \lfw \Big)^* \right)$ and positive on $\left(\Big(\Kfa \lfw \Big)^*, +\infty \right)$. Using \eqref{equivalenceDeltaStabP}, we obtain that $EE^{HF_W}_{\cI = 0}$ is asymptotically stable if $\lfw \Kfa < \Big(\Kfa \lfw \Big)^* \Leftrightarrow \lfw  < \dfrac{\Big(\Kfa \lfw \Big)^*}{\Kfa}$.
+
+We can verify that this condition is compatible with the existing condition of $EE^{HF_W}_{\cI = 0}$, which is $\lfw \Kfa > \dfrac{\mu_D - f_D}{m e}$. In other terms, we need to verify that $\Big(\Kfa \lfw \Big)^* > \dfrac{\mu_D - f_D}{m e}$.
+
+We have :
+$$P_{\Delta_{Stab}}(\dfrac{\mu_D - f_D}{m e}) = -(\mu_D - f_D + m_D +m_W) \dfrac{(\mu_D - f_D) m_W}{m_D e} \Big(m_D - f_D + m_D + m_W + r_F) < 0$$
+
+Since $P_{\Delta_{Stab}}$ is positive on $\left(\Big(K_F(1-\alpha)\lambda_F \Big)^*, +\infty \right)$, we do have $(K_F(1-\alpha)\lambda_F)^* > \dfrac{\mu_D - f_D}{m e}$.
+\end{proof}
+
+This result can be interpreted as follow: if the hunting rate is too high, the system's dynamic tends toward a limit cycle, which correspond to a classical predator-prey system. We can also note that $\lambda_{F, \cI =0}^{Max} $ is decreasing as a function of $K_F(1-\alpha)$. 
+
+
+
+\section{Model analysis in the case $c\mathcal{I} > 0$}
+Now, we consider the case were food import occurs, \textit{ie} we assume $c\mathcal{I} > 0$. Since the human subsistence does not depend only on hunt, the system's dynamic and its interpretation change.
+
+
+\subsection{Theoretical analysis}
+\begin{prop}
+The following results hold:
+\begin{itemize}
+\item System \eqref{equationsHDFWHW} has a Human-only equilibrium $EE^{H} = \Big(\dfrac{c\mathcal{I}}{\mu_D - f_D}, 0, \dfrac{m \ c\mathcal{I}}{\mu_D - f_D} \Big)$ that always exists.
+\item If $$ \lfw < \dfrac{r_F (\mu_D -f_D)}{m c\mathcal{I}},$$ then system \eqref{equationsHDFWHW} has a unique coexistence equilibrium $EE^{HF_W}_{c\mathcal{I} = 0} = \Big(H^*_{D}, F^*_{W}, m H^*_{D} \Big)$
+where
+$$F^*_{W} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},\quad
+H^*_{D} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W} = m H^*_{D}$$
+and
+$$
+\Delta_F = \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  c\mathcal{I}.
+$$
+\end{itemize} 
+\end{prop}
+
+\begin{proof}
+An equilibrium of system \eqref{equationsHDFWHW} satisfies the system of equations:
+\begin{equation}\label{system-equilibre}
+\left\lbrace \begin{array}{cll}
+c\mathcal{I} + e \lfw m F_W^* H_D^* + (f_D - \mu_D) H_D^* = 0,&&\\
+F_W^* - K_F(1-\alpha) \Big(1 - \dfrac{\lfw m H^*_D}{r_F} \Big) = 0& \mbox{or} & F^*_W = 0,\\
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*.&&
+\end{array} \right.
+\end{equation}
+
+The solution of system \eqref{system-equilibre} when $F_W^* = 0$ is the Human-only equilibrium $EE^{H} = \Big(\dfrac{c\mathcal{I}}{\mu_D - f_D}, 0, \dfrac{m \ c\mathcal{I}}{\mu_D - f_D} \Big)$.
+In the sequel, we assume that $F_W^* > 0$. In this case, $F^*_W$ is solution of the quadratic equation
+\begin{equation}
+P_F(X) := X^2 \left(\dfrac{er_F}{K_F(1-\alpha)} \right) - X \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right) + \left(\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \right) = 0.
+\label{polynome-Feq}
+\end{equation}
+
+We note $\Delta_F$ the discriminant of this equation, which is positive. Indeed, we have:
+\begin{align*}
+\Delta_F &= \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 - 4\dfrac{er_F}{K_F(1-\alpha)}  \left(\dfrac{(\mu_D -f_D) r_F}{\lfw m} - c\mathcal{I} \right), \\
+\Delta_F &= \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  c\mathcal{I}, \\
+\Delta_F & > 0.
+\end{align*}
+
+Therefore, $P_F$ admits two real roots. Their sign depends on the sign of the constant coefficient. $P_F$ admits:
+\begin{itemize}
+\item One non positive root $F^*_1$ and one positive root $F^*_2$ if $\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \leq 0 \Leftrightarrow \dfrac{(\mu_D - f_D) r_F}{\lfw m } \leq c\mathcal{I}.$
+\item Two positive roots $F^*_1\leq  F^*_2$ if $\dfrac{(\mu_D - f_D) r_F}{\lfw m } > c\mathcal{I}$.
+\end{itemize}
+They are given by:
+
+\begin{equation*}
+F_i^* = \dfrac{K_F(1-\alpha)}{2}\left(1 \pm \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e}, \quad i=1,2.
+\end{equation*}
+
+Moreover, $P_F$ is positive on $(-\infty, F_1^*)$, negative on $(F^*_1, F^*_2)$ and positive on $(F^*_2, +\infty)$. Let us compute $P_F(K_{F,\alpha})$ (where $ K_{F,\alpha} = K_F(1-\alpha)$).
+\begin{align*}
+P_F(K_{F,\alpha},c\mathcal{I}) &= K_{F,\alpha}^2 \left(\dfrac{er_F}{K_{F,\alpha}} \right) - K_{F,\alpha} \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_{F,\alpha}} \right) + \left(\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \right), \\
+&= K_{F,\alpha}er_F - K_{F,\alpha}er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m} + \dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I}, \\
+&= -c\mathcal{I}< 0.
+\end{align*}
+
+Therefore, $F_1^* < K_{F, \alpha} < F_2^*$. This means that $F_2^*$ is not biologically meaningful.
+
+Therefore, if $\dfrac{(\mu_D - f_D) r_F}{\lfw m} > c\mathcal{I}$, we have a unique meaningful coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, H^*_{W} \Big)$  
+where $$F^*_{W} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},\quad
+H^*_{D} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, c\mathcal{I} = 0}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W} = m H^*_{D}.$$
+\end{proof}
+
+\begin{remark} \label{RemarqueSimilariteEqCoexistence}
+We can note that when $c\mathcal{I}=0$, $P_F$ rewrites:
+$$
+P_F(X, c\mathcal{I}=0) = \Big(X-K_F(1-\alpha) \Big) \Big(X - \dfrac{\mu_D - f_D}{\lfw m e} \Big).
+$$
+Therefore, $F^*_{W,c\mathcal{I} =0}$ still satisfies equation \eqref{polynome-Feq}, and in particular, when $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha)$ we still have
+$$
+F^*_{W, c\mathcal{I} =0} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_{F, c\mathcal{I} = 0}}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e} = \dfrac{\mu_D - f_D}{\lfw m e}.
+$$ 
+\end{remark}
+
+
+\begin{remark}
+In the case where $c\mathcal{I} = 0$, the equilibrium of coexistence $EE^{HF_W}_{c\mathcal{I}=0}$ exists if $\lambda_{F, c\mathcal{I}=0}^{Min} < \lfw$, see remark \marc{ref}. When $c\mathcal{I} > 0$, the equilibrium of coexistence exists, according to previous proposition, only if $\lfw < \dfrac{r_F(\mu_D - f_D)}{m c \mathcal{I}} := \lambda_{F, c\mathcal{I}>0}^{Max}$. This will be interpret in the section \marc{ref}.
+\end{remark}
+
+Now, we look for the asymptotic stability of the equilibriums. We have the following results:
+
+\begin{prop}\label{propLAS} The following results are valid.
+\begin{itemize}
+\item Equilibrium of human only $EE^{H}$ is LAS if $r_F(\mu_D - f_D) < m \lfw c\mathcal{I}$.
+\item When it exists, equilibrium of coexistence $EE^{HF_W}$ is LAS if a quantity $\Delta_{stab}$ is positive, where 
+
+\begin{multline*}
+\Delta_{stab} = \left(\mu_D -f_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
+\left(\big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right)\right) - m_D \lfw \sqrt{\Delta_F}  F^*_{W}.
+\end{multline*}
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+To assess the local stability or instability of the different equilibria, we look at the Jacobian matrix. The Jacobian of system \eqref{equationsHDFWHW} is given by
+\begin{equation*}
+\mathcal{J}(H_D, F_W, H_W) = \begin{bmatrix}
+f_D-\mu_D - m_D & e \lfw H_W & e\lfw F_W + m_W \\
+0 & r_F \left( 1 - \dfrac{2F_W}{K_F(1-\alpha)} \right) - \lfw H_W & - \lfw F_W \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+At equilibrium $EE^{H}$, we have
+\begin{equation*}
+\mathcal{J}(EE^{H}) = \begin{bmatrix}
+f_D-\mu_D - m_D & e \lfw m \dfrac{c\mathcal{I}}{\mu_D - f_D} & m_W \\
+0 & r_F - \lfw m \dfrac{c\mathcal{I}}{\mu_D - f_D} & 0 \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+
+
+The characteristic polynomial of $\mathcal{J}(EE^{H})$ is given by:
+\begin{equation*}
+\chi(X) = (X - r_F + \dfrac{\lfw m c\mathcal{I}}{\mu_D - f_D}) \times \left(X^2 - X\Big(f_D - \mu_D - m_D - m_W \Big) + m_W(\mu_D - f_D)\right).
+\end{equation*}
+
+The constant coefficient of the second factor and its coefficient in $X$ are positive. So, the roots of the second factor have a negative real part. Therefore, only the sign of $-r_F + \dfrac{\lfw m c\mathcal{I}}{\mu_D - f_D}$ determines the stability of $EE^{H}$.
+
+
+\medskip
+Now, we look for the asymptotic stability of the equilibrium of coexistence $EE^{HF_W}$. Note that using remark \ref{RemarqueSimilariteEqCoexistence}, all the following is also valid for the equilibrium of coexistence in the case $c\mathcal{I} = 0$. We have 
+\begin{equation*}
+\mathcal{J}(EE^{H F_W}) = \begin{bmatrix}
+f_D -\mu_D - m_D & e \lfw m H_D^* & e \lfw F^*_W +m_W \\
 0 & -r_F \dfrac{F_W^*}{K_F(1-\alpha)} & - \lfw F_W^* \\
 m_D & 0 & -m_W
-\end{bmatrix}
-\end{equation*}
+\end{bmatrix}.
+\end{equation*} and its characteristic polynomial is given by: $\chi = X^3 + a_2 X^2 + a_1 X + a_0$. According to the Routh-Hurwitz criterion \marc{ref}, $EE^{H F_W}$ are LAS if $a_i > 0$ for $i=1,2,3$ and $a_2 a_1 - a_0 > 0$. Note that $a_2 = - \Tr(\mathcal{J}(EE^{H F_W}))$ and $a_0 = - \det (\mathcal{J}(EE^{H F_W}))$.
 
-On the following, we note $K_{F, \alpha} = K_F(1-\alpha)$, and $\chi = X^3 + a_2 X^2 + a_1 X + a_0$ the characteristic polynomial of $\mathcal{J}(EE^{H_D F_W})$. 
-
-According to the Routh-Hurwitz  criterion, $EE^{H_D F_W}$ is AS if $a_i > 0$ and $a_2 a_1 - a_0 > 0$. Note that $a_2 = - \Tr(\mathcal{J}(EE^{H_D F_W}))$ and $a_0 = - \det (\mathcal{J}(EE^{H_D F_W}))$.
-
-We have
+We have:
 \begin{equation*}
-\Tr = r_D - \mu_D - m_D - r_F \dfrac{F_W^*}{K_{F, \alpha}} - m_W < 0
+a_2 = - \Tr = -(f_D - \mu_D - m_D - r_F \dfrac{F_W^*}{K_{F, \alpha}} - m_W)
 \end{equation*}
-
-and:
+that is $a_2>0$. Coefficient $a_0$ is given by:
 
 \begin{align*}
-\det &= -\Big(\mu_D + m_D -r_D \Big) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D\Big(-e\lfw ^2 m F_W^* H_D^* + r_F \big(e \lfw F^*_W + m_W \big) \dfrac{F^*}{K_{F, \alpha}} \Big) \\
-\det &= - (\mu_D-r_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D e \lfw \Big( m \lfw H_D^* - r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W \\
-\det &= - (\mu_D-r_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D e \lfw \Big( r_F - 2 r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W \\
-\det &= m_D \lfw \left( F_W^* \Big(2 \dfrac{e r_F}{K_{F, \alpha}} \Big) - \Big(\dfrac{\mu_D - r_D}{m} \dfrac{r_F}{K_{F, \alpha} \lfw} + er_F \Big) \right) F_W^* 
+a_0 &= -\det\Big(\mathcal{J}(EE^{H F_W})\Big), \\
+a_0 &= \Big(\mu_D + m_D -f_D \Big) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D\Big(-e\lfw ^2 m F_W^* H_D^* + r_F \big(e \lfw F^*_W + m_W \big) \dfrac{F^*_W}{K_{F, \alpha}} \Big), \\
+a_0 &= (\mu_D-f_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D e \lfw \Big( m \lfw H_D^* - r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W, \\
+a_0 &= (\mu_D-f_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D e \lfw \Big( r_F - 2 r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W, \\
+a_0 &= - m_D \lfw \left( F_W^* \Big(2 \dfrac{e r_F}{K_{F, \alpha}} \Big) - \Big(\dfrac{\mu_D - f_D}{m} \dfrac{r_F}{K_{F, \alpha} \lfw} + er_F \Big) \right) F_W^*.
 \end{align*}
 Using 
 
 \begin{equation*}
-F_W^* = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - r_D}{2\lfw m e}
+F_W^* = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},
 \end{equation*}
 
-We have 
+(this expression holds for both $F_W^*$ and $F^*_{W, c\mathcal{I} = 0}$, according to remark \ref{remark-Feq}) we have 
 \begin{equation*}
-\det = - m_D \lfw \sqrt{\Delta_F}  F^*_{W} < 0
+a_0 = m_D \lfw \sqrt{\Delta_F}  F^*_{W},
+\end{equation*}
+that is $a_0>0$. The coefficient $a_1$ is given by:
+\begin{align*}
+a_1 &= \big( \mu_D  -f_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}} + (\mu_D -f_D + m_D) m_W + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W - m_D (e\lfw F^*_W + m_W), \\
+a_1 &= \big( \mu_D -f_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}}  + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right),  \\
+a_1 &= \big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right).
+\end{align*}
+
+We can look for the sign of $\left(\dfrac{\mu_D -f_D}{m e\lfw} - F^*_{W}\right)$. To do so, we will use the sign of $P_F(X)$ (negative on $(F^*_W, F^*_2)$, positive otherwise). We have:
+
+\begin{align*}
+P_F \left(\dfrac{\mu_D-f_D}{m e\lfw}; c\mathcal{I}\right) &= \left(\dfrac{\mu_D-f_D}{m e\lfw} \right)^2 \left(\dfrac{er_F}{K_{F, \alpha}} \right) - \dfrac{\mu_D-f_D}{m e\lfw} \left(er_F + \dfrac{(\mu_D -f_D) r_F}{\lfw m K_{F, \alpha}} \right) + \left(\dfrac{(\mu_D-f_D) r_F}{\lfw m} - c\mathcal{I}\right), \\
+&= \dfrac{(\mu_D-f_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-f_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-f_D) r_F}{m \lfw} + \dfrac{(\mu_D-f_D) r_F}{m \lfw} - c\mathcal{I}, \\
+&= - c\mathcal{I},\\
+& \leq 0.
+\end{align*}
+
+Therefore, $\dfrac{\mu_D - f_D}{m e\lfw} \geq F^*_{W}$. This implies $a_1 > 0$.
+
+The first assumption of Rough-Hurwitz is verified, $a_i > 0$ for $i=1,2,3$. Therefore, the asymptotic stability of $EE^{HF_W}$ only depends on the sign of $\Delta_{Stab}= a_2 a_1 - a_0$, which has to be positive.
+\end{proof}
+
+For now, we have the following table:
+\begin{table}[ht!]
+\def\arraystretch{2}
+\centering
+\begin{tabular}{c|c|c|c}
+$c\mathcal{I}$ & $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} $ & $\Delta_{Stab}$ & \\
+\hline
+\multirow{3}{*}{$>0$} & $<1$ & &$EE^{H}$ exists and is LAS \\
+\cline{2-4}
+ & \multirow{2}{*}{$> 1$}  & $>0$ &$EE^{HF_W}$ exists and is LAS\\
+ \cline{3-4}
+ & & $ < 0$ & $EE^{HF_W}$ is unstable \\
+\end{tabular}
+\caption{Intermediate table summarizing the long term behavior}
+\end{table}
+
+As before, we can complete it with information about global asymptotic stability and existence of limit cycles. The following proposition is obtained using the same proof than for proposition \ref{LimitCycle, cI=0}.
+
+\begin{prop}
+If $\dfrac{r_F (\mu_D - f_D)}{m \lfw c \mathcal{I}} > 1$ and $\Delta_{Stab} < 0$, system \eqref{equationsHDFWHW} admits an orbitally asymptotically stable periodic solution.
+\end{prop}
+
+The following theorem will be useful to prove the global asymptotic stability of equilibrium $EE^{H}$:
+
+\begin{prop}
+If $$\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} < 1$$
+that is if equilibrium $EE^{H}$ is LAS, then it is GAS on $\Omega$ for system \eqref{equationsHDFWHW}.
+\end{prop}
+
+\begin{proof}
+On the following, we assume $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} < 1$. For any solutions $(H_D^s, F_W^s, H_W^s)$ of equations \eqref{equationsHDFWHW} with initial condition in $\Omega$, we have:
+
+\begin{align*}
+\dfrac{dH_D^s}{dt} &= c\mathcal{I} + e\lfw H_W^s F_W^s + (f_D - \mu_D) H_D^s - m_D H_D^s + m_W H_W^s \\
+&\geq c\mathcal{I} + (f_D - \mu_D) H_D^s - m_D H_D^s + m_W H_W^s
+\end{align*}
+
+We consider the sub-system for $\Big(H_D, H_W\Big)$, given by
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= c\mathcal{I} + (f_D - \mu_D) H_D- m_D H_D + m_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array}\right.
+\label{limitSystem - eqH}
+\end{equation}
+
+On the following, we note $H = \Big(H_D, H_W\Big)$, and $g$ the right hand side of previous system. The system $\dfrac{dH}{dt} = g(H)$ is cooperative, and admits a unique equilibrium $\Big(H_D^*, mH_D^*\Big)$ where $H_D^* = \dfrac{cI}{\mu_D - f_D}$. This equilibrium is GAS \marc{on ??}, and therefore, any solutions with initial condition in $\Omega_H$ will converge to it.
+
+
+
+Moreover, we have the following inequality: $$f_{[1,3]}(H) \geq g(H)$$. We can apply the Kamke's inequality, see for example \cite{kirkilionis_comparison_2004}: for any initial conditions $H_0$, and for any time $t$, we have:
+\begin{equation}
+H_f^s(t, H_0) \geq H_g^s(t, H_0)
+\label{inequalitySolution - eqH}
+\end{equation}
+
+where $H_g^s(t, H_0)$ is the solution of $\dfrac{dH}{dt} = g(H)$ with initial condition $H_0$.
+
+\medskip
+
+We assumed $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} = \dfrac{r_F}{\lfw}\dfrac{1}{H_W^*} < 1$. Since $H_W^s(t, H_0)$ converges toward $H_W^*$, it exists $T > 0$ such that for all $t \geq T$, we have $\dfrac{r_F}{\lfw}\dfrac{1}{H_{W, f}^s(t, H_0)} < 1$. Using inequality \eqref{inequalitySolution - eqH}, we have:
+
+\begin{equation}
+\forall t \geq T, \quad \dfrac{r_F}{\lfw}\dfrac{1}{H_{W, f}^s(t, H_0)} < 1
+\end{equation}
+
+\medskip
+Therefore, for all $t \geq T$, we have
+\begin{align*}
+\dfrac{dF_W^s}{dt} &= r_F \left(1 - \dfrac{F_W^s}{K_F(1-\alpha)} \right) F_W^s - \lfw F_W^s H_W^s \\
+&= \left(r_F- \lfw H_W^s\right) F_W^s - r_F \dfrac{F_W^s}{K_F(1-\alpha)}F_W^s \\
+& \leq 0
+\end{align*}
+
+This implies that $F_W^s$ converges to 0. The limit system of equations \eqref{equationsHDFWHW} is given by:
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= c\mathcal{I} + (f_D - \mu_D) H_D - m_D H_D + m_W H_W  \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W
+\end{array}\right.
+\end{equation}
+
+As we saw before, equilibrium $\Big(H_D^*, mH_D^*\Big)$ where $H_D^* = \dfrac{cI}{\mu_D - f_D}$ is GAS \marc{on ??} for this system. Therefore, equilibrium $EE^{H} = \Big(H_D^*, 0, mH_D^*\Big)$ is GAS \marc{on ??} for system \eqref{equationsHDFWHW}.
+\end{proof}
+
+\section{Numerical scheme}
+
+\section{Results}
+
+\section{Existence and uniqueness of local and global solution}
+
+
+
+
+
+
+
+
+
+
+\marc{La région $F_W \leq K_F(1-\alpha)$, $H_W \leq  \dfrac{m_D}{m_W} H_D^{max}, H_D \leq H_D^{max} = \dfrac{c\mathcal{I}}{\mu_D - f_D - \lfw e m K_F(1-\alpha)}$ est aussi invariante, mais il faut que le dénominateur soit positif..}
+
+
+\section{Model analysis: steady states existence and stability}
+In this section, we state and prove results dealing with existence of equilibrium points of system \eqref{equationsHDFWHW} as well as with their stability.
+\begin{theorem}
+\label{theorem-equilibre}
+\begin{itemize}
+\item Assume that $c\mathcal{I}=0.$ The following results hold:
+\begin{itemize}
+\item System \eqref{equationsHDFWHW} admits a trivial equilibrium $TE = \Big(0,0,0\Big)$ that always exists.
+\item System \eqref{equationsHDFWHW} admits a fauna-only equilibrium $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$ that always exists.
+\item If 
+$$\dfrac{\mu_D - f_D}{\lfw m e}< K_F(1-\alpha),$$ 
+then system \eqref{equationsHDFWHW} admits a unique coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D, c\mathcal{I} = 0}, F^*_{W, c\mathcal{I} = 0}, H^*_{W, c\mathcal{I} = 0} \Big)$ \\ 
+where 
+$$F^*_{W, c\mathcal{I} = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad 
+H^*_{D, c\mathcal{I} = 0} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, c\mathcal{I} = 0}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W, c\mathcal{I} = 0} = m H^*_{D, c\mathcal{I} = 0}.$$
+\end{itemize}
+
+\item Assume that $c\mathcal{I} > 0$. The following results hold:
+\begin{itemize}
+\item System \eqref{equationsHDFWHW} has a Human-only equilibrium $EE^{H} = \Big(\dfrac{c\mathcal{I}}{\mu_D - f_D}, 0, \dfrac{m \ c\mathcal{I}}{\mu_D - f_D} \Big)$ that always exists.
+\item If $$m \lfw c\mathcal{I}< r_F (\mu_D -f_D),$$ then system \eqref{equationsHDFWHW} has a unique coexistence equilibrium $EE^{HF_W}_{c\mathcal{I} = 0} = \Big(H^*_{D}, F^*_{W}, m H^*_{D} \Big)$
+where
+$$F^*_{W} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},\quad
+H^*_{D} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, c\mathcal{I} = 0}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W} = m H^*_{D}$$
+and
+$$
+\Delta_F = \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  c\mathcal{I}.
+$$
+\end{itemize} 
+\end{itemize}
+\end{theorem}
+
+
+\begin{proof}
+An equilibrium of system \eqref{equationsHDFWHW} satisfies the system of equations:
+\begin{equation}\label{system-equilibre}
+\left\lbrace \begin{array}{cll}
+c\mathcal{I} + e \lfw m F_W^* H_D^* + (f_D - \mu_D) H_D^* = 0,&&\\
+F_W^* - K_F(1-\alpha) \Big(1 - \dfrac{\lfw m H^*_D}{r_F} \Big) = 0& \mbox{or} & F^*_W = 0,\\
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*.&&
+\end{array} \right.
+\end{equation}
+We first assume that $c\mathcal{I}=0$. Then, system \eqref{system-equilibre} leads 
+\begin{equation}\label{system-equilibre2}
+\left\lbrace \begin{array}{cll}
+ e \lfw m F_W^* + f_D - \mu_D = 0& \mbox{or} & H_D^* = 0,\\
+F_W^* - K_F(1-\alpha) \Big(1 - \dfrac{\lfw m H^*_D}{r_F} \Big) = 0& \mbox{or} & F^*_W = 0,\\
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*.&&
+\end{array} \right.
+\end{equation}
+When $H_D^*=0$ and $F_W^*=0$, we recover the trivial equilibrium $TE = \Big(0,0,0\Big)$. When $H_D^*=0$ and $F_W^*\neq0$, we obtain the fauna-only equilibrium $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$. Finally, when $H_D^*\neq0$ and $F_W^*\neq0$, direct computations lead to a unique coexistence equilibrium 
+$EE^{HF_W}_{c\mathcal{I} = 0} = \Big(H^*_{D, c\mathcal{I} = 0}, F^*_{W, c\mathcal{I} = 0}, H^*_{W, c\mathcal{I} = 0} \Big)$ \\ 
+where 
+$$
+F^*_{W, c\mathcal{I} = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad
+H^*_{D, c\mathcal{I} = 0} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, c\mathcal{I} = 0}}{K_F(1-\alpha)} \Big),
+\quad
+H^*_{W, c\mathcal{I} = 0} = m H^*_{D, c\mathcal{I} = 0}
+$$
+which is biologically meaningful whenever $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha).$
+
+
+\bigskip
+We now assume that $c\mathcal{I}>0$. The solution of system \eqref{system-equilibre} when $F_W^* = 0$ is the Human-only equilibrium $EE^{H} = \Big(\dfrac{c\mathcal{I}}{\mu_D - f_D}, 0, \dfrac{m \ c\mathcal{I}}{\mu_D - f_D} \Big)$.
+In the sequel, we assume that $F_W^* > 0$. In this case, $F^*_W$ is solution of the quadratic equation
+\begin{equation}
+P_F(X ; c\mathcal{I}) := X^2 \left(\dfrac{er_F}{K_F(1-\alpha)} \right) - X \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right) + \left(\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \right) = 0.
+\label{polynome-Feq}
+\end{equation}
+
+We note $\Delta_F$ the discriminant of this equation, which is positive. Indeed, we have:
+\begin{align*}
+\Delta_F &= \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 - 4\dfrac{er_F}{K_F(1-\alpha)}  \left(\dfrac{(\mu_D -f_D) r_F}{\lfw m} - c\mathcal{I} \right), \\
+\Delta_F &= \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)} \right)^2 + 4\dfrac{er_F}{K_F(1-\alpha)}  c\mathcal{I}, \\
+\Delta_F & > 0.
+\end{align*}
+
+Therefore, $P_F$ admits two real roots. Their sign depends on the sign of the constant coefficient. $P_F$ admits:
+\begin{itemize}
+\item One non positive root $F^*_1$ and one positive root $F^*_2$ if $\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \leq 0 \Leftrightarrow \dfrac{(\mu_D - f_D) r_F}{\lfw m } \leq c\mathcal{I}.$
+\item Two positive roots $F^*_1\leq  F^*_2$ if $\dfrac{(\mu_D - f_D) r_F}{\lfw m } > c\mathcal{I}$.
+\end{itemize}
+They are given by:
+
+\begin{equation*}
+F_i^* = \dfrac{K_F(1-\alpha)}{2}\left(1 \pm \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e}, \quad i=1,2.
 \end{equation*}
 
-Coefficient $a_1$ is given by:
+Moreover, $P_F$ is positive on $(-\infty, F_1^*)$, negative on $(F^*_1, F^*_2)$ and positive on $(F^*_2, +\infty)$. Let us compute $P_F(K_{F,\alpha},c\mathcal{I})$ (where $ K_{F,\alpha} = K_F(1-\alpha)$).
 \begin{align*}
-a_1 &= \big( \mu_D  -r_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}} + (\mu_D -r_D + m_D) m_W + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W - m_D (e\lfw F^*_W + m_W) \\
-a_1 &= \big( \mu_D -r_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}}  + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)  \\
-a_1 &= \big( \mu_D -r_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)
+P_F(K_{F,\alpha},c\mathcal{I}) &= K_{F,\alpha}^2 \left(\dfrac{er_F}{K_{F,\alpha}} \right) - K_{F,\alpha} \left(er_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_{F,\alpha}} \right) + \left(\dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I} \right), \\
+&= K_{F,\alpha}er_F - K_{F,\alpha}er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m} + \dfrac{(\mu_D - f_D) r_F}{\lfw m} - c\mathcal{I}, \\
+&= -c\mathcal{I}< 0.
+%& < 0.
 \end{align*}
 
-We can look for the sign of $\left(\dfrac{\mu_D -r_D}{m e\lfw} - F^*_{W}\right)$. To do so, we will use the sign of $P_F(X)$ (negative on $(F^*_W, F^*_2)$, positive otherwise). We have:
+Therefore, $F_1^* < K_{F, \alpha} < F_2^*$. This means that $F_2^*$ is not biologically meaningful.%, and $F_1^*$ is whenever it is positive.
+
+Therefore, if $\dfrac{(\mu_D - f_D) r_F}{\lfw m} > c\mathcal{I}$, we have a unique meaningful coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D}, F^*_{W}, H^*_{W} \Big)$ \\ 
+where $$F^*_{W} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},\quad
+H^*_{D} = \dfrac{r_F}{\lfw m} \Big(1 - \dfrac{F^*_{W, c\mathcal{I} = 0}}{K_F(1-\alpha)} \Big),
+\quad 
+H^*_{W} = m H^*_{D}.$$
+\end{proof}
+
+\begin{remark}\label{remark-Feq}
+When $c\mathcal{I}=0$, we have:
+$$
+P_F(X, c\mathcal{I}=0) = \Big(X-K_F(1-\alpha) \Big) \Big(X - \dfrac{\mu_D - f_D}{\lfw m e} \Big).
+$$
+Therefore, $F^*_{W,c\mathcal{I} =0}$ still satisfies equation \eqref{polynome-Feq}, and in particular, when $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha)$ we still have
+$$
+F^*_{W, c\mathcal{I} =0} = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_{F, c\mathcal{I} = 0}}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e} = \dfrac{\mu_D - f_D}{\lfw m e}.
+$$ 
+\end{remark}
+
+Based on Theorem \ref{theorem-equilibre}, we can highlight the existence of a coexistence's threshold.
+\begin{cor}[Hunt Limitation]
+
+\begin{itemize}
+\item When $c\mathcal{I} = 0$, coexistence between human and fauna is possible only if the hunt parameter $\lfw$ and the anthropization parameter $\alpha$ are such that
+$$
+\lfw > \dfrac{\mu_D - f_D}{m e K_F(1-\alpha)} := \lambda_{F, min}.
+$$
+\item When $c\mathcal{I}>0$, coexistence between human and fauna is possible only if the hunt parameter $\lfw$ is such that
+$$
+\lambda_{F, max} := \dfrac{(\mu_D - f_D) r_F}{m c\mathcal{I}} > \lfw.
+$$
+\end{itemize}
+\end{cor}
+
+\marc{This corollary shows that the limitation for the hunting parameter, $\lfw$ are totally different if human population can import food ($c\mathcal{I} > 0$) or not ($c\mathcal{I} = 0$). When food is imported ($c\mathcal{I} > 0$), a human population is always present (equilibrium $EE^{H}$ exists), and has to not over-hunt in order to preserve the wild fauna (we could rewrite the condition has $1 < \dfrac{r_F}{\lfw H^*_{W, H}}$ : comparison between growth and intake). In this case, the existence of equilibrium of coexistence does not depend on the level of anthropization, $K_F(1-\alpha)$ but the value of $F^*_W$ does.}
+
+\marc{When no food is imported ($c\mathcal{I} = 0)$, it is the fauna population which is always presents (equilibrium $EE^{F_W}$ exists). The human population find its resources only by hunting, which has to be consequent enough to ensure its subsistence. Moreover, the more the level of anthropization ($\alpha$ large), the higher the hunt level in order to compensate the diminution of maximum prey. In this case, the existence of equilibrium of coexistence depend on the level of anthropization, but the value of $F^*_W$ does not }
+
+
+
+We can now look for the local stability of these equilibrium:
+
+\begin{theorem}\label{TheoremLAS} The following results are valid.
+\begin{itemize}
+\item Assume $c\mathcal{I} = 0$. Under the different condition of existence given by Theorem, the following results hold:
+\begin{itemize}
+\item The trivial equilibrium $TE$ is unstable.
+\item Equilibrium of fauna only $EE^{F_W}$ is Locally Asymptotically Stable (LAS) if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} < 1 $, stable if there is equality and unstable otherwise.
+\item When it exists, equilibrium of coexistence $EE^{HF_W}_{c\mathcal{I} =0}$ is LAS if quantity $\Delta_{stab}$ is positive.
+\end{itemize}
+
+\item Assume $c\mathcal{I} > 0$. Under the different condition of existence given by Theorem, the following results hold:
+\begin{itemize}
+\item Equilibrium of human only $EE^{H}$ is LAS if $r_F(\mu_D - f_D) < m \lfw c\mathcal{I}$, stable if $r_F(\mu_D - f_D) = m \lfw c\mathcal{I}$ and unstable otherwise.
+\item When it exists, equilibrium of coexistence $EE^{HF_W}$ is LAS if quantity $\Delta_{stab}$ is positive.
+\end{itemize}
+The quantity $\Delta_{stab}$ is given by:
+
+\begin{multline*}
+\Delta_{stab} = \left(\mu_D -f_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
+\left(\big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right)\right) - m_D \lfw \sqrt{\Delta_F}  F^*_{W}.
+\end{multline*}
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+To assess the local stability or instablity of the different equilibria, we look at the Jacobian matrices. The Jacobian of system \eqref{equationsHDFWHW} is given by
+\begin{equation*}
+\mathcal{J}(H_D, F_W, H_W) = \begin{bmatrix}
+f_D-\mu_D - m_D & e \lfw H_W & e\lfw F_W + m_W \\
+0 & r_F \left( 1 - \dfrac{2F_W}{K_F(1-\alpha)} \right) - \lfw H_W & - \lfw F_W \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+
+At equilibrium $TE$, we have:
+\begin{equation*}
+\mathcal{J}(TE) = \begin{bmatrix}
+f_D-\mu_D - m_D & 0 &  m_W \\
+0 & r_F  &  0\\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+and $r_F > 0$ is an eigenvalue of $\mathcal{J}(TE)$. So, $TE$ is unstable.
+
+At equilibrium $EE^{F_W}$, we have
+\begin{equation*}
+\mathcal{J}(EE^{F_W}) = \begin{bmatrix}
+f_D-\mu_D - m_D & 0 & e\lfw K_F(1-\alpha) + m_W \\
+0 & -r_F  & -\lfw K_F(1-\alpha)  \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+
+
+The characteristic polynomial of $\mathcal{J}(EE^{F_W})$ is given by:
+\begin{equation*}
+\chi(X) = (X +r_F) \times \left(X^2 - X\Big(f_D - \mu_D - m_D - m_W \Big) + m_W(\mu_D - f_D) - m_D e \lfw K_F(1-\alpha) \right).
+\end{equation*}
+
+We need to determine the sign of the roots' real part of the second factor. Since the coefficient in $X$ is positive, the sign of their real part is determined by the sign of the constant coefficient.
+The roots have a negative real part if the constant coefficient is positive \textit{ie} if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} < 1 $, and a positive real part if $\dfrac{m e \lfw K_F(1-\alpha)}{\mu_D - f_D} > 1 $. Stability of $\mathcal{J}(EE^{F_W})$ follows.
+
+At equilibrium $EE^{H}$, we have
+\begin{equation*}
+\mathcal{J}(EE^{H}) = \begin{bmatrix}
+f_D-\mu_D - m_D & e \lfw m \dfrac{c\mathcal{I}}{\mu_D - f_D} & m_W \\
+0 & r_F - \lfw m \dfrac{c\mathcal{I}}{\mu_D - f_D} & 0 \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+
+
+The characteristic polynomial of $\mathcal{J}(EE^{H})$ is given by:
+\begin{equation*}
+\chi(X) = (X - r_F + \dfrac{\lfw m c\mathcal{I}}{\mu_D - f_D}) \times \left(X^2 - X\Big(f_D - \mu_D - m_D - m_W \Big) + m_W(\mu_D - f_D)\right).
+\end{equation*}
+
+The constant coefficient of the second factor and its coefficient in $X$ are positive. So, the roots of the second factor have a negative real part. Therefore, only the sign of $-r_F + \dfrac{\lfw m c\mathcal{I}}{\mu_D - f_D}$ determines the stability of $EE^{H}$.
+
+
+\medskip
+At equilibrium of co-existence $EE^{HF_W}_{c\mathcal{I} =0}$ and $EE^{HF_W}$ (on the following we only consider $EE^{HF_W}$, but the same holds for $EE^{HF_W}_{c\mathcal{I} =0}$) we have 
+\begin{equation*}
+\mathcal{J}(EE^{H F_W}) = \begin{bmatrix}
+f_D -\mu_D - m_D & e \lfw m H_D^* & e \lfw F^*_W +m_W \\
+0 & -r_F \dfrac{F_W^*}{K_F(1-\alpha)} & - \lfw F_W^* \\
+m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*} and its characteristic polynomial is given by: $\chi = X^3 + a_2 X^2 + a_1 X + a_0$. According to the Routh-Hurwitz criterion \marc{ref}, $EE^{H F_W}$ are LAS if $a_i > 0$ for $i=1,2,3$ and $a_2 a_1 - a_0 > 0$. Note that $a_2 = - \Tr(\mathcal{J}(EE^{H F_W}))$ and $a_0 = - \det (\mathcal{J}(EE^{H F_W}))$.
+
+We have:
+\begin{equation*}
+a_2 = - \Tr = -(f_D - \mu_D - m_D - r_F \dfrac{F_W^*}{K_{F, \alpha}} - m_W)
+\end{equation*}
+that is $a_2>0$. Coefficient $a_0$ is given by:
 
 \begin{align*}
-P_F \left(\dfrac{\mu_D-r_D}{m e\lfw}\right) &= \left(\dfrac{\mu_D-r_D}{m e\lfw} \right)^2 \left(\dfrac{er_F}{K_{F, \alpha}} \right) - \dfrac{\mu_D-r_D}{m e\lfw} \left(er_F + \dfrac{(\mu_D -r_D) r_F}{\lfw m K_{F, \alpha}} \right) + \left(\dfrac{(\mu_D-r_D) r_F}{\lfw m} - cI\right) \\
-&= \dfrac{(\mu_D-r_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-r_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-r_D) r_F}{m \lfw} + \dfrac{(\mu_D-r_D) r_F}{m \lfw} - cI \\
-&= - cI\\
-& < 0
+a_0 &= -\det\Big(\mathcal{J}(EE^{H F_W})\Big), \\
+a_0 &= \Big(\mu_D + m_D -f_D \Big) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} - m_D\Big(-e\lfw ^2 m F_W^* H_D^* + r_F \big(e \lfw F^*_W + m_W \big) \dfrac{F^*_W}{K_{F, \alpha}} \Big), \\
+a_0 &= (\mu_D-f_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D e \lfw \Big( m \lfw H_D^* - r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W, \\
+a_0 &= (\mu_D-f_D) m_W r_F \dfrac{F^*_W}{K_{F, \alpha}} + m_D e \lfw \Big( r_F - 2 r_F \dfrac{F^*_W}{K_{F, \alpha}} \Big) F^*_W, \\
+a_0 &= - m_D \lfw \left( F_W^* \Big(2 \dfrac{e r_F}{K_{F, \alpha}} \Big) - \Big(\dfrac{\mu_D - f_D}{m} \dfrac{r_F}{K_{F, \alpha} \lfw} + er_F \Big) \right) F_W^*.
+\end{align*}
+Using 
+
+\begin{equation*}
+F_W^* = \dfrac{K_F(1-\alpha)}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{er_F}\right) + \dfrac{\mu_D - f_D}{2\lfw m e},
+\end{equation*}
+
+(this expression holds for both $F_W^*$ and $F^*_{W, c\mathcal{I} = 0}$, according to remark \ref{remark-Feq}) we have 
+\begin{equation*}
+a_0 = m_D \lfw \sqrt{\Delta_F}  F^*_{W},
+\end{equation*}
+that is $a_0>0$. The coefficient $a_1$ is given by:
+\begin{align*}
+a_1 &= \big( \mu_D  -f_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}} + (\mu_D -f_D + m_D) m_W + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W - m_D (e\lfw F^*_W + m_W), \\
+a_1 &= \big( \mu_D -f_D + m_D) r_F \dfrac{F^*_W}{K_{F, \alpha}}  + r_F \dfrac{F_W^*}{K_{F, \alpha}} m_W + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right),  \\
+a_1 &= \big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right).
 \end{align*}
 
-Therefore, $\dfrac{\mu_D}{m e\lfw} > F^*_{W, 1}$. This implies $a_1 > 0$.
+We can look for the sign of $\left(\dfrac{\mu_D -f_D}{m e\lfw} - F^*_{W}\right)$. To do so, we will use the sign of $P_F(X)$ (negative on $(F^*_W, F^*_2)$, positive otherwise). We have:
 
-The first assumption of Rough-Hurwitz is verified, $a_i > 0$. We need to investigate the sign of $a_2 a_1 - a_0$. To do it, we focus on the anthropization markers, parameters $\alpha$ and $\lfw$, and we define $\Delta_{Stab}(\alpha, \lfw) = a_2 a_1 - a_0$. We have:
+\begin{align*}
+P_F \left(\dfrac{\mu_D-f_D}{m e\lfw}; c\mathcal{I}\right) &= \left(\dfrac{\mu_D-f_D}{m e\lfw} \right)^2 \left(\dfrac{er_F}{K_{F, \alpha}} \right) - \dfrac{\mu_D-f_D}{m e\lfw} \left(er_F + \dfrac{(\mu_D -f_D) r_F}{\lfw m K_{F, \alpha}} \right) + \left(\dfrac{(\mu_D-f_D) r_F}{\lfw m} - c\mathcal{I}\right), \\
+&= \dfrac{(\mu_D-f_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-f_D)^2 r_F}{m^2 \lfw^2 K_{F, \alpha} e} - \dfrac{(\mu_D-f_D) r_F}{m \lfw} + \dfrac{(\mu_D-f_D) r_F}{m \lfw} - c\mathcal{I}, \\
+&= - c\mathcal{I},\\
+& \leq 0.
+\end{align*}
+
+Therefore, $\dfrac{\mu_D - f_D}{m e\lfw} \geq F^*_{W}$. This implies $a_1 > 0$.
+
+The first assumption of Rough-Hurwitz is verified, $a_i > 0$ for $i=1,2,3$. Therefore, the asymptotic stability of $EE^{HF_W}$ only depends on the sign of $\Delta_{Stab}= a_2 a_1 - a_0$, which has to be positive.
+\end{proof}
+
+Theorem \ref{TheoremLAS} assesses the local stability of the equilibrium. In theorem \ref{propEEFGAS} and \ref{propEEHGAS} we show that equilibrium $EE^{F_W}$ and $EE^{H}$ can be globally asymptotically stable, under conditions. To prove it, the following theorem will be useful:
+
+
+\begin{prop}\label{propEEFGAS}If 
+$$
+cI = 0 
+\quad \text{and} \quad
+\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1,
+$$
+that is if equilibrium $EE^{F_W}$ exists and is LAS, then it is globally asymptotically stable on $\Omega$.
+\end{prop}
+
+\begin{proof}
+In the following, we assume $cI = 0$ and $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1$. We consider a solution $(H_D^s, F_W^s, H_W^s)$ of equations \eqref{equationsHDFWHW} with initial conditions in $\Omega$. Using the fact that $\Omega$ is an invariant region, we have:
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH^s_D}{dt} \leq e\lfw H^s_W K_F(1-\alpha) + (f_D - \mu_D) H^s_D - m_D H^s_D + m_W H^s_W , \\
+\dfrac{dF^s_W}{dt} = r_F \left(1 - \dfrac{F^s_W}{K_F(1-\alpha)} \right) F^s_W - \lfw F^s_W H^s_W \\
+\dfrac{dH^s_W}{dt}= m_D H^s_D - m_W H^s_W 
+\end{array} \right.
+\end{equation}
+
+We can study the limit system, given by:
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt} = \Big(e\lfw K_F(1-\alpha) + m_W\Big)H_W + (f_D - \mu_D - m_D) H_D \\
+\dfrac{dF_W}{dt} = r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{limitSystem}
+\end{equation}
+
+We will apply theorem \ref{theoremVidyasagar} on this system, with $x = (H_D, H_W)$, $y = F_W$, $x^* = (0,0)$ and $y^* = K_F(1- \alpha)$. We have that $x^*$ is GAS for system $\dfrac{dx}{dt} = f(x)$. 
+
+Indeed, $x^*$ is the unique equilibrium of this system, and it is LAS since $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)} >1$. By applying the Bendixson-Dulac theorem \marc{ref}, we show that $\dfrac{dx}{dt} = f(x)$ does not admit any limit cycle. Therefore, the Poincarré theorem \marc{ref} shows that $\Big(0, 0\Big)$ is GAS for $\dfrac{dx}{dt} = f(x)$.
+
+It is quite immediate to show that $y^*$ is GAS for system $\dfrac{dy}{dt} = g(x^*, y)$. 
+
+Moreover, the trajectories of the solution of limit-system \eqref{limitSystem} with initial condition in $\Omega$ are bounded (theorem \ref{Invariant region}). So, we can apply theorem \ref{theoremVidyasagar}, and we obtain that equilibrium $\Big(0, K_F(1-\alpha), 0)$ is GAS on $\Omega$ for the limit system, and therefore for the original system \eqref{equationsHDFWHW}
+\end{proof}
+
+
+
+
+
+\begin{prop}\label{propEEHGAS}If 
+$$
+cI > 0 
+\quad \text{and} \quad
+\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} < 1,
+$$
+that is if $EE^{H}$ exists and is LAS, then it is globally asymptotically stable on $\Omega$.
+\end{prop}
+
+\begin{proof}
+On the following, we assume $cI > 0$ and $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} < 1$. For any solutions $(H_D^s, F_W^s, H_W^s)$ of equations \eqref{equationsHDFWHW} with initial condition in $\Omega$, we have:
+
+\begin{align*}
+\dfrac{dH_D^s}{dt} &= c\mathcal{I} + e\lfw H_W^s F_W^s + (f_D - \mu_D) H_D^s - m_D H_D^s + m_W H_W^s \\
+&\geq c\mathcal{I} + (f_D - \mu_D) H_D^s - m_D H_D^s + m_W H_W^s
+\end{align*}
+
+We consider the sub-system for $\Big(H_D, H_W\Big)$, given by
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= c\mathcal{I} + (f_D - \mu_D) H_D- m_D H_D + m_W H_W := g_1\Big(H_D, H_W\Big)\\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W := g_2\Big(H_D, H_W\Big)
+\end{array}\right.
+\label{limitSystem - eqH}
+\end{equation}
+
+On the following, we note $H = \Big(H_D, H_W\Big)$. The system $\dfrac{dH}{dt} = g(H)$ is a cooperative, and the inequality $\begin{pmatrix}
+f_1 \\f_3 \end{pmatrix}(H) \geq g(H)$ (where $f_{1}$ and $f_3$ are the first and third components of the right hand side of the original system), we can apply the Kamke's inequality, see for example \cite{kirkilionis_comparison_2004}: for any initial conditions $H_0$, and for any time $t$, we have:
+\begin{equation}
+H_f^s(t, H_0) \geq H_g^s(t, H_0)
+\label{inequalitySolution - eqH}
+\end{equation}
+
+where $H_g^s(t, H_0)$ is the solution of $\dfrac{dH}{dt} = g(H)$ with initial condition $H_0$.
+
+Moreover, system $\dfrac{dH}{dt} = g(H)$ admits a unique equilibrium $\Big(H_D^*, mH_D^*\Big)$ where $H_D^* = \dfrac{cI}{\mu_D - f_D}$. Since the system is cooperative, this equilibrium is GAS, and any solutions of $H_g^s$ converges to it.
+
+\medskip
+
+We assumed $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} = \dfrac{r_F}{\lfw}\dfrac{1}{H_W^*} < 1$. Since $H_W^s(t, H_0)$ converges toward $H_W^*$, it exists $T > 0$ such that for all $t \geq T$, we have $\dfrac{r_F}{\lfw}\dfrac{1}{H_{W, f}^s(t, H_0)} < 1$. Using inequality \eqref{inequalitySolution - eqH}, we have:
+
+\begin{equation}
+\forall t \geq T, \quad \dfrac{r_F}{\lfw}\dfrac{1}{H_{W, f}^s(t, H_0)} < 1
+\end{equation}
+
+\medskip
+Therefore, for all $t \geq T$, we have
+\begin{align*}
+\dfrac{dF_W^s}{dt} &= r_F \left(1 - \dfrac{F_W^s}{K_F(1-\alpha)} \right) F_W^s - \lfw F_W^s H_W^s \\
+&= \left(r_F- \lfw H_W^s\right) F_W^s - r_F \dfrac{F_W^s}{K_F(1-\alpha)}F_W^s \\
+& \leq 0
+\end{align*}
+
+This implies that $F_W^s$ will converge to 0. The limit system of equations \eqref{equationsHDFWHW} is given by:
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+\dfrac{dH_D}{dt}= c\mathcal{I} + (f_D - \mu_D) H_D - m_D H_D + m_W H_W  \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W
+\end{array}\right.
+\end{equation}
+
+As we saw before, equilibrium $\Big(H_D^*, mH_D^*\Big)$ where $H_D^* = \dfrac{cI}{\mu_D - f_D}$ is GAS for this system. Therefore, equilibrium $EE^{H} = \Big(H_D^*, 0, mH_D^*\Big)$ is GAS for system \eqref{equationsHDFWHW}.
+
+\end{proof}
+
+System \eqref{equationsHDFWHW} may also converge towards stable limit cycle. The following proposition gives the conditions of their existence.
+
+\begin{prop} The following results are valid.
+\begin{itemize}
+\item If $cI = 0$, $\dfrac{\mu_D - f_D}{\lfw m e}< K_F(1-\alpha)$ and $\Delta_{Stab} < 0$, system \eqref{equationsHDFWHW} admits an orbitally asymptotically stable periodic solution.
+\item If $cI > 0$, $m \lfw c\mathcal{I}< r_F (\mu_D -f_D)$ and $\Delta_{Stab} < 0$, system \eqref{equationsHDFWHW} admits an orbitally asymptotically stable periodic solution.
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+We prove this proposition following \cite{wang_predator-prey_1997}. On the following, we assume $cI > 0$, $m \lfw c\mathcal{I}< r_F (\mu_D -f_D)$ and $\Delta_{Stab} < 0$, the other case can be done by the same way.
+
+We consider the change of variables $h_D = H_D$, $f_W = -F_W$ and $h_W = - H_W$, which transforms the system \eqref{equationsHDFWHW} into
+\begin{subequations}
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dh_D}{dt}= c\mathcal{I} + e\lfw h_W f_W + (f_D - \mu_D) h_D - m_D h_D - m_W h_W.
+\end{array}\right.
+\end{equation}
+\begin{equation}
+\left\lbrace \begin{array}{l}
+\dfrac{df_W}{dt} = r_F \left(1 + \dfrac{f_W}{K_F(1-\alpha)} \right) f_W + \lfw f_W h_W \\
+\dfrac{dh_W}{dt}= -m_D h_D - m_W h_W 
+\end{array} \right.
+\end{equation}
+\label{equationshDfWhW}
+\end{subequations}
+
+This system is competitive in $\Big\{(h_d, f_w, h_w) | 0 < h_D, f_W < 0, h_W < 0 \Big\}$.  We note $g(h_d, f_w, h_w)$ the right hand side of system \eqref{equationshDfWhW}, and $\mathcal{J}_g$ the Jacobian matrix of $g$. We also note $h_D^* = H_D^*$, $f_W^* = -F_W^*$ and $h_W^* = -H_W^*$. According to theorem \ref{theorem-equilibre}, $\Big(h_D^*, f_W^*, h_W^* \Big)$, is the unique equilibrium of system \eqref{equationshDfWhW}. 
+
+We have:
+
+\begin{equation*}
+\mathcal{J}_g(EE^{h f_W}) = \begin{bmatrix}
+f_D -\mu_D - m_D & e \lfw h_W^* & e \lfw f^*_W - m_W \\
+0 & r_F \dfrac{F_W^*}{K_F(1-\alpha)} & \lfw f_W^* \\
+-m_D & 0 & -m_W
+\end{bmatrix}.
+\end{equation*}
+and simple calculations show that  $\mathcal{J}_g(h_d^*, f_w^*, h_w^*)$ and $\mathcal{J}(H_d^*, F_w^*, F_w^*)$ have the same characteristic polynomial. Therefore, $\det( \mathcal{J}_g(EE^{h f_W})) < 0$ and since we assume $\Delta_{stab} < 0$, $EE^{h f_W}$ is unstable.
+
+Moreover, we have shown that system \eqref{equationsHDFWHW} has a compact invariant region, so it is for system \eqref{equationshDfWhW}. All the hypothesis of Theorem 1.2 of article \cite{zhu_stable_1994} are thus verified, and system \eqref{equationshDfWhW} and  then system \eqref{equationsHDFWHW} has an orbitally asymptotically stable periodic solution.
+
+\end{proof}
+
+\subsection{Summary table}
+The following table summarizes the conditions of existence and AS of the different equilibrium
+
+\begin{table}[!ht]
+\centering
+\def\arraystretch{2}
+\begin{tabular}{c|c|c|c}
+$c\mathcal{I}$ & $\dfrac{\mu_D - f_D}{\lfw m e K_F(1-\alpha)}$ &  $\Delta_{Stab}$ & \\
+\hline
+\multirow{3}{*}{$=0$} & $ > 1$ & &$EE^{F_W}$ exists and is GAS  \\
+\cline{2-4}
+ & \multirow{2}{*}{$< 1$} & $>0$ &$EE^{HF_W}_{c\mathcal{I}=0}$ exists and is LAS\\
+ \cline{3-4}
+ & & $ < 0$ &$EE^{HF_W}_{c\mathcal{I}=0}$ is unstable ; a stable limit cycle exists
+\end{tabular}
+\newline
+\vspace{0.5cm}
+\newline
+\begin{tabular}{c|c|c|c}
+$c\mathcal{I}$ & $\dfrac{r_F(\mu_D-f_D)}{m\lfw c\mathcal{I}} $ & $\Delta_{Stab}$ & \\
+\hline
+\multirow{3}{*}{$>0$} & $<1$ & &$EE^{H}$ exists and is GAS \\
+\cline{2-4}
+ & \multirow{2}{*}{$> 1$}  & $>0$ &$EE^{HF_W}$ exists and is LAS\\
+ \cline{3-4}
+ & & $ < 0$ & $EE^{HF_W}$ is unstable ; a stable limit cycle exists \\
+\end{tabular}
+\caption{Condition of existence and asymptotic stability}
+\end{table}
+
+
+
+%
+%\begin{figure}[!ht]
+%\begin{pdfpic}
+%\psset{xunit=0.9cm,yunit=0.9cm}
+%\begin{pspicture}(-5,-10)(5,10)
+%\psaxes[linewidth=0.7pt, ticks=none, labels=none]{->}(0,0)(-1,-2)(9,4)[$F$, -90][$y$, 180]
+%\psplot[algebraic,
+%          plotpoints=500,
+%          linecolor=blue,
+%          linewidth=1.5pt,
+%          yMinValue=-10,
+%          yMaxValue=10]{-0.1}{10}{0.2*(x-2)*(x-8)}
+%\uput{2pt}[50](9.5, 3.2){\textcolor{blue}{$P_F(F)$}}
+%
+%\rput(3,-0.2){\pnode{Mu}}
+%\ncangle[angleA = 90, angleB = 90]{Mu}{Mu}
+%\naput[npos = 1.5]{$\dfrac{(\mu_D -f_D)}{m e \lfw}$}
+%%
+%\rput(7,-0.2){\pnode{KF}}
+%\ncangle[angleA = 90, angleB = 90]{KF}{KF}
+%\naput[npos = 1.5]{$K_F(1-\alpha)$}
+%
+%\rput(2,0.2){\pnode{F1}}
+%\ncangle[angleA = -90, angleB = -90]{F1}{F1}
+%\nbput{$F_{W, 1}$}
+%
+%\rput(8,0.2){\pnode{F2}}
+%\ncangle[angleA = -90, angleB = -90]{F2}{F2}
+%\nbput{$F_{W, 2}$}
+%\end{pspicture}
+%\end{pdfpic}
+%\caption{Graph of $P_F(F)$.}
+%\end{figure}
+
+\section{Asymptotic stability of $EE^{HFW}$ and Hopf bifurcation}
+
+$\Delta_{Stab}$ is given by the following expression:
+
+\begin{multline*}
+\Delta_{Stab} = \left(\mu_D -f_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
+\left(\big( \mu_D -f_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - f_D}{m e\lfw} - F^*_W \right)\right) - m_D \lfw \sqrt{\Delta_F}  F^*_{W} 
+\end{multline*}
+
+\subsection{General case}
+In order to show the local asymptotic stability of equilibrium $EE^{HF_W}$, we need to show that $\Delta_{Stab} > 0$. Due to the complexity of the formula, this will be mainly investigate numerically (except in the case $c\mathcal{I} = 0$, where we can go deeper ; see following part). 
+
+More than proving the asymptotic stability of this equilibrium, we focus on the apparition of Hopf bifurcation. On the following, we consider the parameter $\lfw$ as bifurcation parameter. A Hopf bifurcation may occur if the characteristic polynomial $\chi$ of $\mathcal{J}\Big(EE^{HF_W}\Big)$  has complex conjugate roots, $a \pm i b$ which cross the imaginary axis with a non-zero velocity, when $\lfw$ changes.
+\medskip 
+
+We can write mathematically those conditions. On the following, we assume that $\chi(X) = X^3 + a_2 X^2 + a_1X + a_0$ (where $a_i > 0$) has one (negative) real root $r$, and two complex conjugate roots $a \pm i b$: $\chi(X) = \Big(X - r\Big) \Big(X - (a+ib) \Big)\Big(X - (a-ib) \Big)$. By definition of $\Delta_{Stab}$, we have:
+
+\begin{equation}
+\Delta_{Stab}(\lfw) := a_2a_1 - a_0 = -2a\Big(b^2 + r^2) - 2a^3,
+\end{equation}
+
+and therefore, the complex roots cross the imaginary axis ($a=0$) if $\Delta_{Stab}(\lfw^*) = 0$. They cross it with a non zero velocity if 
+$$
+\dfrac{d a(\lfw)}{\lfw} (\lfw^*) = a'(\lfw^*) \neq 0
+.$$
+Using previous formula for $\Delta_{stab}(\lfw)$, we have:
+
+\begin{align*}
+\Delta_{stab}'(\lfw^*) = -2a'(\lfw^*)\Big(b(\lfw^*)^2 + r(\lfw^*)^2) -2a(\lfw^*) \Big(b^2 + r^2)'(\lfw^*) - 6 a'(\lfw^*) a(\lfw^*)^2 = -2a'(\lfw^*)\Big(b(\lfw^*)^2 + r(\lfw^*)^2)
+\end{align*}
+
+and therefore, $a'(\lfw^*) \neq 0 \Leftrightarrow \Delta_{stab}'(\lfw^*) \neq 0$.
+
+Finally, a Hopf bifurcation may occur if it exists $\lfw^*$ such that $\Delta_{Stab}(\lfw^*) = 0$ and $\dfrac{d\Delta_{Stab}}{d\lfw} (\lfw^*) \neq 0$.
+
+
+\subsection{Case $c\mathcal{I} = 0$}
+In the case where $c\mathcal{I} = 0$, we can go deeper in the computations. Indeed, we have: 
+
+$F^*_{W, c\mathcal{I}=0} = \dfrac{\mu_D - f_D}{\lfw m e}$ and $\sqrt{\Delta_{F, c\mathcal{I} = 0}} = er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F(1-\alpha)}$. Using this values, $\Delta_{Stab, c\mathcal{I} = 0}$ is given by:
+
+\begin{multline}
+\Delta_{Stab, c\mathcal{I} = 0} = \left(\mu_D - f_D + m_D + m_W + \dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) \times \\ \left(\big( \mu_D -f_D + m_D + m_W)\dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) -  m_D \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m \Kfa} \right) \dfrac{\mu_D - f_D}{me}
+\end{multline}
+
+We can first search for the sign of $\Delta_{Stab, c\mathcal{I} = 0}$, which determines the asymptotic stability of $EE^{HF_W}_{c\mathcal{I} = 0}$. We have:
 
 
 \begin{multline*}
-\Delta_{Stab}(\alpha, \lfw) = \left(\mu_D -r_D + m_D + r_F \dfrac{F_W^*}{K_{F, \alpha}} + m_W\right) \times \\
-\left(\big( \mu_D -r_D + m_D + m_W) r_F \dfrac{F^*_W}{K_{F, \alpha}}   + m_D e\lfw   \left(\dfrac{\mu_D - r_D}{m e\lfw} - F^*_W \right)\right) - m_D \lfw \sqrt{\Delta_F}  F^*_{W} 
+\Delta_{Stab, c\mathcal{I} = 0} > 0 \\
+\Leftrightarrow \left(\mu_D - f_D + m_D + m_W + \dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) \times  \left(\big( \mu_D -f_D + m_D + m_W)\dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right) > \\ m_D\left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m \Kfa} \right) \dfrac{\mu_D - f_D}{m e} \\
+\Leftrightarrow \left(\mu_D - f_D + m_D + m_W \right)^2 \dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} + \left(\mu_D - f_D + m_D + m_W \right)\left(\dfrac{r_F(\mu_D-f_D)}{\lfw \Kfa m e} \right)^2 > \\ \left(er_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m \Kfa} \right) \dfrac{m_W(\mu_D - f_D)}{e} \\
+\Leftrightarrow \lfw \Kfa \left(\mu_D - f_D + m_D + m_W \right)^2 \dfrac{r_F(\mu_D-f_D)}{m e} + \left(\mu_D - f_D + m_D + m_W \right)\left(\dfrac{r_F(\mu_D-f_D)}{m e} \right)^2 > \\m_D \left((\lfw \Kfa)^2 er_F - \dfrac{(\mu_D - f_D) r_F}{m}\lfw \Kfa  \right) \dfrac{(\mu_D - f_D)}{me} \\
+\Leftrightarrow \lfw \Kfa \left(\mu_D - f_D + m_D + m_W \right)^2 + \left(\mu_D - f_D + m_D + m_W \right)\dfrac{r_F(\mu_D-f_D)}{m e} >  m_D\left((\lfw \Kfa)^2 e - \dfrac{(\mu_D - f_D) }{m}\lfw \Kfa  \right) \\
+\Leftrightarrow 0 > \Big(\lfw \Kfa \Big)^2 em_D -  \Big(\lfw \Kfa \Big) \left(m_W (\mu_D - f_D) + \big(\mu_D - f_D + m_D + m_W\big)^2 \right) \\ - \big(\mu_D - f_D + m_D + m_W\big) \dfrac{r_F (\mu_D - f_D)m_W}{m_D e}
 \end{multline*}
 
 
-Given the complexity of this expression, we will only investigate the sign of $\Delta_{Stab}$ numerically. For fixed parameter values, we can compute $\Delta_{Stab}$ for $\alpha \in [0,1)$ and $ \lfw \in (0, \lambda_{F, max})$.
+We define 
+\begin{multline*}
+P_{\Delta_{Stab}}(X) := X^2 em_D -  X \left(m_W (\mu_D - f_D) + \big(\mu_D - f_D + m_D + m_W\big)^2 \right) \\ - \big(\mu_D - f_D + m_D + m_W\big) \dfrac{r_F (\mu_D - f_D)m_W}{m_D e},
+\end{multline*} 
 
+such that we have 
+\begin{equation}
+\Delta_{Stab, c\mathcal{I} = 0} > 0 \Leftrightarrow P_{\Delta_{Stab}}(K_F(1-\alpha)\lfw) < 0.
+\label{equivalenceDeltaStabP}
+\end{equation}
+
+
+$P_{\Delta_{Stab}}$ has a positive dominant coefficient, and its other coefficients are negative. So,  $P_{\Delta_{Stab}}$ admits a unique positive root, noted $\Big(\Kfa \lambda_F \Big)^*$, given by:
+\begin{multline}
+\Big(\Kfa \lambda_F \Big)^*= \\
+ \dfrac{\left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]\left(1+\sqrt{1+4\dfrac{m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D}
+\end{multline}
+
+Moreover, $P_{\Delta_{Stab}}$ is negative on $\left(0, \Big(\Kfa \lambda_F \Big)^* \right)$ and positive on $\left(\Big(\Kfa \lambda_F \Big)^*, +\infty \right)$. Using \eqref{equivalenceDeltaStabP}, we obtain that $EE^{HF_W}_{c \mathcal{I} = 0}$ is asymptotically stable if $\lfw \Kfa < (\Big(\Kfa \lambda_F \Big)^*$.
+
+However, we still need to verify that this condition is compatible with the existing condition of $EE^{HF_W}_{c \mathcal{I} = 0}$, namely $\lfw \Kfa > \dfrac{\mu_D - f_D}{m e}$.
+
+We have $$P_{\Delta_{Stab}}(\dfrac{\mu_D - f_D}{m e}) = -(\mu_D - f_D + m_D +m_W) \dfrac{(\mu_D - f_D) m_W}{m_D e} \Big(m_D - f_D + m_D + m_W + r_F) < 0$$
+
+
+Since $P_{\Delta_{Stab}}$ is positive on $\left(\Big(K_F(1-\alpha)\lambda_F \Big)^*, +\infty \right)$, we do have $(K_F(1-\alpha)\lambda_F)^* > \dfrac{\mu_D - f_D}{m e}$.
+
+All this lead to the following theorem:
+
+\begin{theorem}
+If $c\mathcal{I} = 0$, and if 
+$$
+\lambda_{F, c\mathcal{I} = 0}^{Min}(\Kfa) < \lfw < \lambda_{F, c\mathcal{I} = 0}^{Max}(\Kfa)
+$$
+where $\lambda_{F, c\mathcal{I} = 0}^{Min}(\Kfa) = \dfrac{\mu_D - f_D}{m e K_F(1-\alpha)}$ and 
+$$
+\lambda_{F, c\mathcal{I} = 0}^{Max}(\Kfa) = \dfrac{\left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]\left(1+\sqrt{1+4\dfrac{m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D K_F(1-\alpha)}
+$$
+then $EE^{HF_W}_{c\mathcal{I} = 0}$ exists and is LAS.
+\end{theorem}
+
+We can now check for the existence of a Hopf bifurcation. We consider parameter $\lfw \Kfa$ as bifurcation parameter. We already know that $\Delta_{Stab}((\lfw \Kfa)^*) = 0$, and we only have to check the transversality condition. We have:
+
+\begin{multline*}
+\dfrac{d \Delta_{Stab}}{d (\lfw \Kfa)} = -\dfrac{r_F (\mu_D - m_D)^2 m_D}{m^2 e (\lfw \Kfa)^ 2} - \\
+\dfrac{(\mu_D - f_D + m_D + m_W) r_F (\mu_D - f_D)}{me} \left(\dfrac{\mu_D - f_D + m_D + m_W}{(\lfw \Kfa)^2} + \dfrac{2 r_F (\mu_D - f_D)}{m e (\lfw \Kfa)^3} \right)
+\end{multline*} 
+and therefore $\dfrac{d \Delta_{Stab}}{d (\lfw \Kfa)}\Big((\lfw \Kfa)^*\Big) < 0$.
+This proves the transversality condition, and proofs the following proposition:
+
+\begin{prop} When $c \mathcal{I} = 0$, a Hopf bifurcation occurs when 
+\begin{multline*} 
+\Kfa \times \lambda_F = \\
+ \dfrac{\left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]\left(1+\sqrt{1+4\dfrac{m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D}
+ \end{multline*}
+\end{prop}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{DiagramBifcI0.png}
+    \caption{}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{DiagramBifcI03D.png}
+    \caption{}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+\YD{N'y a t-il pas une bifurcation de codimension 2 (au moins) étant donné la relation trouvée et la figure 6 avec deux orbites? A vérifier.... Qu'est ce que cela entraîne? A creuser....}
+
+\YD{On déduit que pour tout $\lambda^*<\lambda < \lambda_{F,0,\max}$, où $\lambda_{F,0,\max}$ est le paramètre relatif à la stabilité locale de $(0,0,0)$. l'équilibre endémique est instable et qu'un cylce limite peut se mettre en place.... Vérifié numériquement, ainsi que la formule!}
+
+\YD{Le cas général $c\mathcal{I}>0$ doit être également étudié, afin de montrer, via une étude de fonction, l'existence d'au moins $\lfw^*$ pour lequel $\Delta_{Stab}(\alpha, \lfw)=0$, même si on ne trouve pas de formule comme la précédente....}
+
+\vspace{2cm}
+
+\YD{Simulations à revoir et avec $K_F=3000$, afin d'avoir des oscillations entre plusieurs milliers d'individus et quelques individus...}
 \begin{figure}[!ht]
 \centering
 \begin{subfigure}[b]{1\textwidth}
@@ -297,18 +1483,17 @@ Given the complexity of this expression, we will only investigate the sign of $\
 \centering
 \includegraphics[width=0.8\textwidth]{DeltaStabBW.png}
 \end{subfigure}
-\caption{\centering $\Delta_{Stab}$ as function of $\alpha$ and $\lfw$. \\
-Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
+\caption{\centering $\Delta_{Stab}$ as function of $\alpha$ and $\lfw$. \newline
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $c\mathcal{I} = 0.1$, $\mu_D = 0.017$, $f_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
 \end{figure}
 
-We can see that Hopf bifurcation can occur. Moreover, it appears that equilibrium $EE^{HF_W}$ can be AS even for large values of $\alpha$ and $\lfw$. However, values of $F^*$ will be really low:
 
 \newpage
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\textwidth]{Feq.png}
-\caption{\centering $F^*_W$ as function of $\alpha$ and $\lfw$. \\
-Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$ \\
+\caption{\centering $F^*_W$ as function of $\alpha$ and $\lfw$. \newline
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $c\mathcal{I} = 0.1$, $\mu_D = 0.017$, $f_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$ \newline
 \textbf{Values of $F^*_W$ have artificially be damped on instability area}}
 \end{figure}
 
@@ -323,8 +1508,8 @@ We can focus on the area at the left of the instability area (where the largest 
 \begin{subfigure}[b]{1\textwidth}
 \includegraphics[width=0.8\textwidth]{FeqPortion.png}
 \end{subfigure}
-\caption{\centering $\Delta_{Stab}$ and $F^*_W$ as function of $\alpha$ and $\lfw$. \\
-Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
+\caption{\centering $\Delta_{Stab}$ and $F^*_W$ as function of $\alpha$ and $\lfw$. \newline
+Other parameters : $r_F = 0.6$, $K_F = 800$, $e=1$, $c\mathcal{I} = 0.1$, $\mu_D = 0.017$, $f_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$}
 \end{figure}
 
 \textbf{For certain values of $\lfw$, $F^*_W$ seems to increase with $\alpha$ !!}
@@ -334,8 +1519,9 @@ On the instability area, we have unstable limit cycles:
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=1\textwidth]{OrbitLimitCycle.png}
-\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \\
-Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.2$, $\lfw = 0.0012$}
+\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \newline
+Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $c\mathcal{I} = 0.1$, $\mu_D = 0.017$, $f_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.2$, $\lfw = 0.0012$
+\YD{Quel intérêt de ce diagramme en $H_D$ et pas en $H=H_D+H_W$? C'est quoi le code couleur? Que représente-t-il? Deux cycles? Très intéressant!}}
 \end{figure}
 
 \newpage
@@ -344,9 +1530,37 @@ On the AS area, we have the following orbit:
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=1\textwidth]{OrbitStable.png}
-\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \\
-Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $cI = 0.1$, $\mu_D = 0.017$, $r_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.8$, $\lfw = 0.0001$}
+\caption{\centering Two orbits in the $H_D - F_W$ plane, converging towards a limit cycle. Dots are finale points, black cross is equilibrium $EE^{HF_W}$ \newline
+Parameter values : $r_F = 0.6$, $K_F = 800$, $e=1$, $c\mathcal{I} = 0.1$, $\mu_D = 0.017$, $f_D = 0.001$, $m_D = 0.05$, $m_W = 0.1$, $\alpha = 0.8$, $\lfw = 0.0001$}
 \end{figure}
 
 
+\section{Numerical Scheme and simulations}
+For a given $\Delta t>0$, we set $X^n=\Big(F_W^n,H_D^n,H_W^n \Big)$ as an approximation of $X(t)=\Big(F_W(t),H_D(t),H_W(t)\Big)$ at $t=n\Delta t$, for $n=0,...,N$, where $T=N\Delta$. We consider the following nonstandard scheme
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ \begin{array}{l}
+F_{W}^{n+1}=\dfrac{\left(1+\phi(\Delta t)r_{F}\right)}{1+\phi(\Delta t)\left(\dfrac{r_{F}}{K_{F}(1-\alpha)}F_{W}^{n}+\lambda_{F}H_{W}^{n}\right)}F_{W}^{n}\\ 
+H_{D}^{n+1}=\Big(1-\phi(\Delta t) \left(\mu_{D}+m_{D}-f_{D}\right)\Big)H_{D}^{n}+ \phi(\Delta t)\Big(c\mathcal{I}+ \big(e\lambda_{F}F_{W}^{n+1} + m_{W}\big)H_{W}^{n}\Big)\\ 
+H_{W}^{n+1}=\Big(1-\phi(\Delta t)m_{W}\Big)H_{W}^n+\phi(\Delta t)m_{D}H_{D}^n
+\end{array}\right.
+\end{equation}
+
+where $\phi(\Delta t)=\dfrac{1-e^{-Q\Delta t}}{Q}$, with $Q=\max\{\mu_D+m_D-f_D,m_W\}$. 
+It is straightforward to check that
+$$
+X^n \geq 0 \Rightarrow X^{n+1}\geq 0,\qquad \forall n\in \mathbb{N}.
+$$
+\YD{
+\begin{definition}
+A numerical scheme is called elementary stable whenever it has no other fixed points than those of the continuous system it approximates, the local stability of these fixed points is the same for both the discrete and the continuous dynamical systems for each value of $\Delta t$.
+\end{definition}
+Il faut donc vérifier cela....
+}
+
+\bibliographystyle{plain}
+\bibliography{Math}
+
 \end{document}
+

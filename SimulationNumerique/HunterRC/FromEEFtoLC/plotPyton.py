@@ -110,7 +110,6 @@ def plotPhasePlane(inputFileNames,
         data = pd.read_csv(inputFileName)
         data = data.to_numpy()
         dataTransformed = transformData(data)
-        print(data.shape)
         listParamX = np.float64(dataTransformed[1:, 0])
         listParamY = np.float64(dataTransformed[1:, 1])
         line, = ax.plot(listParamX, listParamY, label=lineLabels[k])
@@ -132,6 +131,7 @@ def plotPhasePlane(inputFileNames,
 
     return fig, ax
 
+  
 def plotContinuousBifurcationFile(inputFileName,
                 saveFig = True, saveFileName="",
                 xlabel = "", ylabel="", colorbarTitle = "",
@@ -362,21 +362,6 @@ def plotSurfaceTest(inputFileNames,
 
     return fig, (ax1, ax2)
 
-def myTransformData(tab):
-    rslt = np.zeros_like(tab, dtype=float)
-    ncol, nrow = rslt.shape
-    for indCol in range(ncol):
-        for indRow in range(nrow):
-            val = tab[indCol, indRow]
-            if val > 0:
-                rsltVal = 2
-            elif val < 0:
-                rsltVal = 1
-            else: ## NaN case
-                rsltVal = 0
-            rslt[indCol, indRow] = rsltVal
-    return rslt
-
 def eqNamestoNbr(tab):
     rslt = np.zeros_like(tab, dtype=float)
     ncol, nrow = rslt.shape
@@ -392,106 +377,52 @@ def eqNamestoNbr(tab):
             rslt[indCol, indRow] = rsltVal
     return rslt
 
-# input = "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/BifurcationcIM02/Bifurcation.csv"
+def addHDHW(tab):
+    nrow, _ = tab.shape
+    rslt = np.zeros((nrow, 2), dtype=float)
+    for indRow in range(nrow):
+            H = tab[indRow, 1] + tab[indRow, 3]
+            FW = tab[indRow, 2]
+            rslt[indRow, 0] = H
+            rslt[indRow, 1] = FW
+            
+    return rslt
 
-# myFig, myAx = plotDiscreteBifurcationFile(
-#                     input, ylabel="$K_F(1-\\alpha)$", xlabel="$\\lambda_{F}$",
-#                     saveFig = False, toPlot=False, fontsize=20
-#                     , tickText=["$EE^{F}$ AS", "$EE^{HF_W}$ AS", "$EE^{HF_W}$ \n Limit Cycle"]
-#                     , dicEqColor={0 : "white", 1 : "grey", 2 : "black"}
-#                     , transformData=eqNamestoNbr
-#                     )
-
-# inputLambdaMax = "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/BifurcationcIM02/LambdaMax.csv"
-# data = pd.read_csv(inputLambdaMax, low_memory=False)
-# data = data.to_numpy()
-# listAlpha = np.float64(data[1:, 0])
-# listLambdaMax = np.float64(data[1:, 1])
-# line, = myAx.plot(listLambdaMax, listAlpha, '--', linewidth = 3,
-#            color = "orange")
-# line.set_label("$\\lambda_{F, cI=0}^{Max}(K_{F,\\alpha})$")
-
-# inputLambdaMin = "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/BifurcationcIM02/LambdaMin.csv"
-# data = pd.read_csv(inputLambdaMin, low_memory=False)
-# data = data.to_numpy()
-# listAlpha = np.float64(data[1:, 0])
-# listLambdaMin = np.float64(data[1:, 1])
-# line, = myAx.plot(listLambdaMin, listAlpha, '--', linewidth = 3,
-#            color = "green")
-# line.set_label("$\\lambda_{F, cI=0}^{Min}(K_{F,\\alpha})$")
-# myAx.legend(fontsize=20)
-# myAx.set_xlim((0.0, 0.2))
-
-# line, = myAx.plot(2.304 * np.ones(50), np.linspace(min(listAlpha), max(listAlpha), 50),
-#                   '--', linewidth = 3,
-#                     color = "red")
-# line.set_label("$\\lambda_{F, cI=0.1}^{Max}(K_{F,\\alpha})$")
-# myAx.legend(fontsize=20)
-
-# # myAx.set_xlim((0.0, 0.75))
-
-# # line, = myAx.plot(0.1918* np.ones(100), 3000*(1- np.linspace(0, 1, 100)), '--', color = "red",
-# #                     linewidth=3)
-# # line.set_label("$\\lambda_F^{Max}$")
-# # myAx.set_ylim(bottom=0)
-# # myAx.legend(fontsize=20)
-
-# input3D = ["/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/lambdaMAlphaExistence.csv"
-#            ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/lambdaMAlphaStab.csv"
-#             ]
-
-# Fig, myAx = plotSurface(input3D
-#                       ,toPlot=False
-#                       ,saveFig= False
-#                       ,ylabel="$K_F(1-\\alpha)$"
-#                       ,xlabel="$m$"
-#                       ,zlabel = "$\\lambda_F$"
-#                       ,colorbarLabels=["$\\lambda_{F, cI=0}^{Min}(m; K_{F,\\alpha})$", "$\\lambda_{F, cI=0}^{Max}(m; K_{F,\\alpha})$"]
-#                       ,fontsize=20
-#                       )
-# myAx.locator_params(axis='y', nbins = 3)
-# myAx.locator_params(axis='z', nbins = 3)
-
-
-# input = ["/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI0/result.csv"
-#         ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI1/result.csv"
-#         ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI2_5/result.csv"
-#         ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI5/result.csv"
-#         ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI7_5/result.csv"
-#         ,"/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/inputI10/result.csv",
-#         # "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoEEHF/input7/result.csv"
-        # ]
-
-input = ["/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EEF/result.csv",
-                  "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EELC/result.csv",
-         "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EEHF/result.csv",
+input = [
+# "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EEF/result.csv",
+#         "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EEHF/result.csv",
+#         "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EEHF2/result.csv",
+        "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EELC/result.csv",
+         "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EELC2/result.csv",
+         "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/FromEEFtoLC/EELC3/result.csv",
 
         ]
 
 
-myFig, myAx = plotTrajectory1D(input, toPlot=False,
-                            #    xlabel="$H_D$", ylabel="$F_W$", zlabel="$H_W$",
-                                xlabel="time (year)", y1label="$H_D$", y2label="$F_W$", y3label="$H_W$",
+myFig, myAx = plotPhasePlane(input, toPlot=False,
+                               xlabel="$H_D + H_W$", ylabel="$F_W$", transformData=addHDHW,
                                fontsize=20, markersize = 40,
-                               lineLabels=["$0$", "1", "2.5", "$5$", "7.5", "$10$", "150"],
-                               titleLegend="$\\mathcal{I} = $")
+                               lineLabels=["$0.0$", "0.012", "0.05"],
+                               titleLegend="$\\lambda_F = $")
 
-# myAx.locator_params(axis='y', nbins = 5)
-myAx3 = myAx[2]
-myAx2 =myAx[1]
-myAx1 = myAx[0]
-# myAx1.set_xlim((0,60))
-
-box = myAx1.get_position()
-myAx1.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-box = myAx2.get_position()
-myAx2.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-box = myAx3.get_position()
-myAx3.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-# Put a legend to the right of the current axis
-myAx2.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=20, 
-                title_fontsize = 20, title = "$\\mathcal{I} = $")
-
+# myFig, myAx = plotTrajectory1D(input, toPlot=False,
+#                             xlabel="Time", y1label="$H_D$", y2label="$F_W$", y3label="$H_W$",
+#                                fontsize=20, markersize = 40,
+#                                lineLabels=["$0.0$", "0.0005", "0.001", "0.0037", "0.004", "0.005"],
+#                                titleLegend="$\\lambda_F = $")
+# myAx[1].set_xlim((0,800))
+# myAx3 = myAx[2]
+# myAx2 =myAx[1]
+# myAx1 = myAx[0]
+# box = myAx1.get_position()
+# myAx1.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+# box = myAx2.get_position()
+# myAx2.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+# box = myAx3.get_position()
+# myAx3.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+# # Put a legend to the right of the current axis
+# myAx2.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=20, 
+#                 title_fontsize = 20, title = "$\\lambda_F = $")
 
 plt.show(block = True)
 
