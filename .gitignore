@@ -12,6 +12,7 @@ SimulationNumerique/*/*/*/
 *.ps
 *.toc
 *.out
+*.dvi
 Wild/
 Images/
 Anthropized/
