@@ -409,7 +409,7 @@ def eqNamestoNbr(tab):
 # listLambdaMax = np.float64(data[1:, 1])
 # line, = myAx.plot(listLambdaMax, listAlpha, '--', linewidth = 3,
 #            color = "orange")
-# line.set_label("$\\lambda_{F, cI=0}^{Max}(K_{F,\\alpha})$")
+# line.set_label("$\\lambda_{F, I=0}^{Max}(K_{F,\\alpha})$")
 
 # inputLambdaMin = "/home/hetier/Documents/0PhD/SimulationNumerique/HunterRC/stabcI0/Plot3/BifurcationcIM02/LambdaMin.csv"
 # data = pd.read_csv(inputLambdaMin, low_memory=False)
@@ -418,14 +418,14 @@ def eqNamestoNbr(tab):
 # listLambdaMin = np.float64(data[1:, 1])
 # line, = myAx.plot(listLambdaMin, listAlpha, '--', linewidth = 3,
 #            color = "green")
-# line.set_label("$\\lambda_{F, cI=0}^{Min}(K_{F,\\alpha})$")
+# line.set_label("$\\lambda_{F, I=0}^{Min}(K_{F,\\alpha})$")
 # myAx.legend(fontsize=20)
 # myAx.set_xlim((0.0, 0.2))
 
 # line, = myAx.plot(2.304 * np.ones(50), np.linspace(min(listAlpha), max(listAlpha), 50),
 #                   '--', linewidth = 3,
 #                     color = "red")
-# line.set_label("$\\lambda_{F, cI=0.1}^{Max}(K_{F,\\alpha})$")
+# line.set_label("$\\lambda_{F, I=0.1}^{Max}(K_{F,\\alpha})$")
 # myAx.legend(fontsize=20)
 
 # # myAx.set_xlim((0.0, 0.75))
@@ -446,7 +446,7 @@ def eqNamestoNbr(tab):
 #                       ,ylabel="$K_F(1-\\alpha)$"
 #                       ,xlabel="$m$"
 #                       ,zlabel = "$\\lambda_F$"
-#                       ,colorbarLabels=["$\\lambda_{F, cI=0}^{Min}(m; K_{F,\\alpha})$", "$\\lambda_{F, cI=0}^{Max}(m; K_{F,\\alpha})$"]
+#                       ,colorbarLabels=["$\\lambda_{F, I=0}^{Min}(m; K_{F,\\alpha})$", "$\\lambda_{F, I=0}^{Max}(m; K_{F,\\alpha})$"]
 #                       ,fontsize=20
 #                       )
 # myAx.locator_params(axis='y', nbins = 3)

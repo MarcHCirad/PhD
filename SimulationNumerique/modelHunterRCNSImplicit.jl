@@ -38,10 +38,14 @@ function numericalScheme(model::hunterNSImplicit, variables::Vector{Float64})
     schemeMatrix = Matrix{Float64}(undef, 3,3)
     schemeMatrix[1,:] = [1 - model.phiDt * (mModel.fD - mModel.muD - mModel.mD),
                     -model.phiDt * mModel.e * mModel.lambdaFWH * HW, - model.phiDt * mModel.mW]
-    schemeMatrix[2,:] = [0, 1 - model.phiDt * (mModel.rF * (1 - FW / ((1-mModel.alpha)*mModel.KF)) - mModel.lambdaFWH * HW), 0]
+    schemeMatrix[2,:] = [0, 
+            1 - model.phiDt * ((1-mModel.alpha) * (1 + mModel.beta * HW) * mModel.rF *
+                    (1 - FW / ((1-mModel.alpha)*mModel.KF))
+                     - mModel.lambdaFWH * HW),
+            0]
     schemeMatrix[3,:] = [- model.phiDt * mModel.mD, 0, 1 + model.phiDt * mModel.mW]
     
-    problem = LinearProblem(schemeMatrix, variables + [mModel.c*model.phiDt, 0.,0.])
+    problem = LinearProblem(schemeMatrix, variables + [mModel.I*model.phiDt, 0.,0.])
     variablesN1 = solve(problem)
     
     return variablesN1

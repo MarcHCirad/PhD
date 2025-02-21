@@ -5,7 +5,7 @@ abstract type numericalModel end
 
 include("modelHunterRC.jl")
 include("modelHunterRCRK4.jl")
-include("modelHunterRCNS.jl")
+# include("modelHunterRCNS.jl")
 include("modelHunterRCNSImplicit.jl")
 include("writer.jl")
 include("reader.jl")
@@ -13,7 +13,7 @@ include("reader.jl")
 function solveWriteModel(inputFile::String, outputDir::String)
     myModel = readNumericalModel(inputFile)
     solveModel(myModel)
-    println(longTermDynamic(myModel.mathModel))
+    # println(longTermDynamic(myModel.mathModel))
     writeResult(myModel, outputDir)
 
     startInput = findlast("/input", inputFile)
@@ -38,7 +38,7 @@ end
 
 function mainSolveModel()
     pathWD = "/home/hetier/Documents/0PhD/SimulationNumerique"
-    pathHunter = pathWD * "/HunterRC/GradI"
+    pathHunter = pathWD * "/PositiveFeedback/Test"
     inputPath = pathHunter 
     outputPath = pathHunter
     path = pathHunter
@@ -49,8 +49,8 @@ function mainSolveModel()
     # solveWriteModel(inputPath * "/inputLC.txt", outputPath)
 
     # myModel = readNumericalModel(path * "/inputHF.txt")
-    # println(computeLambdaMincI0(myModel.mathModel))
-    # println(computeLambdaMaxcI0(myModel.mathModel))
+    # println(computeLambdaMinI0(myModel.mathModel))
+    # println(computeLambdaMaxI0(myModel.mathModel))
     # println(longTermDynamic(myModel.mathModel))
     # println(thresholdFW(myModel.mathModel))
     # println(computeValMax(myModel.mathModel))
@@ -118,8 +118,8 @@ function mainLimitCylce()
     # solveWriteModel(inputPath * "/input.txt", outputPath)
 
     myModel = readNumericalModel(path * "/input.txt")
-    println(computeLambdaMincI0(myModel.mathModel))
-    # println(computeLambdaMaxcI0(myModel.mathModel))
+    println(computeLambdaMinI0(myModel.mathModel))
+    # println(computeLambdaMaxI0(myModel.mathModel))
     println(longTermDynamic(myModel.mathModel))
     println(computeCharacteristicLC(myModel))
     # println(computeValMax(myModel.mathModel))
@@ -134,4 +134,5 @@ mainSolveModel()
 # mainLimitCylce()
 
 end
+println("Code basé sur le fichier formulation4.tex")
 println(t, " seconds to execute the code")
