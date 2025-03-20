@@ -19,8 +19,7 @@ function writeDiagram(dirPrefix::String,
         mkpath(dirPrefix)
     end
 
-    ## inputFile = /home/.../input.txt
-    ## copyInputFile = /home/.../dirPrefix/input.txt
+
     indInput = first(findfirst("input", inputFile))
     copyInputFile = dirPrefix * "/" * inputFile[first(indInput):end]
     if copyInputFile != inputFile
@@ -29,7 +28,12 @@ function writeDiagram(dirPrefix::String,
 
     fileName = dirPrefix * "/" * nameSuffix * ".csv"
     println(fileName)
-    CSV.write(fileName, DataFrame(diagram, :auto))
+
+    header::Vector{String} = diagram[1, :]
+    df = DataFrame(diagram[2:end, :], :auto)
+    rename!(df, header)
+
+    CSV.write(fileName, df)
     
     return fileName[1:end-4]
 end

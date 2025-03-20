@@ -70,12 +70,12 @@ We model the human-wild interactions by a consumer-resource model. We consider t
 
 On the wild area, are present wild fauna $F_W$. The dynamic of $F_W$ follows a logistic equation, with a carrying capacity, $K_F$, dependent on the surrounding vegetation. To take into account the level of anthropization of the habitat, we introduce the non-negative parameter $\alpha \in [0, 1)$. When $\alpha > 0$, the carrying capacity of the habitat is reduced of $\alpha \%$ from its original value. Anthropization may also have a negative impact on the animal's growth rate $r_F$. For the sake of simplicity, we model this impact in the same way, by multiplying the growth rate by $(1-\alpha)$.
 
-We consider two different interactions between wild fauna and the population located in the wild area. On the first hand, wild fauna is hunted by humans present in the wild area. This is take into account by the functional response $\lfw H_W$, where $\lfw$ is the hunting rate and $H_W$ the number of hunter. The functional response is unbounded, to take into account the possibility of over-hunt. On the second hand, it is known that housing, culture and food supply may attract some mammals, specially rodents (\marc{donner des noms?}) and favor their reproduction. We take this into account by multiplying the wild animal's growth rate, $r_F$, by the functional $(1 +  \beta H_W)$.
+We consider two different interactions between wild fauna and the population located in the wild area. On the one hand, wild fauna is hunted by humans present in the wild area. This is take into account by the functional response $\lfw H_W$, where $\lfw$ is the hunting rate and $H_W$ the number of hunter. The functional response is unbounded, to take into account the possibility of over-hunt. On the other hand, it is known that housing, culture and food supply may attract some mammals, specially rodents (\marc{donner des noms?}) and favor their reproduction. See for example \cite{dounias_foraging_2011, dobigny_zoonotic_2022}. We take this effect into account by multiplying the wild animal's growth rate, $r_F$, by the functional $(1 +  \beta H_W)$.
 
 Humans present in the domestic area, $H_D$, follow a consumer equation. Its growth will depend on the available resources. The dynamic followed by $H_D$ can be separated in four groups of term. 
 First there is a constant growth due to immigration from other inhabited area. This immigration recoup installation of new workers to develop industrial complex for example.
 
-Prey hunted in the wild area are used to feed the villagers. Therefore, we consider a growth term $e \lfw H_W F_W$, where $e$ is a conversion rate between these hunted prey and the number of human it can nourish.
+Prey hunted in the wild area are used to feed the villagers. Therefore, we consider a growth term $e \lfw H_W F_W$, where $e$ is a conversion rate between these hunted prey and the number of human it can nourish. This parameter encompasses both direct consumption of the meat by villagers, but also the fact that a large amount of bush-meat is not consume by the village inhabitants, but is sold on city market and allow to buy other supply \cite{wilkie_bushmeat_1998}. 
 
 Villagers are also able to produce a certain amount of food at the rate $f_D$. Note that $f_D$ can be understand as $f_D = e \lfd F_D$ where $F_D$ is a constant amount of domestic animals.
 Moreover, we assume that $H_D$ has a natural death-rate, $\mu_D$.
@@ -108,20 +108,20 @@ $$
 
 \begin{table}
 \centering
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline 
-Parameter & Description & Unit & Value \\ 
+Parameter & Description & Unit & Value & Reference \\ 
 \hline 
 $t$ & Time & Year \\
 $e$ & Prey-food conversion & Human Ind Kg $^{-1}$ & \\
 $f_D$ & Food produced by human population & Year$^{-1}$\\
-$\mu_D$ & Human mortality rate  & Year$^{-1}$ & $1/60$\\
-$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} = 0.23$}\\
+$\mu_D$ & Human mortality rate  & Year$^{-1}$ & $1/60$ & \cite{ins_demographie}\\
+$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} = 0.23$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
 $m_W$ & Migration from wild area to domestic area & Year$^{-1}$\\
 $r_F$ & Wild animal growth rate & Year$^{-1}$ & $0.46 \pm 0.37$\\
 $K_F$ & Carrying capacity for wild animal, fixed by the environment& Kg\\
 $\alpha$ & Proportion of anthropized environment & - & $[0, 1)$\\
-$\beta$ & Positive impact from human activities to animal growth rate & Kg$^{-1}$ & \\
+$\beta$ & Positive impact from human activities to animal growth rate & Kg$^{-1}$ &  \\
 $\lfw$ & Hunting rate & Humans Ind Year $^{-1}$ \\
 $\mathcal{I}$ & Migration rate & Human Ind $\times$ Year$^{-1}$ \\
 \hline
@@ -129,6 +129,31 @@ $\mathcal{I}$ & Migration rate & Human Ind $\times$ Year$^{-1}$ \\
 \end{tabular}
 \caption{List of the parameters used}
 \end{table}
+
+
+%\begin{table}
+%\centering
+%\begin{tabular}{|c|c|c|c|c|}
+%\hline 
+%Parameter & Description & Unit & Value & Reference \\ 
+%\hline 
+%$t$ & Time & Year \\
+%$e$ & Prey-food conversion & HumanInd Animal $^{-1}$ & \\
+%$f_D$ & Food produced by human population & Year$^{-1}$\\
+%$\mu_D$ & Human mortality rate  & Year$^{-1}$ & $1/60$ & \cite{ins_demographie}\\
+%$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} = 0.23$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
+%$m_W$ & Migration from wild area to domestic area & Year$^{-1}$\\
+%$r_F$ & Wild animal growth rate & Year$^{-1}$ & $0.46 \pm 0.37$\\
+%$K_F$ & Carrying capacity for wild animal, fixed by the environment& Animal\\
+%$\alpha$ & Proportion of anthropized environment & - & $[0, 1)$\\
+%$\beta$ & Positive impact from human activities to animal growth rate & Animal$^{-1}$ &  \\
+%$\lfw$ & Hunting rate & Humans Ind Year $^{-1}$ \\
+%$\mathcal{I}$ & Migration rate & Human Ind $\times$ Year$^{-1}$ \\
+%\hline
+%%$c$ & Conversion rate between raw products and food OR nothing & Human OR -
+%\end{tabular}
+%\caption{List of the parameters used}
+%\end{table}
 
 \section{Existence and uniqueness of global solutions}
 In this section, we state general results on system \eqref{equationsHDFWHW}:  existence of an invariant region, existence and uniqueness of global solutions.
@@ -143,7 +168,8 @@ On the following, we will assume $\lfw - (1-\alpha) \beta r_F > 0 \Leftrightarro
 
 \marc{Numériquement, on s'aperçoit que les solutions avec $\lfw - (1-\alpha) \beta r_F < 0$ explosent ; 
 cette expression, et le fait qu'elle doit être positive apparaît dans la définition de $S^{max}$, prop 2, et sa positivité facilite aussi le calcul des équilibres (moins de cas à gérer)
-et les conditions de stabilité (par exemple le fait que $a_{0, \cI > 0} > 0$) pour l'équilibre de coexistence}
+et les conditions de stabilité (par exemple le fait que $a_{0, \cI > 0} > 0$) pour l'équilibre de coexistence
+J'ai rajouté une phrase pour justifier}
 
 Second, we need to add a constraint on the sign of $f_D - \mu_D$, to avoid infinite growth of human population. That is the subject of the next proposition:
 
@@ -191,20 +217,16 @@ To prove this proposition we will use the notion of invariant region, see \cite{
 \end{equation}
 
 With this new variable, the model writes:
-\begin{subequations}
+
 \begin{equation}
 \left\{ \begin{array}{l}
-\dfrac{dS}{dt} = \cI + (f_D - \mu_D) \Big(S - H_W - \dfrac{e \lfw}{\lfw - (1-\alpha) \beta r_F }F_W \Big) + \dfrac{e \lfw(1-\alpha)r_F}{\lfw - (1-\alpha) \beta r_F } \left(1 - \dfrac{(1+\beta H_W)F_W}{(1-\alpha)K_F} \right) F_W.
-\end{array}\right.
-\end{equation}
-\begin{equation}
-\left\lbrace \begin{array}{l}
+\dfrac{dS}{dt} = \cI + (f_D - \mu_D) \Big(S - H_W - \dfrac{e \lfw}{\lfw - (1-\alpha) \beta r_F }F_W \Big) + \dfrac{e \lfw(1-\alpha)r_F}{\lfw - (1-\alpha) \beta r_F } \left(1 - \dfrac{(1+\beta H_W)F_W}{(1-\alpha)K_F} \right) F_W, \\
 \dfrac{dF_W}{dt} = (1-\alpha)(1+\beta H_W) r_F \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
 \dfrac{dH_W}{dt}= m_D \left(S - \dfrac{e \lfw}{\lfw - (1-\alpha) \beta r_F }F_W\right) - (m_W + m_D) H_W 
 \end{array} \right.
-\end{equation}
 \label{equationsSFWHW}
-\end{subequations}
+\end{equation}
+
 
 We define the function $g(z)$ as the right hand side of this equations. We also introduce the following functions:
 $$
@@ -861,7 +883,7 @@ The characteristic polynomial of $\mathcal{J}(EE^{H F_W})$ is given by: $\chi = 
 
 According to \eqref{expressionA2}, we have:
 \begin{equation*}
-a_2 = -\left(f_D - \mu_D - m_D - (1+\beta H_W^*)r_F \dfrac{F_W^*}{K_F} - m_W \right)
+a_2 = \mu_D -f_D + m_D + (1+\beta H_W^*)r_F \dfrac{F_W^*}{K_F} + m_W 
 \end{equation*}
 that is $a_2>0$. According to \eqref{expressionA0}, we have:
 \begin{equation*}
@@ -892,11 +914,11 @@ We look for the sign of $\left(\dfrac{\mu_D -f_D}{m e\lfw} - F^*_{W}\right)$ usi
 
 \begin{align*}
 P_F\Big(\dfrac{\mu_D - f_D}{\lfw m e}\Big) &= \left(\dfrac{\mu_D - f_D}{\lfw m e}\right)^2 \left(\dfrac{er_F}{K_F} \right) - \dfrac{\mu_D - f_D}{\lfw m e} \left(e(1-\alpha)r_F + \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F} + \dfrac{\cI \beta r_F}{\lfw K_F} \right) + \\ & \left(\dfrac{(\mu_D - f_D)(1-\alpha) r_F}{\lfw m} - \cI\Big(1 - \dfrac{(1-\alpha)\beta r_F}{\lfw} \Big) \right), \\
-&= - \dfrac{(\mu_D - f_D) \cI \beta r_F}{e \lfw ^2 K_F} - \cI + \dfrac{\cI (1-\alpha)r_F \beta r_F}{\lfw}, \\
-&= -\cI \left( 1 - \dfrac{(1-\alpha)r_F \beta r_F}{\lfw} + \dfrac{(\mu_D - f_D) \cI \beta r_F}{e \lfw ^2 K_F} \right), \\
+&= - \dfrac{(\mu_D - f_D) \cI \beta r_F}{e \lfw ^2 K_F} - \cI + \dfrac{\cI (1-\alpha)r_F \beta}{\lfw}, \\
+&= -\cI \left( 1 - \dfrac{(1-\alpha)r_F \beta }{\lfw} + \dfrac{(\mu_D - f_D)  \beta r_F}{e \lfw ^2 K_F} \right), \\
 & < 0
 \end{align*}
-since we assumed $1 - \dfrac{(1-\alpha)r_F \beta r_F}{\lfw} > 0$. Therefore, $\dfrac{\mu_D - f_D}{m e\lfw} > F^*_{W}$, which was the last step to show that $a_0>0$. 
+since we assumed $1 - \dfrac{(1-\alpha)r_F \beta}{\lfw} > 0$. Therefore, $\dfrac{\mu_D - f_D}{m e\lfw} > F^*_{W}$, which was the last step to show that $a_0>0$. 
 
 According to \eqref{expressionA1}, coefficient $a_1$ is given by:
 \begin{equation*}
@@ -1085,7 +1107,7 @@ $$
 \section{Results}
 
 \bibliographystyle{plain}
-\bibliography{Math,Biblio/Math}
+\bibliography{Biblio/Math, Biblio/Context}
 
 \end{document}
 

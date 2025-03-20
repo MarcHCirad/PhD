@@ -1,4 +1,4 @@
-function createMathModel(modelType::String, param::Dict{String, Float64})
+function createMathModel(modelType::String, param::Dict{String, Any})
     ## Check if the math model is implemented, and if it can be created. If yes, return it.
     if modelType == "Hunter"
         nbrParameters = length(fieldnames(modelHunter))
@@ -66,7 +66,7 @@ function readNumericalModel(inputFile::String)
         mathModelType::String = line[last(indTab)+1:end]
       
         ## Read the math model parameters
-        mathParam = Dict{String, Float64}()
+        mathParam = Dict{String, Any}()
         line = readline(fin)
         while line != "## Initial Values ##"
             indTab = findfirst("    ", line)

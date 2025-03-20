@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+\graphicspath{{./Images/}{./Images/ComparisonBifurcationFAHA}}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\newcommand{\marc}[1]{\textcolor{red}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\newcommand{\lfd}{\lambda_{F, D}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\Kfa}{K_{F,\alpha}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Paramètres Thèse Marc}
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+\section{Model}
+
+\begin{equation}
+\def\arraystretch{2}
+\left\{ 
+\begin{array}{l}
+\dfrac{dH_D}{dt}= \cI + e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W. \\
+\dfrac{dF_W}{dt} = r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{equationsHDFWHW}
+\end{equation}
+
+
+
+\section{Parameters values}
+\begin{table}[ht]
+\centering
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Parameter & Description & Unit \\ 
+\hline 
+$t$ & Time & Year \\
+$e$ & Prey-food conversion & Human Ind Kg $^{-1}$ \\
+$f_D$ & Food produced by human population & Year$^{-1}$ \\
+$\mu_D$ & Human mortality rate  & Year$^{-1}$ \\
+$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ \\
+$m_W$ & Migration from wild area to domestic area & Year$^{-1}$ \\
+$r_F$ & Wild animal growth rate & Year$^{-1}$ \\
+$K_F$ & Carrying capacity for wild animal, fixed by the environment& Kg \\
+$\alpha$ & Proportion of anthropized environment & - \\
+$\beta$ & Positive impact from human activities to animal growth rate & Human Ind$^{-1}$  \\
+$\lfw$ & Hunting rate & Human Ind Year $^{-1}$ \\
+$\mathcal{I}$ & Immigration rate & Human Ind $\times$ Year$^{-1}$\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Parameter & Value & Reference \\ 
+\hline 
+$t$ & - & -\\
+$e$ & &\\
+$f_D$ & $0.011$ &\\
+$\mu_D$ & $1/60 \simeq 0.017$ & \cite{ins_demographie}\\
+$m_D$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} \in [0.006, 0.016]$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
+$m_W$ & &\\
+$r_F$ & $0.46 \pm 0.37$ &\\
+$K_F$ & &\\
+$\alpha$ & $[0, 1)$ & - \\
+$\beta$ & &  \\
+$\lfw$ & & \\
+$\mathcal{I}$ & &\\
+\hline
+\end{tabular}
+
+\caption{List of the parameters used}
+\end{table}
+
+\subsection{Complementary explication}
+\begin{itemize}
+
+\item Parameter $\mu_D$ : Life expectancy in Cameroon is around 60 years, so we just take $\mu_D = \dfrac{1}{60}$
+
+\item Parameter $m$ is estimated using data from \cite{avila_interpreting_2019, jones_incentives_2019, jones_consequences_2020}. Using the fact that the total population is equal at the population in the domestic area plus the population in the wild area, and the equilibrium relations ($H_D^* = \dfrac{1}{m}H_W^*$), we have:
+$$
+H^* = H_D^* + H_W^* = (1 + \dfrac{1}{m}) H_W^*
+$$
+
+and this gives
+$$
+m = \dfrac{H_W^*}{H^* - H_W^*}
+$$
+where $H^*$ is the total population, and $H_W^*$ is the population in the wild area, at a given time.
+
+Article \cite{avila_interpreting_2019} registers the total populations $H^*$ of villages in the Dja area (Southeast Cameroon), as well as the number of hunters $H_{hunter}$ and estimate that hunters spend 4.60h per week (10 days per year) hunting. Thus, a hunter as a probability of $p = \dfrac{4.60}{7 \times 24} = 0.027$ to be hunting. Therefore, we can estimate that $H_W^* = 0.027 \times H_{hunter}$.
+
+Taking the mean of the different villages population, we obtain that $m = 0.006$. However, other articles (\cite{jones_consequences_2020, jones_incentives_2019}) estimates different hunting durations : 25 days per year for \cite{jones_incentives_2019} and 5 days per year for \cite{jones_consequences_2020}. This gives the following values for $m = 0.016$ or $m = 0.0032$.
+
+We will retain $m \in [0.006, 0.016]$.
+
+\item Parameter $f_D$ can be estimated using data from \cite{koppert_consommation_1996} and the equilibrium expressions. When no immigration is considered, the ratio $r$ between the food locally produced (parameter $f_D$) and the resources coming from the hunt ($e \lfw F_W^*$) writes:
+
+\begin{align*}
+r :=&  \dfrac{f_D}{e \lfw F_W^*} \\
+=& \dfrac{f_D}{e \lfw \times \dfrac{\mu_D - f_D}{e m \lfw}}\\
+=& \dfrac{f_D m }{\mu_D - f_D}
+\end{align*}
+
+Therefore, $f_D = \dfrac{r}{m + r} \mu_D$ and we do have $f_D < \mu_D$, which is conformed to the model hypothesis.
+
+We consider that the resources coming from the hunt correspond to the bush meat consumed and the imported food (obtained by selling bushmeat). According to \cite{koppert_consommation_1996}, this represents 90\% (resp 73\% ; 80\%) of the consumed proteins by the Yassa (resp Mvae; Bakola). The local production furnishes 10\% (resp 27\% ; 18\%) of the consumed proteins. 
+
+However, if we reason using calories and not proteins intakes, the figures are inversed: the calories coming from the hunt represent 18\% (resp 17\%; 17\%) of the diet and the ones coming from local production represents 82\% (resp 81\%; 81\%).
+
+Therefore, we have $r = 0.11$ (resp $=0.37$ ; $=0.225$) if we use proteins data, and $r = 4.56$ (resp $=4.76$; $=4.76$) if we use the calories data.
+
+Using previously found values of $m$ and $\mu_D$, we obtain $f_D = 0.009$ (resp. $=0.013$; $=0.011$) (average $f_D = 0.011$) or $f_D = 0.016$ (resp $=0.016$, $= 0.016$) (average $f_D = 0.016$). Let recall that $\mu_D \simeq 0.017$.
+
+ \begin{figure}
+ \centering
+ \includegraphics[width=0.8\textwidth]{DiagConsommation.png}
+ \end{figure}
+
+\end{itemize}
+
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{Biblio/Math, Biblio/Context}
+
+
+\end{document}

@@ -16,7 +16,7 @@ struct modelHunter <: mathematicalModel
 
     m::Float64
         
-    function modelHunter(modelParam::Dict{String, Float64})
+    function modelHunter(modelParam::Dict{String, Any})
 
         rF, lambdaFWH, KF = modelParam["rF"], modelParam["lambdaFWH"], modelParam["KF"]
         alpha, beta = modelParam["alpha"], modelParam["beta"]
@@ -25,7 +25,9 @@ struct modelHunter <: mathematicalModel
         variablesNames = ["H_D", "F_W", "H_W"]
         m  = mD / mW
 
-        # @assert (lambdaFWH > (1-alpha) * beta * rF)
+        @assert(alpha < 1)
+        bound = 4 * (muD - fD) / (m * e * rF * KF * (1-alpha)^2)
+        @assert (bound > beta) "bound for beta is $bound"
 
         new(variablesNames, rF, KF, alpha, beta, lambdaFWH, e, I, muD, fD, mD, mW, m)
     end
@@ -66,7 +68,7 @@ function equilibriumFW(model::modelHunter)
     When I == 0 ;
     return eq EE^F
     """
-    return (0, model.KF * (1 - model.alpha), 0)
+    return [0, model.KF * (1 - model.alpha), 0]
 end
 
 function equilibriumH(model::modelHunter)
@@ -75,7 +77,7 @@ function equilibriumH(model::modelHunter)
     return eq EE^H
     """
     HD = model.I / (model.muD - model.fD)
-    return (HD, 0, model.m * HD)
+    return [HD, 0, model.m * HD]
 end
 
 function equilibriumHFW(model::modelHunter)
@@ -109,7 +111,7 @@ function equilibriumHFW(model::modelHunter)
     Heq = Heq / (model.m * (model.lambdaFWH - model.beta * (1 - model.alpha) * model.rF + 
                     model.beta * model.rF * Feq / model.KF))
 
-    return (Heq, Feq, model.m * Heq)
+    return [Heq, Feq, model.m * Heq]
     
 end
 
@@ -119,11 +121,9 @@ function computeMaxVal(model::modelHunter)
         {H_D + H_W + e F_W < Smax, F_W < Fmax, H_W < m_D/m_D+m_W Smax}
     """
     Fmax = model.KF * (1 - model.alpha)
-    Smax = (1 + model.m) / (model.muD - model.fD) *
-         (model.I + 
-            model.e * (1 - model.alpha) * model.KF * model.lambdaFWH * 
-            ((1 - model.alpha) * model.rF + model.muD - model.fD) / 
-            (model.lambdaFWH - model.beta * (1 - model.alpha) * model.rF))
+    Smax = (1 + model.m) * (model.I + 
+        (model.muD - model.fD + model.rF * (1-model.alpha) / 4) * model.e * model.KF * (1-model.alpha))
+    Smax = Smax / ((model.muD - model.fD) / model.m - model.e * model.rF * (1-model.alpha)^2 * model.KF * model.beta / 4)
     Hwmax = model.mD / (model.mD + model.mW) * Smax
     
     return (Smax, Fmax, Hwmax)
@@ -150,7 +150,6 @@ function computeLambdaMinI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1
     if e < 0
         e = model.e
     end
-
     if mW < 0
         mW = model.mW
     end
@@ -183,7 +182,7 @@ function computeLambdaMaxI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1
             model.rF * (model.muD - model.fD) / (e * m * model.KF)
             )
     a1 = -(mW * (model.muD - model.fD) + 
-            (model.muD- model.fD + model.mD + mW)^2)
+            (model.muD - model.fD + model.mD + mW)^2)
     a2 = (1 - alpha) * model.KF * e * model.mD
 
     PDeltaStab = Polynomial([a0, a1, a2])
@@ -251,7 +250,7 @@ function computeDeltaStab(model::modelHunter ; lambdaFWH = -1., alpha = -1.0, rs
     end
 end
 
-function longTermDynamic(model::modelHunter)
+function printLongTermDynamic(model::modelHunter)
     if model.I == 0
         lambdaMin = computeLambdaMinI0(model)
         if model.lambdaFWH < lambdaMin
@@ -260,7 +259,6 @@ function longTermDynamic(model::modelHunter)
         elseif model.lambdaFWH > lambdaMin
             eq = equilibriumHFW(model)
             DeltaStab = computeDeltaStab(model, rsltFeq = false)
-            println("DeltaStab : ", DeltaStab)
             if DeltaStab > 0
                 return "I = 0 ; EE^HFW = " * string(eq) * " is GAS"
             elseif DeltaStab < 0
@@ -279,6 +277,7 @@ function longTermDynamic(model::modelHunter)
         elseif model.lambdaFWH < lambdaMax
             eq = equilibriumHFW(model)
             DeltaStab = computeDeltaStab(model, rsltFeq = false)
+            println(DeltaStab)
             if DeltaStab > 0
                 return "I > 0 ; EE^HFW = " * string(eq) * " is GAS"
             elseif DeltaStab < 0
@@ -292,6 +291,61 @@ function longTermDynamic(model::modelHunter)
     end
 end
 
+function longTermDynamic(model::modelHunter)
+    if model.I == 0
+        lambdaMin = computeLambdaMinI0(model)
+        if model.lambdaFWH < lambdaMin
+            eq = equilibriumFW(model)
+            return push!(eq, 0.)
+        else
+            eq = equilibriumHFW(model)
+            DeltaStab = computeDeltaStab(model, rsltFeq = false)
+            if DeltaStab > 0
+                return push!(eq, 0.)
+            else
+                return push!(eq, 1.)
+            end
+        end
+    else
+        lambdaMax = computeLambdaMax(model)
+        if model.lambdaFWH > lambdaMax
+            eq = equilibriumH(model)
+            return push!(eq, 0)
+        else
+            eq = equilibriumHFW(model)
+            DeltaStab = computeDeltaStab(model, rsltFeq = false)
+            if DeltaStab > 0
+                return push!(eq, 0.)
+            else DeltaStab < 0
+                return push!(eq, 1.)
+            end
+        end
+    end
+end
+
+
+function bifurcationEquilibriumValues(model::modelHunter, paramName::String,
+                listParam::Vector{Float64})
+
+            bifurcationTable = Matrix{Any}(undef, length(listParam)+1, 5)
+            bifurcationTable[1,:] = [paramName, "H_D", "F_W", "H_W", "LC"]
+            bifurcationTable[2:end,1] = listParam
+
+            localParam = Dict(string(name) => getfield(model, name) for name in fieldnames(modelHunter))
+            delete!(localParam, "variablesNames")
+            for (ind, paramVal) in enumerate(listParam)
+                localParam[paramName] = paramVal
+                localModel = modelHunter(localParam)
+                bifurcationTable[ind+1, 2:end] .= longTermDynamic(localModel)
+            end
+            return bifurcationTable
+    
+end
+
+
+
+
+###
 function computeDeltaStabMatrix(model::modelHunter, 
     listAlpha::Vector{Float64}, 
     listLambdaFWH::Vector{Float64})
@@ -373,7 +427,7 @@ function computeBifurcationDiagram(model::modelHunter,
     return bifurcationMatrix
 end
 
-function computeBifurcationDiagramcI0(model::modelHunter, 
+function computeBifurcationDiagramI0(model::modelHunter, 
     listAlpha::Vector{Float64}, 
     listLambdaFWH::Vector{Float64})
 
@@ -499,3 +553,4 @@ function computeLambdaMatrixAlphaMW(model::modelHunter,
 
     return lambdaMinMatrix, lambdaMaxMatrix
 end
+

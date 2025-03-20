@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage{graphicx,ulem} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+%\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+%\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{pdftricks}
+\usepackage{xcolor}
+\begin{psinputs}
+\usepackage{amsfonts,amsmath}
+	\usepackage{pstricks-add}
+   \usepackage{pstricks, pst-node}
+   \usepackage{multido}
+   \newcommand{\lfw}{\lambda_{F}}
+\end{psinputs}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+   \graphicspath{{./Images/}{../Schema}}
+%\graphicspath{{Figures}}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\lfd}{\lambda_{F, D}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\Kfa}{K_{F,\alpha}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corollary}
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Zone invariante et limite sur $\beta$ }
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+On considère le modèle suivant :
+\begin{equation}
+\def\arraystretch{2}
+\left\{ 
+\begin{array}{l}
+\dfrac{dH_D}{dt}= \cI + e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W. \\
+\dfrac{dF_W}{dt} = r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{equationsHDFWHW}
+\end{equation}
+
+qui donne, par changement de variable $h_W = -H_W$, $f_W = -F_W$ le modèle:
+
+
+\begin{equation}
+\left\{ \begin{array}{l}
+\dfrac{dh_D}{dt}= \cI + e\lfw h_W f_W + (f_D - \mu_D) h_D - m_D h_D - m_W h_W, \\
+\dfrac{df_W}{dt} = (1-\alpha)r_F \left(1 + \dfrac{1 - \beta h_W}{K_F(1-\alpha)}f_W \right) f_W + \Big(\lfw - (1-\alpha)\beta r_F \Big) f_W h_W, \\
+\dfrac{dh_W}{dt}= -m_D h_D - m_W h_W.
+\end{array} \right.
+\label{equationshDfWhW}
+\end{equation}
+
+
+Lorsque 
+\begin{equation}
+(\mu_D - f_D) \dfrac{m_W}{m_D} > er_F (1-\alpha)^2 \beta \dfrac{K_F}{4},
+\label{existenceZI}
+\end{equation}
+la zone invariante $$\Omega_2 = \Big\{\Big(H_D, F_W, H_W \Big) \in \mathbb{R}_+^3  \Big|H_D + H_W + eF_W \leq S^{max}, F_W \leq F_W^{max}, H_W \leq H_W^{max} \Big\},$$
+ avec
+$$
+S^{max} = \dfrac{m_D + m_W}{m_D} \dfrac{\cI + \Big((\mu_D-f_D) + \dfrac{r_F}{4}(1-\alpha) \Big) e K_F (1-\alpha)}{(\mu_D - f_D) \dfrac{m_W}{m_D} - er_F(1-\alpha)^2 \beta \dfrac{K_F}{4}}
+\quad
+F_W^{max} = (1-\alpha)K_F,
+$$
+$$
+H_W^{max} = \dfrac{\cI + \Big((\mu_D-f_D) + \dfrac{r_F}{4}(1-\alpha) \Big) e K_F (1-\alpha)}{(\mu_D - f_D) \dfrac{m_W}{m_D} - er_F(1-\alpha)^2 \beta \dfrac{K_F}{4}}
+$$
+est bien définie.
+
+
+La condition d'existence  de la zone invariante, \eqref{existenceZI} donne:
+\begin{align*}
+(\mu_D - f_D) \dfrac{m_W}{m_D} &> er_F (1-\alpha)^2 \beta \dfrac{K_F}{4}, \\
+\dfrac{\mu_D - f_D}{\dfrac{m_D}{m_W} e(1-\alpha) K_F } &> \dfrac{r_F (1-\alpha) \beta}{4}
+\end{align*}
+
+Dans le cas $\cI = 0$, l'équilibre de coexistence existe ssi:
+
+\begin{equation}
+\lfw > \dfrac{\mu_D - f_D}{\dfrac{m_D}{m_W} e (1-\alpha)K_F}
+\end{equation}
+
+Et donc, l'équilibre de coexistence et la zone invariante co-existe si:
+
+$$
+\lfw > \dfrac{\mu_D - f_D}{\dfrac{m_D}{m_W} e (1-\alpha)K_F} > \dfrac{r_F (1-\alpha) \beta}{4}
+$$
+
+
+On retrouve une inégalité entre $\lfw$ et $r_F(1- \alpha) \beta$.
+
+
+Par ailleurs, le système $\eqref{equationshDfWhW}$ est compétitif pour $-(1-\alpha) K_F \leq f_W \leq 0$ ssi
+
+\begin{align*}
+\Big(\lfw - (1-\alpha)\beta r_F \Big) f_W - \beta r_F \dfrac{f_W^2}{K_F} &\leq 0 \\
+\Big(\lfw - (1-\alpha)\beta r_F \Big) - \beta r_F \dfrac{f_W}{K_F} &\geq 0 \\
+\lfw- (1-\alpha)\beta r_F \geq \beta r_F\dfrac{f_W}{K_F}
+\end{align*}
+
+et cette inégalité est vraie pour $f_W = -F_W \in [-(1-\alpha) K_F, 0]$ ssi $$\lfw- (1-\alpha)\beta r_F \geq 0$$
+
+
+On peut noter que si l'on limite $\beta$ à $\beta < \dfrac{(\mu_D - f_D) \dfrac{m_W}{m_D}} {er_F (1-\alpha)^2K_F}$ (et non plus $\beta < \dfrac{4(\mu_D - f_D) \dfrac{m_W}{m_D}} {er_F (1-\alpha)^2 K_F}$), on obtient l'implication : (existence de la Zone invariante + de l'équilibre de coexistence)
+
+$$
+\lfw > \dfrac{\mu_D - f_D}{\dfrac{m_D}{m_W} e (1-\alpha)K_F} > r_F (1-\alpha) \beta
+$$
+donc compétitivité du système \eqref{equationshDfWhW}.
+
+\end{document}
+

@@ -1,0 +1,190 @@
+\documentclass[landscape, a3paper]{article}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\usepackage{graphicx,ulem} 
+\usepackage{color, soul}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage[left=1.5cm, right=2cm]{geometry}
+
+
+
+%\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+   \graphicspath{{./Images/}{../Schema}}
+%\graphicspath{{Figures}}
+%\setcounter{secnumdepth}{4}
+%\titleformat{\paragraph}
+%{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+%\titlespacing*{\paragraph}
+%{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
+
+
+\newcommand{\Hlight}[1]{\textcolor{orange}{#1}}
+
+\title{Revue Modèle Interactions Hommes-Environnement}
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{longtable}{p{4cm}|c|p{5cm}|p{3cm}|p{5cm}|p{5cm}|p{8cm}|p{5cm}|}
+Article Title & Type & Goal & Geographic Area & Hypothesis & Limits & Conclusion &Personal Comments\\
+\hline
+Modelling the Impact of Human Population and Its Associated Pressure on Forest Biomass and Forest-Dependent Wildlife Population \cite{fanuel_modelling_2023}
+&  Review 
+& 
+& Intoduction mainly focuses on Tanzania 
+& All along the review, the human population depends on forest biomass. 
+& 7 out 8 categories consider population pressure or industrialization as variable.  & Socioeconomic status influences forest resource consumption patterns, thus, stratification of the human population based on economic status is a critical phenomenon in modelling human-nature interactions; \newline Use of sensitivity analysis recommended
+& Distribute the different model in 8 different categories, according to the variables. In all the model considered, \Hlight{forest biomass is always a variable}, \Hlight{surely due to the geographic area.} \newline Category ``Forest biomass, wildlife, HPop, Pop pressure" seems the closest to our model \\
+
+\hline
+
+Modeling the effect of deforestation caused by human population pressure on wildlife species \cite{lata_modeling_2018}
+& Model 
+& Study the effect of deforestation caused by human pop. on wildlife 
+&- 
+& Forest, and HPop. follows logistic. \newline
+Forest is linearly impacted by HPop (cutting, grazing..), and quadratically impacted by HPressure (agricultural needs; area cannot be used for regeneration) \newline
+HPressure naturally decreases, and linearly increases with HPop \newline
+Wildlife species are completely reliant on forestry resources. There are natural mortality and intraspecific competition, both increased by the HPressure 
+& \Hlight{No positive feedback from human to wildlife. \newline
+HPop only benefits from forest biomass, not from wildlife.}
+ & To ensure the persistence of wildlife species, it is important that the population pressure be reduced 
+ & The article is not very critical of model formulation, included and non-included terms \newline
+ \Hlight{The human carrying capacity does not depend on resources, and is fixed}
+ \\
+ \hline
+ 
+Mathematical model to study the impact of anthropogenic activities on forest biomass and forest-dependent wildlife population \cite{fanuel_mathematical_2024}
+& Model 
+& Study the impact of anthropogenic activities on forest biomass and forest-dependent wildlife populations 
+& \Hlight{A region where inhabitants heavily rely on the forests resources for there subsistence, and not from hunt.} & Forest, wildlife biomass and HPop follow logistic equation \newline Growth and capacity of wildlife are function of forest biomass \newline
+Forest biomass is decreased by wildlife, HPop (linearly) and HActivities (quadratic) \newline
+Wildlife is decreased by HPop and HActivities (both linearly) \newline
+\Hlight{Predation from wildlife to HPop}: either predation or destruction of resources
+& \Hlight{No positive feedback from human to wildlife. \newline
+HPop only benefits from forest biomass, not from wildlife.} \newline No real data \newline Integrate Spacial Dynamics ?
+
+&
+& \Hlight{The human carrying capacity does not depend on resources}
+
+
+\\ \hline
+Modelling the depletion of forestry resources by population and population pressure augmented industrialization \cite{dubey_modelling_2009}
+& Model
+& Study the depletion of forestry resources caused by HPop and industrialization
+& Area where there are both domestic and industrial uses of forestry resources (eg northern India)
+& Forest biomass (\Hlight{essetially wood}) follows a logistic, and is linearly depleted by both HPop and industrialization
+\newline
+HPop can growth (two cases) either logistically, either \Hlight{by immigration}, and use forest biomass as resources
+\newline
+Human Pressure : essetially here to increase industrialization
+\newline
+Level of Industrialization increases thanks to human pressure and forest biomass, \Hlight{is controlled by external measures applied by Government agencies} (term $-\theta_0 I$)
+& No wildlife is considered \newline
+& 
+& Why not consider immigration and logistic growth in the same time ?
+
+
+\\ \hline
+
+Impact of human activities on forest resources and wildlife population \cite{pathak_impact_2021}
+& Model
+& Trace the causes and consequences of human activities on the depletion of forestry resources
+& India
+& Forest biomass follows a logistic equation ; there are depletion due to wildlife, human population and (quadratically) by human activities \newline
+Wildlife growth depend on forest biomass, natural mortality, intraspecific competition and depletion due to HPop and Hactivities \newline
+HPop growth logistically, and \Hlight{by use of forest biomass only}. Additional mortality due \Hlight{to human death caused by wild animals} \newline
+HActivities growth with HPop and the use of Forest biomass
+& An equilibrium point with no HPop but HActivities exists
+\newline
+HPop only benefits from forest biomass, not from wildlife.
+
+&
+&The fact that an equilibrium point with no HPop but HActivities exists let think \Hlight{that humans do not live on the considered area (=forest area), but only work on it}
+
+\\ \hline \hline
+
+Human-induced oscillations in a network landscape model  \cite{della_marca_human-induced_2022}
+&  Model
+& Investigate the role of human factor in the resilience of environmental systems
+& Application to Northern Italy
+& \Hlight{Consider different region, separated} by natural or anthropic barrier. \newline
+For each regions, two main variables are consider : green area and a proportion of ecologists which work to protect the green area. \newline
+Green area follows a logistic, with a degradation caused by the proportion of non-environmentalists, and a degradation \Hlight{due to the fragmented landscape} \newline
+Ecologists population follow a logistic equation, with a growth term depending on the utility gain to protect the area : \Hlight{evolutionnary game dynamics}
+& Ecosystem dynamics are really simplified \newline
+Future model could add migration terms, from one region to others. \newline
+\Hlight{Study the long term behavior, time dependent parameter could be more appropriate}
+& Find configuration where stable periodic oscillations exist, as typical of resilient territories \newline
+When several land units are connecting, oscillations in one unit may induce oscillation in others : highlight the role of connectivity
+
+
+& An economist's point of view on human-environment system \newline
+Example of different patches
+
+
+\\ \hline \hline
+
+Agricultural land use and the sustainability of social-ecological systems \cite{bengochea_paz_agricultural_2020}
+& Model 
+& Explore the effects of different agricultural land use strategies on long-term human-environment dynamics. 
+& Rather occidental ? 
+& HPop growths logistically, \Hlight{with a carrying capacity depending on the available resources} \newline
+Take into account ecosystem services and land remission \newline
+Type of agriculture (intense or not) controlled by a parameter
+& Humans can not \Hlight{change of strategies over time} (adaptive strategies)
+&
+& It is more a human-land model, questioning past or future society's collapse. It is also a very general model.
+\\ \hline
+
+The Dynamics of Human–Environment Interactions in the Collapse of the  Classic Maya \cite{roman_dynamics_2018}
+& Model
+& Explore whether societal dynamics and depletion of natural resources can explain the fall of Maya
+& Central America 16th century
+& The HPop is divided in several roles. \Hlight{HPop growth is related to food available, as the repartition along the different categories (builders, workers in swidden/intensive agriculture)}. \newline
+The environment is considered only through the amount of food it can produce. It follows a logistic equation. There is an additional intake from all the population. Rainfall increases the growth rate and the capacity\newline
+A last variable exists, for the number of monuments built. It has no influence on the other variables.
+& 
+& A simple model can fit pretty well with historical data \newline
+A shift from swidden to intensive agricultural practice may explain the decline \newline
+Drought is probably not to be considered as a major contributor
+& The HPop is categorized in different types of workers, which have different impact on the environment. 
+\newline
+The model isolate one parameter (harvesting rate per capita of intensive agriculture) as a bifurcation parameter. \newline
+It is more a human-land model, questioning past or future society's collapse.
+\\ \hline
+
+\end{longtable}
+
+
+
+
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{Biblio/Math, Biblio/Context, Biblio/interactionsHumanEnvironmentModel}
+
+\end{document}
+

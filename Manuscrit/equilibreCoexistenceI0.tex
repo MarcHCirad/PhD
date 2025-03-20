@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage{graphicx,ulem} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+%\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+%\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{pdftricks}
+\usepackage{xcolor}
+\begin{psinputs}
+\usepackage{amsfonts,amsmath}
+	\usepackage{pstricks-add}
+   \usepackage{pstricks, pst-node}
+   \usepackage{multido}
+   \newcommand{\lfw}{\lambda_{F}}
+\end{psinputs}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+   \graphicspath{{./Images/}{../Schema}}
+%\graphicspath{{Figures}}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\lfd}{\lambda_{F, D}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\Kfa}{K_{F,\alpha}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corollary}
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Zone invariante et limite sur $\beta$ }
+\author{Marc Hétier, Yves Dumont  and Valaire Yatat-Djeumen}
+
+\begin{document}
+
+\maketitle
+On considère le modèle suivant :
+\begin{equation}
+\def\arraystretch{2}
+\left\{ 
+\begin{array}{l}
+\dfrac{dH_D}{dt}= e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W. \\
+\dfrac{dF_W}{dt} = r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw F_W H_W \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{equationsHDFWHW, cI=0}
+\end{equation}
+
+
+\begin{prop}
+\label{theoremEquilibre, cI=0}
+The following results hold:
+\begin{itemize}
+\item System \eqref{equationsHDFWHW, cI=0} admits a trivial equilibrium $TE = \Big(0,0,0\Big)$ that always exists.
+\item System \eqref{equationsHDFWHW, cI=0} admits a fauna-only equilibrium $EE^{F_W} = \Big(0, (1-\alpha)K_F, 0 \Big)$ that always exists.
+\item When
+$$
+\mathcal{N}_{\cI = 0} >1,
+$$ 
+then system \eqref{equationsHDFWHW, cI=0} admits a unique coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D, \cI = 0}, F^*_{W, \cI = 0}, H^*_{W, \cI = 0} \Big)$ \\ 
+where 
+
+\begin{equation*}
+\mathcal{N}_{\cI = 0} := \dfrac{m e \lfw (1-\alpha)K_F}{\mu_D - f_D}
+\end{equation*}
+
+$$F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad 
+H^*_{D, \cI = 0} = \dfrac{(1-\alpha)r_F\Big(1 - \dfrac{F^*_{W, \cI = 0}}{K_F(1-\alpha)} \Big)}{m\left(\lfw - \beta (1-\alpha) r_F + \beta r_F  \dfrac{F^*_{W, \cI = 0}}{K_F}\right)} ,
+\quad 
+H^*_{W, \cI = 0} = m H^*_{D, \cI = 0}.$$
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+An equilibrium of system \eqref{equationsHDFWHW, cI=0} satisfies the system of equations:
+\begin{equation}\label{system-equilibre, cI=0}
+\left\lbrace \begin{array}{cll}
+ e \lfw m F_W^* + f_D - \mu_D = 0& \mbox{or} & H_D^* = 0,\\
+m H_D^*\Big(\lfw - (1-\alpha)r_F \beta - \dfrac{r_F \beta}{K_F}F_W^* \Big) + r_F \dfrac{F_W^*}{K_F} - (1-\alpha)r_F= 0& \mbox{or} & F^*_W = 0,\\
+H_W^* = \dfrac{m_D}{m_W} H_D^* = m H_D^*.&&
+\end{array} \right.
+\end{equation}
+When $H_D^*=0$ and $F_W^*=0$, we recover the trivial equilibrium $TE = \Big(0,0,0\Big)$. When $H_D^*=0$ and $F_W^*\neq0$, we obtain the fauna-only equilibrium $EE^{F_W} = \Big(0, K_F(1-\alpha), 0 \Big)$. 
+
+Finally, when $H_D^*\neq0$ and $F_W^*\neq0$, direct computations lead to the following expression:
+$$F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e}, \quad
+H^*_{D, \cI = 0} = \dfrac{(1-\alpha)r_F\Big(1 - \dfrac{F^*_{W, \cI = 0}}{K_F(1-\alpha)} \Big)}{m\left(\lfw - \beta (1-\alpha) r_F + \beta r_F  \dfrac{F^*_{W, \cI = 0}}{K_F}\right)} ,
+\quad 
+H^*_{W, \cI = 0} = m H^*_{D, \cI = 0}.$$
+
+
+$F^*_{W, \cI = 0}$ is biologically meaningful whenever $\dfrac{\mu_D - f_D}{\lfw m e} \leq K_F(1-\alpha)$. From now we assume this.
+
+$H^*_{D, \cI = 0}$ is biologically meaningful if it is positive. The numerator of $H^*_{D, \cI = 0}$ is non-negative since $F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e} \leq K_F(1-\alpha)$ and positive if $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha)$. 
+
+From now, we assume $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha)$.
+We have to study the sign of the denominator of $H^*_{D, \cI = 0}$, which has to be positive:
+The denominator is equal at:
+\begin{align}
+\lfw - \beta (1-\alpha) r_F + \beta r_F  \dfrac{F^*_{W, \cI = 0}}{K_F} &= \lfw - \beta (1-\alpha) r_F \Big(1 - \dfrac{F^*_{W, \cI = 0}}{(1-\alpha)K_F} \Big) \\
+&= \lfw \left(1 - \dfrac{\beta (1-\alpha) r_F}{\lfw} \Big(1 - \dfrac{\mu_D - f_D}{\lfw m e(1-\alpha)K_F} \Big) \right) \label{denominator}
+\end{align}
+
+Using $\beta < \dfrac{4 (\mu_D - f_D)}{m e r_F (1-\alpha)^2 K_F}$ and since $1 - \dfrac{\mu_D - f_D}{\lfw m eK_F(1-\alpha)} > 0$, we have
+
+\begin{align*}
+\dfrac{\beta (1-\alpha) r_F}{\lfw} \Big(1 - \dfrac{\mu_D - f_D}{\lfw m e(1-\alpha)K_F} \Big) &< \dfrac{4 (\mu_D - f_D)}{m e (1-\alpha) K_F \lfw}\Big(1 - \dfrac{\mu_D - f_D}{\lfw m e(1-\alpha)K_F} \Big)
+\end{align*}
+A study of the function $g(x) = x(1-x)$ for $x \in (0,1)$ show that $g(x) \leq \dfrac{1}{4}$ and therefore 
+
+\begin{align*}
+\dfrac{\beta (1-\alpha) r_F}{\lfw} \Big(1 - \dfrac{\mu_D - f_D}{\lfw m e(1-\alpha)K_F} \Big) &< 4 \times \dfrac{1}{4} = 1 \\
+0 &< 1 - \dfrac{\beta (1-\alpha) r_F}{\lfw} \Big(1 - \dfrac{\mu_D - f_D}{\lfw m e(1-\alpha)K_F} \Big)
+\end{align*}
+
+This means that the denominator of $H^*_{D, \cI = 0}$ (expression \eqref{denominator}) is positive.
+
+Under the assumption $ \beta < \dfrac{4 (\mu_D - f_D)}{m e r_F (1-\alpha)^2 K_F}$, the equilibrium of coexistence exists if $\dfrac{\mu_D - f_D}{\lfw m e} < K_F(1-\alpha)$.
+\end{proof}
+
+
+\end{document}
+
