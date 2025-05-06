@@ -1,14 +1,18 @@
-# import Pkg;
-# Pkg.add("CSV");
-# Pkg.add("Tables");
-# Pkg.add("DataFrames");
-# Pkg.add("PlotlyJS");
-# Pkg.add("LaTeXStrings");
-# Pkg.add("Polynomials");
-# Pkg.add("PolynomialRoots");
-# Pkg.add("LinearSolve")
+import Pkg;
+Pkg.add("CSV");
+Pkg.add("Tables");
+Pkg.add("DataFrames");
+Pkg.add("Polynomials");
+Pkg.add("PolynomialRoots");
+Pkg.add("LinearSolve")
+Pkg.add("Roots");
+Pkg.add("LinearAlgebra");
 
 using CSV, Tables, DataFrames
-using PlotlyJS, LaTeXStrings
 using Polynomials, PolynomialRoots
-using LinearSolve
+using LinearSolve, LinearAlgebra
+using Roots
+
+
+abstract type mathematicalModel end
+abstract type numericalModel end

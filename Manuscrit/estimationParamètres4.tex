@@ -26,8 +26,9 @@
 \titlespacing*{\paragraph}
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-
-\newcommand{\marc}[1]{\textcolor{red}{#1}}
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
 
 \DeclareMathOperator{\Tr}{Tr}
 \newcommand{\lfd}{\lambda_{F, D}}
@@ -59,47 +60,53 @@
 
 \section{Parameters values}
 \begin{table}[ht]
-\centering
-
 \begin{tabular}{|c|c|c|}
 \hline 
 Parameter & Description & Unit \\ 
-\hline 
+\hline \hline
 $t$ & Time & Year \\
-$e$ & Prey-food conversion & Human Ind Kg $^{-1}$ \\
+\hline
+$H_D$ & Humans in the domestic area & Ind \\
+$H_W$ & Humans in the wild area & Ind \\
+$F_W$ & Wild fauna & Ind \\
+\hline
+$e$ & Prey-food conversion & - \\
 $f_D$ & Food produced by human population & Year$^{-1}$ \\
 $\mu_D$ & Human mortality rate  & Year$^{-1}$ \\
-$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ \\
-$m_W$ & Migration from wild area to domestic area & Year$^{-1}$ \\
+$m_D$ & Displacement from domestic area to wild area & Year$^{-1}$ \\
+$m_W$ & Displacement from wild area to domestic area & Year$^{-1}$ \\
 $r_F$ & Wild animal growth rate & Year$^{-1}$ \\
-$K_F$ & Carrying capacity for wild animal, fixed by the environment& Kg \\
+$K_F$ & Carrying capacity for wild fauna, fixed by the environment& Ind \\
 $\alpha$ & Proportion of anthropized environment & - \\
-$\beta$ & Positive impact from human activities to animal growth rate & Human Ind$^{-1}$  \\
-$\lfw$ & Hunting rate & Human Ind Year $^{-1}$ \\
-$\mathcal{I}$ & Immigration rate & Human Ind $\times$ Year$^{-1}$\\
+$\beta$ & Positive impact from human activities to animal growth rate & Ind$^{-1}$  \\
+$\lfw$ & Hunting rate & Ind/Year\\
+$\mathcal{I}$ & Immigration rate &Ind/Year\\
 \hline
 \end{tabular}
+\caption{Parameters and variables of the model}
+\end{table}
 
+\begin{table}[ht]
+\centering
 \begin{tabular}{|c|c|c|}
 \hline 
 Parameter & Value & Reference \\ 
 \hline 
-$t$ & - & -\\
-$e$ & &\\
-$f_D$ & $0.011$ &\\
-$\mu_D$ & $1/60 \simeq 0.017$ & \cite{ins_demographie}\\
-$m_D$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} \in [0.006, 0.016]$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
-$m_W$ & &\\
-$r_F$ & $0.46 \pm 0.37$ &\\
-$K_F$ & &\\
-$\alpha$ & $[0, 1)$ & - \\
-$\beta$ & &  \\
-$\lfw$ & & \\
-$\mathcal{I}$ & &\\
+$e$ & & Assumed\\
+$f_D$ & 0.0137 & \cite{koppert_consommation_1996}\\
+$\mu_D$ & $1/60$ & \cite{ins_demographie}\\
+$m_D$ & $0.483$ & \cite{avila_interpreting_2019}\\
+$m_W$ & 24.3 & \cite{avila_interpreting_2019}\\
+$r_F$ & $0.68$ & \cite{robinson_intrinsic_1986}\\
+$K_F$ & 22725 & \cite{janson_ecological_1990} \\
+$\alpha$ & $[0, 1)$ & parameter of interest; varies \\
+$\beta$ & $\in [0, \beta^*)$ &  \\
+$\lfw$ & - & parameter of interest; varies \\
+$\mathcal{I}$ &  & \\
 \hline
 \end{tabular}
 
-\caption{List of the parameters used}
+\caption{Parameters values}
 \end{table}
 
 \subsection{Complementary explication}
@@ -107,45 +114,60 @@ $\mathcal{I}$ & &\\
 
 \item Parameter $\mu_D$ : Life expectancy in Cameroon is around 60 years, so we just take $\mu_D = \dfrac{1}{60}$
 
-\item Parameter $m$ is estimated using data from \cite{avila_interpreting_2019, jones_incentives_2019, jones_consequences_2020}. Using the fact that the total population is equal at the population in the domestic area plus the population in the wild area, and the equilibrium relations ($H_D^* = \dfrac{1}{m}H_W^*$), we have:
-$$
-H^* = H_D^* + H_W^* = (1 + \dfrac{1}{m}) H_W^*
-$$
+\item Quantity $1/m_W$ corresponds to the average time spend in the wild area. Several articles record it, \cite{avila_interpreting_2019, jones_incentives_2019, jones_consequences_2020}. Authors of \cite{avila_interpreting_2019} talks about 4.6 hours per week (10 days per year), the ones of \cite{jones_incentives_2019} about 25 days per year, and the ones of \cite{jones_consequences_2020} about 5 days per year. We use a value of 15 days per year, giving $m_W = \dfrac{365}{15} = 24.3$
 
-and this gives
-$$
-m = \dfrac{H_W^*}{H^* - H_W^*}
-$$
-where $H^*$ is the total population, and $H_W^*$ is the population in the wild area, at a given time.
+\item Parameter $m_D$ is estimated using the relation $m = \dfrac{H_W^*}{H_D^*}$ and $m_D = m \times m_W$. Let recall that $H_W^*$ and $H_D^*$ are not precisely the number of hunter and the number of non-hunter; they are the number of villagers (hunters) present in the wild area and the the number of villagers (hunter and non-hunter) present in the village. 
+Authors of \cite{avila_interpreting_2019} registered the total populations $H^*$ of three villages in the Dja area (Southeast Cameroon), as well as the number of hunters $H_{hunter}$ for 2002, 2009 and 2015. The figures are given below:
 
-Article \cite{avila_interpreting_2019} registers the total populations $H^*$ of villages in the Dja area (Southeast Cameroon), as well as the number of hunters $H_{hunter}$ and estimate that hunters spend 4.60h per week (10 days per year) hunting. Thus, a hunter as a probability of $p = \dfrac{4.60}{7 \times 24} = 0.027$ to be hunting. Therefore, we can estimate that $H_W^* = 0.027 \times H_{hunter}$.
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|ccc|ccc|ccc|ccc}
+& \multicolumn{12}{c}{Village/year} \\
+& \multicolumn{3}{c|}{Duomo Pierre} & \multicolumn{3}{c|}{Malen V} & \multicolumn{3}{c|}{Mimpala} & \multicolumn{3}{c}{Total} \\
+& 2003 & 2009 & 2016  & 2003 & 2009 & 2016 & 2003 & 2009 & 2016 & 2003 & 2009 & 2016 \\
+Total Village population size & 82 & 71 &85&143&163&152&98&81&71&323&315&308 \\
+Total Number of Hunter & 12 & 18 & 29& 23&38&36&18&27&18&53&79&82
+\end{tabular}
+\end{table}
 
-Taking the mean of the different villages population, we obtain that $m = 0.006$. However, other articles (\cite{jones_consequences_2020, jones_incentives_2019}) estimates different hunting durations : 25 days per year for \cite{jones_incentives_2019} and 5 days per year for \cite{jones_consequences_2020}. This gives the following values for $m = 0.016$ or $m = 0.0032$.
-
-We will retain $m \in [0.006, 0.016]$.
-
-\item Parameter $f_D$ can be estimated using data from \cite{koppert_consommation_1996} and the equilibrium expressions. When no immigration is considered, the ratio $r$ between the food locally produced (parameter $f_D$) and the resources coming from the hunt ($e \lfw F_W^*$) writes:
+To ``convert" the previous data into $H_D^*$ and $H_W^*$, we divide the number of hunters by the time they spend in the forest (15 days per year). Therefore, we estimate $m$ by:
 
 \begin{align*}
-r :=&  \dfrac{f_D}{e \lfw F_W^*} \\
-=& \dfrac{f_D}{e \lfw \times \dfrac{\mu_D - f_D}{e m \lfw}}\\
-=& \dfrac{f_D m }{\mu_D - f_D}
+m = \dfrac{H_D^*}{H_W^*} \simeq \dfrac{H_{hunter} \dfrac{1}{15}}{H_{non hunter}}
 \end{align*}
 
-Therefore, $f_D = \dfrac{r}{m + r} \mu_D$ and we do have $f_D < \mu_D$, which is conformed to the model hypothesis.
+For 2003, we obtain $m \simeq = \dfrac{53\dfrac{1}{15}}{(323-53)} \simeq 0.013$ and therefore $m_D \simeq 0.31$. 
+Over the three years, the average is $m_D = 0.483$.
 
-We consider that the resources coming from the hunt correspond to the bush meat consumed and the imported food (obtained by selling bushmeat). According to \cite{koppert_consommation_1996}, this represents 90\% (resp 73\% ; 80\%) of the consumed proteins by the Yassa (resp Mvae; Bakola). The local production furnishes 10\% (resp 27\% ; 18\%) of the consumed proteins. 
+\item For parameter $f_D$: Assuming that the population describes in \cite{koppert_consommation_1996} corresponds to the equilibrium of coexistence with no immigration $EE^{HF_W}_{\cI = 0}$, we follow the below reasoning.
 
-However, if we reason using calories and not proteins intakes, the figures are inversed: the calories coming from the hunt represent 18\% (resp 17\%; 17\%) of the diet and the ones coming from local production represents 82\% (resp 81\%; 81\%).
+The ratio $r$ between the food locally produced (quantity $f_D H_D^*$) and the resources coming from the hunt ($e \lfw F_W^* H_W^*$) can be estimated from data from \cite{koppert_consommation_1996}. Moreover, it writes:
 
-Therefore, we have $r = 0.11$ (resp $=0.37$ ; $=0.225$) if we use proteins data, and $r = 4.56$ (resp $=4.76$; $=4.76$) if we use the calories data.
+\begin{align*}
+r :=&  \dfrac{f_D H_D^*}{e \lfw F_W^* H_W^*} \\
+=& \dfrac{f_D}{e \lfw \times \dfrac{\mu_D - f_D}{e m \lfw}} \times \dfrac{1}{m}\\
+=& \dfrac{f_D}{\mu_D - f_D}
+\end{align*}
 
-Using previously found values of $m$ and $\mu_D$, we obtain $f_D = 0.009$ (resp. $=0.013$; $=0.011$) (average $f_D = 0.011$) or $f_D = 0.016$ (resp $=0.016$, $= 0.016$) (average $f_D = 0.016$). Let recall that $\mu_D \simeq 0.017$.
+Therefore, $f_D = \dfrac{r}{1 + r} \mu_D$ and we do have $f_D < \mu_D$, which is conformed to the model hypothesis.
 
- \begin{figure}
+We consider that the resources coming from the hunt correspond to the bush meat consumed and the imported food (obtained by selling bushmeat). According to \cite{koppert_consommation_1996}, this represents 18\% (resp 17\%; 17\%) of the calories by the Yassa (resp Mvae; Bakola). The local production furnishes 82\% (resp 81\%; 81\%) of the calories.
+
+Therefore, we have $r = 4.56$ (resp $=4.76$; $=4.76$)using the calories data.
+
+Using previously found value of $\mu_D$, we obtain $f_D = 0.0137$ (resp. $=0.0138$; $=0.0138$). Let recall that $\mu_D \simeq 0.017$.
+
+ \begin{figure}[ht]
  \centering
  \includegraphics[width=0.8\textwidth]{DiagConsommation.png}
  \end{figure}
+
+\item Parameter $r_F$ is estimated using data from \cite{robinson_intrinsic_1986}. This article provides intrinsic growth rates for 40 mammals of neo-tropics, \marc{(including non-african species that I did not remove yet)}. The mean over the 40 input is $r_F = 0.68$, the standard deviation is $1.78$.
+
+\item Parameter $K_F$ is estimated using data from \cite{janson_ecological_1990}. The authors provide density of non flying mammals per km$^2$. The densities were measured in a biological station considered as an intact area. I sum up all the densities provided, assuming that all the species were co-living. It gives a density of $909$ animals per km$^2$. \marc{I think that we should multiply this number by the surface of the hunting area. Int the article \cite{avila_interpreting_2019}, the authors estimate that the overall hunting area for three villages (of Southeast Cameroon) was about 45-110 km$^2$, depending on the year. Taking an average area of $75$km$^2$ and dividing by 3 (three villages), this gives $K_F = 22725$}.
+
+
+
 
 \end{itemize}
 
@@ -153,7 +175,7 @@ Using previously found values of $m$ and $\mu_D$, we obtain $f_D = 0.009$ (resp.
 
 \newpage
 \bibliographystyle{plain}
-\bibliography{Biblio/Math, Biblio/Context}
+\bibliography{Biblio/Math, Biblio/Context, Biblio/WildArea}
 
 
 \end{document}

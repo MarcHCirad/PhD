@@ -5,12 +5,12 @@ function writeResult(myModel::numericalModel, dirName::String)
     resultFile = dirName * "/result.csv"
 
     CSV.write(resultFile, 
-        DataFrame(transpose(myModel.result), :auto),
+        DataFrame(transpose(myModel.result)[1:1:end,1:end], :auto),
         header = myModel.variablesNames)
 end
 
 
-function writeDiagram(dirPrefix::String,
+function writeDiagram1D(dirPrefix::String,
                     inputFile::String,
                     diagram::Matrix{Any};
                     nameSuffix = "Diagram")
@@ -19,14 +19,13 @@ function writeDiagram(dirPrefix::String,
         mkpath(dirPrefix)
     end
 
-
     indInput = first(findfirst("input", inputFile))
-    copyInputFile = dirPrefix * "/" * inputFile[first(indInput):end]
+    copyInputFile = dirPrefix * inputFile[first(indInput):end]
     if copyInputFile != inputFile
         cp(inputFile, copyInputFile, force=true)
     end
 
-    fileName = dirPrefix * "/" * nameSuffix * ".csv"
+    fileName = dirPrefix * nameSuffix * ".csv"
     println(fileName)
 
     header::Vector{String} = diagram[1, :]
@@ -35,5 +34,30 @@ function writeDiagram(dirPrefix::String,
 
     CSV.write(fileName, df)
     
+    return fileName[1:end-4]
+end
+
+function writeDiagram2D(dirPrefix::String,
+    inputFile::String,
+    diagram::Matrix{Any};
+    nameSuffix = "Diagram")
+
+    if !isdir(dirPrefix)
+        mkpath(dirPrefix)
+    end
+
+    indInput = first(findfirst("input", inputFile))
+    copyInputFile = dirPrefix * inputFile[first(indInput):end]
+    if copyInputFile != inputFile
+        cp(inputFile, copyInputFile, force=true)
+    end
+
+    fileName = dirPrefix * nameSuffix * ".csv"
+    println(fileName)
+
+    df = DataFrame(diagram[1:end, :], :auto)
+
+    CSV.write(fileName, df)
+
     return fileName[1:end-4]
 end

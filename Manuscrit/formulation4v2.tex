@@ -141,53 +141,58 @@ $$
 \dfrac{dF_W}{dt} = (1- \alpha)r_F \left(1 - \dfrac{1 + \beta H_W}{(1-\alpha)K_F}F_W \right) F_W - \Big(\lfw - (1-\alpha) \beta r_F\Big) F_W H_W
 $$
 
-\begin{table}
-\centering
-\begin{tabular}{|c|c|c|c|c|}
+\begin{table}[ht]
+\begin{tabular}{|c|c|c|}
 \hline 
-Parameter & Description & Unit & Value & Reference \\ 
-\hline 
-$t$ & Time & Year & -\\
-$e$ & Prey-food conversion & Human Ind Kg $^{-1}$ & &\\
-$f_D$ & Food produced by human population & Year$^{-1}$ &\\
-$\mu_D$ & Human mortality rate  & Year$^{-1}$ & $1/60$ & \cite{ins_demographie}\\
-$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} = 0.23$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
-$m_W$ & Migration from wild area to domestic area & Year$^{-1}$ &\\
-$r_F$ & Wild animal growth rate & Year$^{-1}$ & $0.46 \pm 0.37$ &\\
-$K_F$ & Carrying capacity for wild animal, fixed by the environment& Kg &\\
-$\alpha$ & Proportion of anthropized environment & - & $[0, 1)$ &\\
-$\beta$ & Positive impact from human activities to animal growth rate & Human Ind$^{-1}$ &  \\
-$\lfw$ & Hunting rate & Human Ind Year $^{-1}$ & \\
-$\mathcal{I}$ & Immigration rate & Human Ind $\times$ Year$^{-1}$ &\\
+Parameter & Description & Unit \\ 
+\hline \hline
+$t$ & Time & Year \\
+\hline
+$H_D$ & Humans in the domestic area & Ind \\
+$H_W$ & Humans in the wild area & Ind \\
+$F_W$ & Wild fauna & Ind \\
+\hline
+$e$ & Prey-food conversion & - \\
+$f_D$ & Food produced by human population & Year$^{-1}$ \\
+$\mu_D$ & Human mortality rate  & Year$^{-1}$ \\
+$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ \\
+$m_W$ & Migration from wild area to domestic area & Year$^{-1}$ \\
+$r_F$ & Wild animal growth rate & Year$^{-1}$ \\
+$K_F$ & Carrying capacity for wild fauna, fixed by the environment& Ind \\
+$\alpha$ & Proportion of anthropized environment & - \\
+$\beta$ & Positive impact from human activities to animal growth rate & Ind$^{-1}$  \\
+$\lfw$ & Hunting rate & Ind/Year\\
+$\mathcal{I}$ & Immigration rate &Ind/Year\\
 \hline
 \end{tabular}
-\caption{List of the parameters used}
+\caption{Parameters and variables of the model}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline 
+Parameter & Value & Reference \\ 
+\hline 
+$e$ & & Assumed\\
+$f_D$ & 0.0137 & \cite{koppert_consommation_1996}\\
+$\mu_D$ & $1/60$ & \cite{ins_demographie}\\
+$m_D$ & 0.483 & \cite{avila_interpreting_2019}\\
+$m_W$ & 24.3 & \cite{avila_interpreting_2019}\\
+$r_F$ & $0.68$ & \cite{robinson_intrinsic_1986}\\
+$K_F$ & 22725 & \cite{janson_ecological_1990} \\
+$\alpha$ & $[0, 1)$ & parameter of interest; varies \\
+$\beta$ & $\in [0, \beta^*)$ &  \\
+$\lfw$ & - & parameter of interest; varies \\
+$\mathcal{I}$ &  & \\
+\hline
+\end{tabular}
+
+\caption{Parameters values\YD{A placer dans la partie simulations!!!!}}
 \end{table}
 
 
-%\begin{table}
-%\centering
-%\begin{tabular}{|c|c|c|c|c|}
-%\hline 
-%Parameter & Description & Unit & Value & Reference \\ 
-%\hline 
-%$t$ & Time & Year \\
-%$e$ & Prey-food conversion & HumanInd Animal $^{-1}$ & \\
-%$f_D$ & Food produced by human population & Year$^{-1}$\\
-%$\mu_D$ & Human mortality rate  & Year$^{-1}$ & $1/60$ & \cite{ins_demographie}\\
-%$m_D$ & Migration from domestic area to wild area & Year$^{-1}$ & \multirow{2}{*}{$\dfrac{m_D}{m_W} = 0.23$} & \multirow{2}{*}{\cite{avila_interpreting_2019}}\\
-%$m_W$ & Migration from wild area to domestic area & Year$^{-1}$\\
-%$r_F$ & Wild animal growth rate & Year$^{-1}$ & $0.46 \pm 0.37$\\
-%$K_F$ & Carrying capacity for wild animal, fixed by the environment& Animal\\
-%$\alpha$ & Proportion of anthropized environment & - & $[0, 1)$\\
-%$\beta$ & Positive impact from human activities to animal growth rate & Animal$^{-1}$ &  \\
-%$\lfw$ & Hunting rate & Humans Ind Year $^{-1}$ \\
-%$\mathcal{I}$ & Migration rate & Human Ind $\times$ Year$^{-1}$ \\
-%\hline
-%%$c$ & Conversion rate between raw products and food OR nothing & Human OR -
-%\end{tabular}
-%\caption{List of the parameters used}
-%\end{table}
+
 
 \section{Existence and uniqueness of global solutions}
 In this section, we state general results on system \eqref{equationsHDFWHW}:  existence of an invariant region, existence and uniqueness of global solutions.
@@ -1197,6 +1202,196 @@ When $\cI = 0$, the existence of the equilibrium of coexistence is implied by th
 We can note that when $\cI > 0$, the existence of the equilibrium of coexistence does not depend on the level of anthropization, $K_F(1-\alpha)$ but the value of $F^*_W$ does. When $\cI = 0$, it is the opposite. 
 \marc{donc quand $\cI =0$, l'existence de la coexistence dépend la capacité du milieu, et la valeur de l'équilibre (=centre du cyle limite ?) uniquement de la chasse ; si on reprend les calculs, on doit vérifier ce seuil pour éviter que $H^*$ devienne négatif = on n'est pas sûr que la pop humaine puisse exister. Dans le cas $\cI > 0$, c'est l'existence de $F^*$ qui n'est pas sûr, et qui dépend de la pression de chasse.}
 
+
+\section{Model analysis under the quasi steady state assumption}
+In this section, we use the fact that $m_D <<m_W$ to apply the quasi steady state approximation to the model \eqref{equationsHDFWHW}. Under this approximation, the model becomes:
+
+\begin{equation}
+\def\arraystretch{2}
+\left\lbrace \begin{array}{l}
+\dfrac{dH_D}{dt} = \cI + (f_D - \mu_D) H_D + e \lfw m F_W \\
+\dfrac{dF_W}{dt} = (1-\alpha) (1+\beta m H_D) r_F \left(1 - \dfrac{F_W}{(1-\alpha)K_F} \right) F_W - \lfw m H_D \\
+H_W(t) = \dfrac{m_D}{m_W} H_D(t) = m H_D(t)
+\end{array} \right.
+\label{QSSA eq}
+\end{equation}
+
+Similar analysis than before shows the following properties, which are left without proof.
+
+\begin{prop}
+When $\cI = 0$, the following results hold.
+\begin{itemize}
+\item System \eqref{QSSA eq} admits a trivial equilibrium $TE = \Big(0,0,0\Big)$ and a fauna-only equilibrium $EE^{F_W} = \Big(0, (1-\alpha)K_F, 0 \Big)$ that always exist.
+
+\item Moreover, when
+$$
+\mathcal{N}_{\cI = 0} := \dfrac{m e \lfw (1-\alpha)K_F}{\mu_D - f_D} >1,
+$$ 
+then system \eqref{QSSA eq} admits a unique coexistence equilibrium $EE^{HF_W} = \Big(H^*_{D, \cI = 0}, F^*_{W, \cI = 0}, H^*_{W, \cI = 0} \Big)$ \\ 
+where 
+
+
+$$F^*_{W, \cI = 0} = \dfrac{\mu_D - f_D}{\lfw m e},
+\quad 
+H^*_{D, \cI = 0} = \dfrac{(1-\alpha)r_F\Big(1 - \dfrac{F^*_{W, \cI = 0}}{K_F(1-\alpha)} \Big)}{m\left(\lfw - \beta (1-\alpha) r_F + \beta r_F  \dfrac{F^*_{W, \cI = 0}}{K_F}\right)} ,
+\quad 
+H^*_{W, \cI = 0} = m H^*_{D, \cI = 0}.$$
+\end{itemize}
+\end{prop}
+
+\begin{prop}
+When $\cI > 0$, the following result holds.
+\begin{itemize}
+\item System \eqref{QSSA eq} has a Human-only equilibrium $EE^{H} = \Big(\dfrac{\cI}{\mu_D - f_D}, 0, \dfrac{m \cI}{\mu_D - f_D} \Big)$ that always exists.
+\item When
+$$ \mathcal{N}_{\cI >0} :=  \dfrac{r_F(1-\alpha)\Big({\dfrac{\mu_D - f_D}{m\cI}+\beta\Big)}}{\lfw}  > 1,$$
+system \eqref{QSSA eq} has a unique coexistence equilibrium $EE^{HF_W}_{\cI = 0} = \Big(H^*_{D}, F^*_{W}, m H^*_{D} \Big)$
+where
+$$F^*_{W} = \dfrac{(1-\alpha)K_F}{2}\left(1 - \dfrac{\sqrt{\Delta_F}}{e(1-\alpha)r_F}\right) + \dfrac{\mu_D - f_D + \cI \beta m}{2\lfw m e},\quad
+H^*_{D} = \dfrac{(1-\alpha)r_F\Big(1 - \dfrac{F^*_{W}}{(1-\alpha)K_F} \Big)}{m\left(\lfw - \beta (1-\alpha) r_F + \beta r_F  \dfrac{F^*_{W}}{K_F}\right)},
+\quad 
+H^*_{W} = m H^*_{D}$$
+and
+$$
+\Delta_F = \left(e(1-\alpha)r_F - \dfrac{(\mu_D - f_D) r_F}{\lfw m K_F}\right)^2 + \dfrac{\cI \beta r_F}{\lfw K_F} \left(\dfrac{\cI \beta r_F}{\lfw K_F} + 2\dfrac{(\mu_D - f_D) r_F}{\lfw m K_F} + 2e(1-\alpha)r_F \right) + 4\dfrac{er_F}{K_F}  \cI\Big(1 - \dfrac{(1-\alpha)\beta r_F}{\lfw} \Big)
+$$
+\end{itemize} 
+\end{prop}
+
+The following proposition stands the local stability of the equilibrium.
+
+
+\begin{prop}
+When $\cI = 0$, system \eqref{QSSA eq} admits:
+\begin{itemize}
+\item A trivial equilibrium which is unstable.
+\item A Fauna equilibrium, which is LAS if $\mathcal{N}_{\cI = 0} < 1$.
+\item When $\mathcal{N}_{\cI = 0} > 1$, the coexistence equilibrium $EE^{HF_W}$ exists. It is LAS without condition.
+\end{itemize}
+
+When $\cI > 0$, system \eqref{QSSA eq} admits:
+\begin{itemize}
+\item A Human equilibrium, which is LAS if $\mathcal{N}_{\cI > 0} < 1$.
+\item When $\mathcal{N}_{\cI > 0} > 1$, the coexistence equilibrium $EE^{HF_W}$ exists. It is LAS without condition.
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+
+To investigate the local stability of the equilibrium of the system \eqref{QSSA eq}, we can use its Jacobian matrix. It is given by:
+
+\begin{multline}
+\mathcal{J}_{QSSA}(H_D, F_W) = \\ \begin{bmatrix}
+-(\mu_D - f_D) + e \lfw m F_W & e \lfw m H_D \\
+m\left(-\lfw + \beta (1-\alpha) r_F \Big(1- \dfrac{F_W}{(1-\alpha)K_F} \Big) \right) F_W & (1-\alpha) (1+\beta m H_D) r_F \left(1 - \dfrac{2F_W}{K_F} \right) - \lfw m H_D
+\end{bmatrix}
+\end{multline}
+
+\begin{itemize}
+\item At equilibrium $TE$, the Jacobian is given by:
+\begin{equation*}
+\mathcal{J}_{QSSA}(TE) = \begin{bmatrix}
+-(\mu_D - f_D) &0 \\
+0 & (1-\alpha)  r_F 
+\end{bmatrix}
+\end{equation*}
+$(1-\alpha) r_F > 0$ is a positive eigenvalue, an therefore $TE$ is unstable.
+
+\item At equilibrium $EE^{F_W}$, the Jacobian is given by: 
+\begin{equation*}
+\mathcal{J}_{QSSA}(EE^{F_W}) = \begin{bmatrix}
+-(\mu_D - f_D) + e\lfw m K_F(1-\alpha) &0 \\
+- m \lfw (1-\alpha)K_F & -(1-\alpha)  r_F 
+\end{bmatrix}
+\end{equation*}
+$-(1-\alpha)  r_F$ and $-(\mu_D - f_D) + e\lfw m K_F(1-\alpha)$ are the eigenvalues. They are both negative if $-(\mu_D - f_D) + e\lfw m K_F(1-\alpha) <0 \Leftrightarrow \mathcal{N}_{\cI = 0} < 1$
+
+\item At equilibrium $EE^{H}$, the Jacobian is given by:
+\begin{equation*}
+\mathcal{J}_{QSSA}(EE^{F_W}) = \begin{bmatrix}
+-(\mu_D - f_D) &  \dfrac{e \lfw m \cI}{\mu_D - f_D} \\
+0 & (1-\alpha)\Big(1+ \dfrac{m \beta \cI}{\mu_D - f_D}\Big)  r_F -  \dfrac{\lfw m  \cI}{\mu_D - f_D}
+\end{bmatrix}
+\end{equation*}
+$-(\mu_D - f_D)$ and $(1-\alpha)\Big(1+ \dfrac{\cI}{\mu_D - f_D}\Big)  r_F -  \dfrac{\lfw m  \cI}{\mu_D - f_D}$ are the eigenvalues. They are both negative if $(1-\alpha)\Big(1+ \dfrac{m \beta \cI}{\mu_D - f_D}\Big)  r_F -  \dfrac{\lfw m  \cI}{\mu_D - f_D} <0 \Leftrightarrow \mathcal{N}_{\cI > 0} < 1$
+
+
+\item At equilibrium $EE^{HF_W}_{\cI \geq 0}$, the Jacobian is given by:
+
+\begin{align*}
+\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI \geq 0}) &= \\&\begin{bmatrix}
+-(\mu_D - f_D) + e \lfw m F_W & e \lfw m H_D \\
+m\left(-\lfw + \beta (1-\alpha) r_F \Big(1- \dfrac{F_W}{(1-\alpha)K_F} \Big) \right) F_W & (1-\alpha) (1+\beta m H_D) r_F \left(1 - \dfrac{2F_W}{K_F} \right) - \lfw m H_D
+\end{bmatrix} \\
+ &\begin{bmatrix}
+-\dfrac{\cI}{H_D} & e \lfw m H_D \\
+m\left(-\lfw + \beta (1-\alpha) r_F \Big(1- \dfrac{F_W}{(1-\alpha)K_F} \Big) \right) F_W & -(1+\beta m H_D) r_F \dfrac{F_W}{K_F} 
+\end{bmatrix}
+\end{align*}
+
+using equilibrium formulas. $EE^{HF_W}_{\cI \geq 0}$ is LAS if the trace of $\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI \geq 0}) $ is negative and its determinant positive. We have:
+
+\begin{equation*}
+\Tr(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI \geq 0})) = -\dfrac{\cI}{H_D} -(1+\beta m H_D) r_F \dfrac{F_W}{K_F} 
+\end{equation*}
+that is $\Tr(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI \geq 0})) < 0$.
+
+When $\cI = 0$, the determinant is simply:
+
+\begin{align*}
+\det(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI = 0})) &= - m^2 e \lfw \left(-\lfw + \beta (1-\alpha) r_F \Big(1- \dfrac{F_W}{(1-\alpha)K_F} \Big) \right) F_W H_D, \\
+&= m^2 e \lfw^2 \left(1 + \dfrac{\beta (1-\alpha) r_F}{\lfw} \Big(1- \dfrac{\mu_D - f_D}{me \lfw(1-\alpha)K_F} \Big) \right) F_W H_D, \\
+\end{align*}
+
+using the equilibrium value. The proposition \ref{propBeta} shows that this last expression is positive. Consequently $\det(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI = 0})) > 0$ and $EE^{HF_W}_{\cI = 0}$ is LAS.
+
+When $\cI > 0$, the determinant is:
+
+\begin{align*}
+\det(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI > 0})) &= \dfrac{\cI}{H_D} \dfrac{1 + \beta m H_D}{K_F} r_F F_W - m^2 e \lfw \left(-\lfw + \beta(1-\alpha)r_F \Big(1- \dfrac{F_W}{(1-\alpha) K_F} \Big) \right) F_W H_D  \\
+&= \dfrac{\cI}{H_D} \dfrac{1 + \beta m H_D}{K_F} r_F F_W + m^2 e \lfw \left(\lfw - \beta(1-\alpha)r_F + r_F \beta\dfrac{F_W}{ K_F} \Big) \right) F_W H_D  \\
+\end{align*}
+
+Using proposition \ref{propPF}, we have that $(1-\alpha)K_F - \dfrac{\lfw K_F}{\beta r_F} < F_W$. Consequently $\det(\mathcal{J}_{QSSA}(EE^{HF_W}_{\cI > 0})) > 0$ and $EE^{HF_W}_{\cI > 0}$ is also LAS.
+\end{itemize}
+
+\end{proof}
+
+The following propositions aim to assess the global stability of the equilibrium.
+
+\begin{prop}
+The system \eqref{QSSA eq} admits no limit cycle.
+\end{prop}
+
+\begin{proof}
+The Bendixson-Dulac criterion with the function $\phi(H_D, F_W) = \dfrac{1}{H_D F_W}$ will show the result. We note $f$ the right hand side of equations \eqref{QSSA eq}. We have:
+
+\begin{equation*}
+(\phi \times f_1)(H_D, F_W) = \dfrac{\cI}{H_D F_W} -\dfrac{\mu_D - f_D}{F_W} - e\lfw m
+\end{equation*} and therefore
+
+\begin{equation*}
+\dfrac{\partial (\phi f_1)}{\partial H_D}(H_D, F_W) = - \dfrac{\cI}{F_W H_D^2} <0
+\end{equation*}
+
+On the other hand, we also have:
+\begin{equation*}
+(\phi \times f_2)(H_D, F_W) = - m \lfw + \dfrac{(1-\alpha) (1+ \beta m H_D) r_F}{H_D} - \dfrac{(1+\beta m H_D) r_F}{H_D} \dfrac{F_W}{K_F}
+\end{equation*} and therefore
+
+\begin{equation*}
+\dfrac{\partial (\phi f_2)}{\partial F_W}(H_D, F_W) = - \dfrac{(1+\beta m H_D) r_F}{H_D K_F} <0
+\end{equation*}
+
+Consequently, $\dfrac{\partial (\phi f_1)}{\partial H_D} + \dfrac{\partial (\phi f_2)}{\partial F_W} < 0$ and according to the Bendixson-Dulac criterion, the system \eqref{QSSA eq} does not admit any limit cycle.
+
+\end{proof}
+
+
+\begin{prop}
+Under the assumptions of proposition , the equilibrium which are LAS are GAS.
+\end{prop}
+
 \section{Numerical scheme }
 \begin{definition} A matrix $A \in \mathcal{M}_n (\mathbb{R})$ is called an $M$-matrix if\begin{itemize}
 \item all its off-diagonal term are negative
@@ -1328,6 +1523,83 @@ $$
 \end{figure}
 
 \newpage
+
+\section{Model with Holling-Type 2}
+\begin{equation}
+\def\arraystretch{2}
+\left\{ 
+\begin{array}{l}
+\dfrac{dH_D}{dt}= \cI + e\lfw H_W F_W + (f_D - \mu_D) H_D - m_D H_D + m_W H_W. \\
+\dfrac{dF_W}{dt} = r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right) F_W - \lfw \dfrac{H_W}{1 + \gamma H_W} F_W  \\
+\dfrac{dH_W}{dt}= m_D H_D - m_W H_W 
+\end{array} \right.
+\label{equationsHDFWHW2}
+\end{equation}
+
+Equilibrium when $\cI > 0$:
+\begin{equation}
+\def\arraystretch{2}
+\left\{ 
+\begin{array}{l}
+\cI + e\lfw m H_D F_W + (f_D - \mu_D) H_D = 0 \\
+r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right)  - \lfw \dfrac{H_W}{1 + \gamma H_W} = 0  \\
+H_W = m H_D
+\end{array} \right.
+\label{equationsHDFWHW2}
+\end{equation}
+
+Second equation gives:
+
+\begin{align*}
+r_F(1- \alpha) (1+ \beta H_W) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right)  - \lfw \dfrac{H_W}{1 + \gamma H_W} &= 0 \\
+r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D) \left(1 - \dfrac{F_W}{K_F(1-\alpha)} \right)   &= \lfw mH_D \\
+- r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D) \dfrac{F_W}{K_F(1-\alpha)}  &= \lfw mH_D -r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D) \\
+\dfrac{F_W}{K_F(1-\alpha)}  &= 1 - \dfrac{\lfw mH_D}{r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D)}\\
+F_W  &= K_F(1-\alpha)\left(1- \dfrac{\lfw mH_D}{r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D)}\right)
+\end{align*}
+
+
+$F_W$ is positive if 
+
+$$
+\dfrac{\lfw}{r_F(1- \alpha)} mH_D <  1 + m (\gamma + \beta) H_D + m^2 \gamma \beta H_D^2
+$$
+
+$$
+0 <  1 + \left(m (\gamma + \beta) - \dfrac{\lfw}{r_F(1- \alpha)} m \right) H_D + m^2 \gamma \beta H_D^2
+$$
+
+Injecting expression of $F_W$ on the first equation:
+$$
+\cI + e\lfw m H_D F_W + (f_D - \mu_D) H_D = 0
+$$
+$$
+\cI + e\lfw m H_D K_F(1-\alpha)\left(1- \dfrac{\lfw mH_D}{r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D)}\right) + (f_D - \mu_D) H_D = 0
+$$
+$$
+\cI + \left(f_D - \mu_D + e \lfw m K_F(1-\alpha) \right)H_D - e\lfw m H_D K_F(1-\alpha)\dfrac{\lfw mH_D}{r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D)} = 0
+$$
+
+\begin{multline*}
+\cI r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D) + r_F(1- \alpha) ({1 + \gamma mH_D}) (1+ \beta m H_D)\left(f_D - \mu_D +  e \lfw m K_F(1-\alpha) \right)H_D - \\ e\lfw m H_D K_F(1-\alpha)\lfw mH_D = 0
+\end{multline*}
+
+
+\begin{multline*}
+H_D^3 \left(r_F(1-\alpha) \gamma \beta m^2 \Big(f_D - \mu_D + e\lfw m K_F(1-\alpha) \Big) \right) \\
++ H_D^2 \left(e \lfw^2 m^2 K_F(1-\alpha) + \cI r_F(1-\alpha) \gamma \beta m^2 + r_F(1-\alpha) (\beta + \gamma) m \Big(f_D - \mu_D + e \lfw m K_F(1-\alpha) \Big) \right) + \\ H_D \left( \cI r_F(1-\alpha) \Big(\gamma + \beta\Big) m + r_F(1-\alpha)\Big(f_D - \mu_D + e\lfw m K_F(1-\alpha) \Big) \right)
+\\
+\cI r_F(1-\alpha) = 0
+\end{multline*}
+
+
+
+ \newpage
+
+
+
+
+
 
 \bibliographystyle{plain}
 \bibliography{Biblio/Math, Biblio/Context, Biblio/interactionsHumanEnvironmentModel}
