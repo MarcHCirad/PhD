@@ -11,6 +11,17 @@ function createMathModel(modelType::String, param::Dict{String, Any})
         end
         myModel = modelHunter(param)
         return myModel
+    elseif modelType == "HunterI"
+            nbrParameters = length(fieldnames(modelHunterI))
+            if nbrParameters - 3 > length(param)
+                println("Number of parameter is incoherent with model HunterI")
+                println("Numbers of parameters as arguments : ", length(param), " while expected number : ",
+                            nbrParameters)
+                println(keys(param), fieldnames(modelHunterI))
+                return
+            end
+            myModel = modelHunterI(param)
+            return myModel
     elseif modelType == "HunterHT2"
             nbrParameters = length(fieldnames(modelHunterHT2))
             if nbrParameters - 3 > length(param)
@@ -54,6 +65,14 @@ function createNumericalModel(numericalModelType::String, mathModelType::String,
         else
             println("This type of numerical scheme is not implemented for this math. model")
         end
+    elseif mathModelType == "HunterI"
+            if numericalModelType == "RK4"
+                myModel = hunterIRK4(mathModel, numericalParam, initialValues)
+            elseif numericalModelType == "NSImplicit"
+                myModel = hunterINSImplicit(mathModel, numericalParam, initialValues)
+            else
+                println("This type of numerical scheme is not implemented for this math. model")
+            end
     elseif mathModelType == "HunterHT2"
             if numericalModelType == "RK4"
                 myModel = hunterHT2RK4(mathModel, numericalParam, initialValues)

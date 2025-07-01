@@ -55,8 +55,7 @@ function writeDiagram2D(dirPrefix::String,
     fileName = dirPrefix * nameSuffix * ".csv"
     println(fileName)
 
-    df = DataFrame(diagram[1:end, :], :auto)
-
+    df = DataFrame(diagram[1:end, 1:end], :auto)
     CSV.write(fileName, df)
 
     return fileName[1:end-4]

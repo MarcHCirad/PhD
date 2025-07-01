@@ -1,0 +1,22 @@
+## Mathematical Parameters ##
+type    Hunter
+rF    3.35
+KF    22725
+alpha    0.5
+beta    0
+lambdaFWH    0.3
+e    5
+I    0.0
+muD    0.02
+fD    0.0164
+mD    7.83
+mW    24.3
+## Initial Values ##
+HD0    2348.3155069366458
+FW0    153.2023272529628
+HW0    39.04523364984654
+## Numerical Parameters ##
+type    RK4
+t0    0.0
+tf    60000
+dt    0.1

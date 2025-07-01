@@ -13,6 +13,7 @@ SimulationNumerique/*/*/*/
 *.toc
 *.out
 *.dvi
+*.png
 Wild/
 Images/
 Anthropized/

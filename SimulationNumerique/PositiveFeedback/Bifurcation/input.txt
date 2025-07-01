@@ -1,0 +1,22 @@
+## Mathematical Parameters ##
+type    Hunter
+rF    0.8
+KF    22000
+alpha    0.2
+beta    0.00001
+lambdaFWH    2.51
+e    2.5
+I    0.02
+muD    0.017
+fD    0.013
+mD    0.405
+mW    24.3
+## Initial Values ##
+HD0    0
+FW0    0
+HW0    0
+## Numerical Parameters ##
+type    NSImplicit
+t0    0.0
+tf    3000
+dt    0.01

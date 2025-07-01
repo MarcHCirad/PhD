@@ -1,4 +1,4 @@
-struct modelHunter <: mathematicalModel
+struct modelHunterI <: mathematicalModel
     variablesNames::Vector{String}
 
     rF::Float64
@@ -9,6 +9,7 @@ struct modelHunter <: mathematicalModel
 
     e::Float64
     I::Float64
+    IF::Float64
     muD::Float64
     fD::Float64
     mD::Float64
@@ -16,37 +17,37 @@ struct modelHunter <: mathematicalModel
 
     m::Float64
         
-    function modelHunter(modelParam::Dict{String, Any})
+    function modelHunterI(modelParam::Dict{String, Any})
 
         rF, lambdaFWH, KF = modelParam["rF"], modelParam["lambdaFWH"], modelParam["KF"]
         alpha, beta = modelParam["alpha"], modelParam["beta"]
-        e, I = modelParam["e"], modelParam["I"]
+        e, I, IF = modelParam["e"], modelParam["I"], modelParam["IF"]
         muD, fD, mD, mW = modelParam["muD"], modelParam["fD"], modelParam["mD"], modelParam["mW"]
         variablesNames = ["H_D", "F_W", "H_W"]
         m  = mD / mW
 
         @assert(alpha < 1)
         bound = 4 * (muD - fD) / (m * e * rF * KF * (1-alpha)^2)
-        # @assert (bound > beta) "bound for beta is $bound"
+        @assert (bound > beta) "bound for beta is $bound"
         # println("Beta max : ", bound)
 
-        new(variablesNames, rF, KF, alpha, beta, lambdaFWH, e, I, muD, fD, mD, mW, m)
+        new(variablesNames, rF, KF, alpha, beta, lambdaFWH, e, I, IF, muD, fD, mD, mW, m)
     end
 end
 
-function equationModel(model::modelHunter, variables::Vector{Float64})
+function equationModel(model::modelHunterI, variables::Vector{Float64})
     """
     Return the right hand side of the model
     """
     HD, FW, HW = variables[1], variables[2], variables[3]
     dHD = model.I + model.e * model.lambdaFWH * HW * FW + (model.fD- model.muD) * HD - model.mD * HD + model.mW * HW
     dFW = ((1 - model.alpha) * (1 + model.beta * HW) * model.rF * (1 - FW / (model.KF * (1 - model.alpha))) * FW -
-            model.lambdaFWH * FW * HW)
+            model.lambdaFWH * FW * HW + model.IF)
     dHW = model.mD * HD - model.mW * HW
     return [dHD, dFW, dHW]
 end
 
-function computeBetaMax(model::modelHunter ; alpha = -1.0)
+function computeBetaMax(model::modelHunterI ; alpha = -1.0)
     if alpha < 0
         alpha = model.alpha
     end
@@ -54,7 +55,7 @@ function computeBetaMax(model::modelHunter ; alpha = -1.0)
     return betaMax
 end
 
-function thresholdHD(model::modelHunter)
+function thresholdHD(model::modelHunterI)
     """
     When I > 0 ;
     If < 1, EE^H is GAS ; if > 1 EE^HFW exists
@@ -64,7 +65,7 @@ function thresholdHD(model::modelHunter)
     return rslt
 end
 
-function thresholdFW(model::modelHunter)
+function thresholdFW(model::modelHunterI)
     """
     When I = 0 ;
     If < 1, EE^F is GAS ; if > 1 EE^HFW exists
@@ -72,7 +73,7 @@ function thresholdFW(model::modelHunter)
     return (model.lambdaFWH * model.m * model.e * model.KF * (1 - model.alpha)) / (model.muD - model.fD)
 end
 
-function printAllCharacteristicValues(model::modelHunter)
+function printAllCharacteristicValues(model::modelHunterI)
     betaMinMax = computeBetaMax(model ; alpha = 0)
     betaMax = computeBetaMax(model)
 
@@ -97,7 +98,7 @@ function printAllCharacteristicValues(model::modelHunter)
 end
 
 
-function equilibriumFW(model::modelHunter)
+function equilibriumFW(model::modelHunterI)
     """
     When I == 0 ;
     return eq EE^F
@@ -105,7 +106,7 @@ function equilibriumFW(model::modelHunter)
     return [0, model.KF * (1 - model.alpha), 0]
 end
 
-function equilibriumH(model::modelHunter)
+function equilibriumH(model::modelHunterI)
     """
     When I > 0 ;
     return eq EE^H
@@ -114,7 +115,7 @@ function equilibriumH(model::modelHunter)
     return [HD, 0, model.m * HD]
 end
 
-function equilibriumHFW(model::modelHunter)
+function equilibriumHFW(model::modelHunterI)
     """
     For I >= 0
     Compute the values of EE^HFW
@@ -149,7 +150,7 @@ function equilibriumHFW(model::modelHunter)
     
 end
 
-function computeMaxVal(model::modelHunter)
+function computeMaxVal(model::modelHunterI)
     """
     Compute the bound for the invariant region Omega 
         {H_D + H_W + e F_W < Smax, F_W < Fmax, H_W < m_D/m_D+m_W Smax}
@@ -163,7 +164,7 @@ function computeMaxVal(model::modelHunter)
     return (Smax, Fmax, Hwmax)
 end
 
-function computeLambdaMax(model::modelHunter ; alpha = -1.0, mD = -1.0, e = -1.0)
+function computeLambdaMax(model::modelHunterI ; alpha = -1.0, mD = -1.0, e = -1.0)
     """
     When I > 0, compute lambda^max such that lambda < lambda^max iff EE^HFW exists
     """
@@ -183,7 +184,7 @@ function computeLambdaMax(model::modelHunter ; alpha = -1.0, mD = -1.0, e = -1.0
     return lambdaMax
 end
 
-function computeLambdaMinI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1.0, mD = -1.0)
+function computeLambdaMinI0(model::modelHunterI ; alpha = -1.0, e = -1.0, mW = -1.0, mD = -1.0)
     """
     When I = 0, compute lambda^min such that lambda > lambda^min iff EE^HFW exists
     """
@@ -206,7 +207,7 @@ function computeLambdaMinI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1
     return lambdaMin
 end
 
-function computeLambdaMaxI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1.0)
+function computeLambdaMaxI0(model::modelHunterI ; alpha = -1.0, e = -1.0, mW = -1.0)
     """
     When I = \beta = 0, compute lambda^max such that lambda < lambda^max iff EE^HFW is AS
     """    
@@ -239,7 +240,7 @@ function computeLambdaMaxI0(model::modelHunter ; alpha = -1.0, e = -1.0, mW = -1
     return lambdaMaxStab
 end
 
-function computeDeltaStab(model::modelHunter ; lambdaFWH = -1., alpha = -1.0, mD = -1.0, e = -1.0, rsltFeq = true)
+function computeDeltaStab(model::modelHunterI ; lambdaFWH = -1., alpha = -1.0, mD = -1.0, e = -1.0, rsltFeq = true)
     """
     For I >= 0
     Compute the value of DeltaStab = a2a1 - a0
@@ -288,20 +289,20 @@ function computeDeltaStab(model::modelHunter ; lambdaFWH = -1., alpha = -1.0, mD
     end
 
     ## Compute a2, a1 and a0             
-    a2 = -(model.fD - model.muD - mD - model.mW - 
+    a2 = -(model.fD - model.muD - model.mD - model.mW - 
         (1 + model.beta * HWeq) * model.rF * Feq / model.KF)
 
-    a0 = e * lambdaFWH * mD * model.rF * (
+    a0 = e * lambdaFWH * model.mD * model.rF * (
         (model.muD - model.fD) / (e * m * model.KF * lambdaFWH) - 2 * Feq / model.KF + 
         1 - alpha + model.beta * HWeq * 
                 ((model.muD - model.fD) / (e * m * model.KF * lambdaFWH) - Feq / model.KF)
         ) * Feq
     
-    a1 = ((model.muD - model.fD + mD + model.mW) * model.rF * (1 + model.beta * HWeq) *
-            Feq / model.KF + mD * e * lambdaFWH * 
+    a1 = ((model.muD - model.fD + model.mD + model.mW) * model.rF * (1 + model.beta * HWeq) *
+            Feq / model.KF + model.mD * e * lambdaFWH * 
                 ((model.muD - model.fD) / (m * lambdaFWH * e) - Feq) )
 
-    @assert (a1 > 0 && a2 > 0 && a0 > 0) "alpha : $alpha, mD : $mD, lambda : $lambdaFWH,  a0 : $a0, a1 : $a1, a2 : $a2"
+    @assert (a1 > 0 && a2 > 0 && a0 > 0) "mD : $mD, a0 : $a0, a1 : $a1, a2 : $a2"
 
     if rsltFeq
         return a2 * a1 - a0, Feq
@@ -310,7 +311,7 @@ function computeDeltaStab(model::modelHunter ; lambdaFWH = -1., alpha = -1.0, mD
     end
 end
 
-function LambdaLC(model::modelHunter)
+function LambdaLC(model::modelHunterI)
 
     alpha = model.alpha
     function Delta(lambdaFWH)
@@ -360,7 +361,7 @@ function LambdaLC(model::modelHunter)
     return zerosDelta
 end
 
-function printLongTermDynamic(model::modelHunter)
+function printLongTermDynamic(model::modelHunterI)
     println("Long term dynamic : ")
     if model.I == 0
         lambdaMin = computeLambdaMinI0(model)
@@ -401,7 +402,7 @@ function printLongTermDynamic(model::modelHunter)
     end
 end
 
-function longTermDynamic(model::modelHunter)
+function longTermDynamic(model::modelHunterI)
     if model.I == 0
         lambdaMin = computeLambdaMinI0(model)
         if model.lambdaFWH < lambdaMin
@@ -433,132 +434,367 @@ function longTermDynamic(model::modelHunter)
     end
 end
 
-function longTermDynamicStr(model::modelHunter)
-    if model.I == 0
-        lambdaMin = computeLambdaMinI0(model)
-        if model.lambdaFWH < lambdaMin
-            return "F"
-        else
-            DeltaStab = computeDeltaStab(model, rsltFeq = false)
-            if DeltaStab > 0
-                return "HFW"
-            else
-                return "LC"
-            end
-        end
-    else
-        lambdaMax = computeLambdaMax(model)
-        if model.lambdaFWH >= lambdaMax
-            return "H"
-        else
-            eq = equilibriumHFW(model)
-            DeltaStab = computeDeltaStab(model, rsltFeq = false)
-            if DeltaStab > 0
-                return "HFW"
-            else DeltaStab < 0
-                return "LC"
-            end
-        end
-    end
-end
 
-
-function computeBifurcationEqVal(model::modelHunter, paramName::String,
+function computeBifurcationEqVal(model::modelHunterI, paramName::String,
                 listParam::Vector{Float64})
 
-    bifurcationTable = Matrix{Any}(undef, length(listParam)+1, 5)
-    bifurcationTable[1,:] = [paramName, "H_D", "F_W", "H_W", "LC"]
-    bifurcationTable[2:end,1] = listParam
+            bifurcationTable = Matrix{Any}(undef, length(listParam)+1, 5)
+            bifurcationTable[1,:] = [paramName, "H_D", "F_W", "H_W", "LC"]
+            bifurcationTable[2:end,1] = listParam
 
-    localParam = Dict(string(name) => getfield(model, name) for name in fieldnames(modelHunter))
-    delete!(localParam, "variablesNames")
-    for (ind, paramVal) in enumerate(listParam)
-        localParam[paramName] = paramVal
-        localModel = modelHunter(localParam)
-        bifurcationTable[ind+1, 2:end] .= longTermDynamic(localModel)
-    end
-    return bifurcationTable
+            localParam = Dict(string(name) => getfield(model, name) for name in fieldnames(modelHunterI))
+            delete!(localParam, "variablesNames")
+            for (ind, paramVal) in enumerate(listParam)
+                localParam[paramName] = paramVal
+                localModel = modelHunterI(localParam)
+                bifurcationTable[ind+1, 2:end] .= longTermDynamic(localModel)
+            end
+            return bifurcationTable
+    
 end
 
-function computeBifurcationDiagram(model::modelHunter, 
-    paramName1::String, listParam1::Vector{Float64},
-    paramName2::String, listParam2::Vector{Float64})
-    
+function computeDeltaStabMatrix(model::modelHunterI, 
+    listAlpha::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
     """
     For I >= 0
-    Return the bifurcation matrix in function of param 1 & param 2
-        First line : param 1 ; first column : param 2
+    Compute the value of DeltaStab = a2a1 - a0 for values of alpha and lambda
+    Return 
+        - matrix of DeltaStab values, with alpha in first line, lambda in first column
+        - matrix of Feq values, with alpha in first line, lambda in first column
+    Values of alpha and lambda must be such EE^HFW exists
     """
 
-    bifurcationMatrix = Matrix{Any}(undef, length(listParam1)+1, length(listParam2)+1)
-    bifurcationMatrix[2:end,1] = listParam1
+    deltaStabMatrix = Matrix{Any}(undef, length(listAlpha)+1, length(listLambdaFWH)+1)
+    deltaStabMatrix[2:end,1] = model.KF * (1 .- listAlpha)
 
-    localParam = Dict(string(name) => getfield(model, name) for name in fieldnames(modelHunter))
-    delete!(localParam, "variablesNames")
+    FeqMatrix = Matrix{Any}(undef, length(listAlpha)+1, length(listLambdaFWH)+1)
+    FeqMatrix[2:end,1] = listAlpha
 
-    for (indRow, param1Val) in enumerate(listParam1)
-        localParam[paramName1] = param1Val
-       
-        for (indCol, param2Val) in enumerate(listParam2)
-            
-            bifurcationMatrix[1, indCol + 1] = param2Val
-            
-            localParam[paramName2] = param2Val
-            localModel = modelHunter(localParam)
-            
-            bifurcationMatrix[indRow + 1, indCol + 1] = longTermDynamicStr(localModel)
+
+    for ind_col in 2:length(listLambdaFWH)+1
+        deltaStabMatrix[1, ind_col] = listLambdaFWH[ind_col-1]
+        FeqMatrix[1, ind_col] = listLambdaFWH[ind_col-1]
+
+        lambdaFWH = listLambdaFWH[ind_col-1]
+        for ind_row in 2:length(listAlpha)+1
+            alpha = listAlpha[ind_row-1]
+            Delta, Feq = computeDeltaStab(model; lambdaFWH=lambdaFWH, alpha=alpha)
+            rsltDelta = Delta
+            deltaStabMatrix[ind_row, ind_col] = rsltDelta
+            FeqMatrix[ind_row, ind_col] = Feq
         end
     end
 
-    bifurcationMatrix[1,1] = paramName1 * "\\" * paramName2
+    deltaStabMatrix[1,1] = "alpha" * "\\" * "lambdaFWH"
+    FeqMatrix[1,1] = "alpha" * "\\" * "lambdaFWH"
+
+    return deltaStabMatrix, FeqMatrix
+
+
+end
+
+function computeBifurcationDiagram(model::modelHunterI, 
+    listAlpha::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    """
+    For I >= 0
+    Return the bifurcation matrix in function of alpha and lambda
+        First line : alpha ; first column : lambda
+    """
+    if model.I == 0
+        bifurcationMatrix = computeBifurcationDiagramI0(model, listAlpha, listLambdaFWH)
+    else
+        bifurcationMatrix =computeBifurcationDiagramI(model, listAlpha, listLambdaFWH)
+    end
+    return bifurcationMatrix
+end
+
+function computeBifurcationDiagramI(model::modelHunterI, 
+    listAlpha::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    
+    """
+    For I > 0
+    Return the bifurcation matrix in function of alpha and lambda
+        First line : alpha ; first column : lambda
+    """
+
+    @assert model.I > 0
+
+    bifurcationMatrix = Matrix{Any}(undef, length(listAlpha)+1, length(listLambdaFWH)+1)
+    bifurcationMatrix[2:end,1] = listAlpha
+
+    for ind_row in 2:length(listAlpha)+1
+        alpha = listAlpha[ind_row-1]
+        lambdaMax = computeLambdaMax(model; alpha = alpha)
+        
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationMatrix[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH >= lambdaMax
+                bifurcationMatrix[ind_row, ind_col] = "H" ## Specific for I>0
+            else
+                Delta, _ = computeDeltaStab(model; lambdaFWH=lambdaFWH, alpha=alpha)
+
+                if Delta > 0
+                    bifurcationMatrix[ind_row, ind_col] = "HFW"
+                else
+                    bifurcationMatrix[ind_row, ind_col] = "LC"
+                end
+            end
+        end
+    end
+
+    bifurcationMatrix[1,1] = "alpha" * "\\" * "lambdaFWH"
 
     return bifurcationMatrix
 end
 
+function computeBifurcationDiagramI0(model::modelHunterI, 
+    listAlpha::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
 
-function computeLambdaMatrixAlpha(model::modelHunter, 
-    listAlpha::Vector{Float64})
     """
-    For I >= 0
-    Return the bifurcation matrix in function of alpha
-        First column : alpha
+    For I == 0
+    Return the bifurcation matrix in function of alpha and lambda
+        First line : alpha ; first column : lambda
     """
-    if model.I == 0
-        bifurcationMatrixs = computeLambdaMatrixAlphaI0(model, listAlpha)
-    else
-        bifurcationMatrixs = computeLambdaMatrixAlphaI(model, listAlpha)
-    end
-    return bifurcationMatrixs
-end
 
+    @assert model.I == 0
 
-function computeLambdaMatrixAlphaI(model::modelHunter, 
-    listAlpha::Vector{Float64})
-    """
-    For I > 0
-    Compute the values of lambda^max and lambda^min as function of parameters alpha
-    Return two matrixs, which contains the values
-    """
-    lambdaMinMatrix = Matrix{Any}(undef, 1, 2) #lambda min is not defined for I > 0 -> empty matrix
-
-    lambdaMaxMatrix = Matrix{Any}(undef, length(listAlpha)+1, 2)
-    lambdaMaxMatrix[2:end,1] = listAlpha
+    bifurcationDiagram = Matrix{Any}(undef, length(listAlpha)+1, length(listLambdaFWH)+1)
+    bifurcationDiagram[2:end,1] = listAlpha
 
     for ind_row in 2:length(listAlpha)+1
         alpha = listAlpha[ind_row-1]
-        lambdaExistence = computeLambdaMax(model; alpha = alpha)
-        lambdaMaxMatrix[ind_row, 2] = lambdaExistence
+        lambdaMin = computeLambdaMinI0(model; alpha = alpha)
+
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationDiagram[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH <= lambdaMin ## Specific for I = 0
+                rslt = "F"
+            else
+                deltaStab,_ = computeDeltaStab(model; alpha=alpha, lambdaFWH=lambdaFWH)
+                if deltaStab <= 0
+                    rslt = "LC"
+                else
+                    rslt = "HFW"
+                end
+            end
+            bifurcationDiagram[ind_row, ind_col] = rslt
+        end
     end
 
-    lambdaMaxMatrix[1,1] = "alpha"
-    lambdaMaxMatrix[1,2] = "lambdaMAx"
-    lambdaMinMatrix[1,1] = "alpha"
-    lambdaMinMatrix[1,2] = "lambdaMin"
+    bifurcationDiagram[1,1] = "alpha" * "\\" * "lambdaFWH"
 
-    return lambdaMinMatrix, lambdaMaxMatrix
+    return bifurcationDiagram
 end
 
-function computeLambdaMatrixAlphaI0(model::modelHunter, 
+function computeBifurcationDiagramMD(model::modelHunterI, 
+    listMD::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    """
+    For I >= 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+    if model.I == 0
+        bifurcationMatrix = computeBifurcationDiagramI0MD(model, listMD, listLambdaFWH)
+    else
+        bifurcationMatrix =computeBifurcationDiagramIMD(model, listMD, listLambdaFWH)
+    end
+    return bifurcationMatrix
+end
+
+function computeBifurcationDiagramIMD(model::modelHunterI, 
+    listMD::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    
+    """
+    For I > 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+
+    @assert model.I > 0
+
+    bifurcationMatrix = Matrix{Any}(undef, length(listMD)+1, length(listLambdaFWH)+1)
+    bifurcationMatrix[2:end,1] = listMD ./ model.mW
+
+    for ind_row in 2:length(listMD)+1
+        mD = listMD[ind_row-1]
+        lambdaMax = computeLambdaMax(model; mD = mD)
+        
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationMatrix[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH >= lambdaMax
+                bifurcationMatrix[ind_row, ind_col] = "H" ## Specific for I>0
+            else
+                Delta, _ = computeDeltaStab(model; lambdaFWH=lambdaFWH, mD=mD)
+
+                if Delta > 0
+                    bifurcationMatrix[ind_row, ind_col] = "HFW"
+                else
+                    bifurcationMatrix[ind_row, ind_col] = "LC"
+                end
+            end
+        end
+    end
+
+    bifurcationMatrix[1,1] = "m" * "\\" * "lambdaFWH"
+
+    return bifurcationMatrix
+end
+
+function computeBifurcationDiagramI0MD(model::modelHunterI, 
+    listMD::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+
+    """
+    For I == 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+
+    @assert model.I == 0
+
+    bifurcationDiagram = Matrix{Any}(undef, length(listMD)+1, length(listLambdaFWH)+1)
+    bifurcationDiagram[2:end,1] = listMD ./ model.mW
+
+    for ind_row in 2:length(listMD)+1
+        mD = listMD[ind_row-1]
+        lambdaMin = computeLambdaMinI0(model; mD = mD)
+
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationDiagram[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH <= lambdaMin ## Specific for I = 0
+                rslt = "F"
+            else
+                deltaStab,_ = computeDeltaStab(model; mD = mD, lambdaFWH=lambdaFWH)
+                if deltaStab <= 0
+                    rslt = "LC"
+                else
+                    rslt = "HFW"
+                end
+            end
+            bifurcationDiagram[ind_row, ind_col] = rslt
+        end
+    end
+
+    bifurcationDiagram[1,1] = "m" * "\\" * "lambdaFWH"
+
+    return bifurcationDiagram
+end
+
+function computeBifurcationDiagramE(model::modelHunterI, 
+    listE::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    """
+    For I >= 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+    if model.I == 0
+        bifurcationMatrix = computeBifurcationDiagramI0E(model, listE, listLambdaFWH)
+    else
+        bifurcationMatrix =computeBifurcationDiagramIE(model, listE, listLambdaFWH)
+    end
+    return bifurcationMatrix
+end
+
+function computeBifurcationDiagramIE(model::modelHunterI, 
+    listE::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+    
+    """
+    For I > 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+
+    @assert model.I > 0
+
+    bifurcationMatrix = Matrix{Any}(undef, length(listE)+1, length(listLambdaFWH)+1)
+    bifurcationMatrix[2:end,1] = listE
+
+    for ind_row in 2:length(listE)+1
+        e = listE[ind_row-1]
+        lambdaMax = computeLambdaMax(model; e = e)
+        
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationMatrix[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH >= lambdaMax
+                bifurcationMatrix[ind_row, ind_col] = "H" ## Specific for I>0
+            else
+                Delta, _ = computeDeltaStab(model; lambdaFWH=lambdaFWH, e = e)
+
+                if Delta > 0
+                    bifurcationMatrix[ind_row, ind_col] = "HFW"
+                else
+                    bifurcationMatrix[ind_row, ind_col] = "LC"
+                end
+            end
+        end
+    end
+
+    bifurcationMatrix[1,1] = "e" * "\\" * "lambdaFWH"
+
+    return bifurcationMatrix
+end
+
+function computeBifurcationDiagramI0E(model::modelHunterI, 
+    listE::Vector{Float64}, 
+    listLambdaFWH::Vector{Float64})
+
+    """
+    For I == 0
+    Return the bifurcation matrix in function of m and lambda
+        First line : m ; first column : lambda
+    """
+
+    @assert model.I == 0
+
+    bifurcationDiagram = Matrix{Any}(undef, length(listE)+1, length(listLambdaFWH)+1)
+    bifurcationDiagram[2:end,1] = listE
+
+    for ind_row in 2:length(listE)+1
+        e = listE[ind_row-1]
+        lambdaMin = computeLambdaMinI0(model; e = e)
+
+        for ind_col in 2:length(listLambdaFWH)+1
+            bifurcationDiagram[1, ind_col] = listLambdaFWH[ind_col-1]
+            lambdaFWH = listLambdaFWH[ind_col-1]
+
+            if lambdaFWH <= lambdaMin ## Specific for I = 0
+                rslt = "F"
+            else
+                deltaStab,_ = computeDeltaStab(model; e = e, lambdaFWH=lambdaFWH)
+                if deltaStab <= 0
+                    rslt = "LC"
+                else
+                    rslt = "HFW"
+                end
+            end
+            bifurcationDiagram[ind_row, ind_col] = rslt
+        end
+    end
+
+    bifurcationDiagram[1,1] = "e" * "\\" * "lambdaFWH"
+
+    return bifurcationDiagram
+end
+
+function computeLambdaMatrixAlpha(model::modelHunterI, 
     listAlpha::Vector{Float64})
     """
     For I = beta = 0
@@ -566,23 +802,16 @@ function computeLambdaMatrixAlphaI0(model::modelHunter,
     Return two matrixs, which contains the values
     """
 
-    
-    if model.beta == 0
-        lambdaMaxMatrix = Matrix{Any}(undef, length(listAlpha)+1, 2)
-        lambdaMaxMatrix[2:end,1] = listAlpha
-    else     #else lambda max is not defined, empty matrix return
-        lambdaMaxMatrix = Matrix{Any}(undef, 1, 2)
-    end
+    lambdaMaxMatrix = Matrix{Any}(undef, length(listAlpha)+1, 2)
+    lambdaMaxMatrix[2:end,1] = listAlpha
 
     lambdaMinMatrix = Matrix{Any}(undef, length(listAlpha)+1, 2)
     lambdaMinMatrix[2:end,1] = listAlpha
 
     for ind_row in 2:length(listAlpha)+1
         alpha = listAlpha[ind_row-1]
-        if model.beta == 0
-            lambdaStab = computeLambdaMaxI0(model; alpha = alpha)
-            lambdaMaxMatrix[ind_row, 2] = lambdaStab
-        end
+        lambdaStab = computeLambdaMaxI0(model; alpha = alpha)
+        lambdaMaxMatrix[ind_row, 2] = lambdaStab
 
         lambdaExistence = computeLambdaMinI0(model; alpha = alpha)
         lambdaMinMatrix[ind_row, 2] = lambdaExistence
@@ -596,7 +825,7 @@ function computeLambdaMatrixAlphaI0(model::modelHunter,
     return lambdaMinMatrix, lambdaMaxMatrix
 end
 
-function computeLambdaMatrixAlphaE(model::modelHunter, 
+function computeLambdaMatrixAlphaE(model::modelHunterI, 
     listAlpha::Vector{Float64}, 
     listE::Vector{Float64})
     """
@@ -632,7 +861,7 @@ function computeLambdaMatrixAlphaE(model::modelHunter,
     return lambdaMinMatrix, lambdaMaxMatrix
 end
 
-function computeLambdaMatrixAlphaMW(model::modelHunter, 
+function computeLambdaMatrixAlphaMW(model::modelHunterI, 
     listAlpha::Vector{Float64}, 
     listMW::Vector{Float64})
     """

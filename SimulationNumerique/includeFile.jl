@@ -1,12 +1,12 @@
-import Pkg;
-Pkg.add("CSV");
-Pkg.add("Tables");
-Pkg.add("DataFrames");
-Pkg.add("Polynomials");
-Pkg.add("PolynomialRoots");
-Pkg.add("LinearSolve")
-Pkg.add("Roots");
-Pkg.add("LinearAlgebra");
+# import Pkg;
+# Pkg.add("CSV");
+# Pkg.add("Tables");
+# Pkg.add("DataFrames");
+# Pkg.add("Polynomials");
+# Pkg.add("PolynomialRoots");
+# Pkg.add("LinearSolve")
+# Pkg.add("Roots");
+# Pkg.add("LinearAlgebra");
 
 using CSV, Tables, DataFrames
 using Polynomials, PolynomialRoots
