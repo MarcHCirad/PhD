@@ -17,8 +17,10 @@ struct hunterHT2RK4 <: numericalModel
         n = Int((tf-t0)/dt)
 
         result = Matrix{Float64}(undef, 7, n+1)
-        result[:,1] = [t0, initialValues["HD0"], initialValues["FW0"], mathModel.m * initialValues["HD0"], 
-                initialValues["HD0"], initialValues["FW0"], mathModel.m * initialValues["HD0"]]
+        # result[:,1] = [t0, initialValues["HD0"], initialValues["FW0"], mathModel.m * initialValues["HD0"], 
+        #         initialValues["HD0"], initialValues["FW0"], mathModel.m * initialValues["HD0"]]
+        result[:,1] = [t0, initialValues["HD0"], initialValues["FW0"], initialValues["HW0"], 
+                initialValues["HD0"], initialValues["FW0"], initialValues["HW0"]]
         
         variablesNames = mathModel.variablesNames
         pushfirst!(variablesNames, "time")

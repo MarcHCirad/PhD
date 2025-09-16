@@ -13,8 +13,9 @@
 \usepackage{graphicx}
 \captionsetup{justification=justified}
 \usepackage[toc,page]{appendix}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{subcaption}
+\usepackage{bm}
 
 \textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
 
@@ -64,12 +65,12 @@
 \hline 
 Parameter & Description & Unit \\ 
 \hline \hline
-$t$ & Time & Year \\
-\hline
-$H_D$ & Humans in the domestic area & Ind \\
-$H_W$ & Humans in the wild area & Ind \\
-$F_W$ & Wild fauna & Ind \\
-\hline
+%$t$ & Time & Year \\
+%\hline
+%$H_D$ & Humans in the domestic area & Ind \\
+%$H_W$ & Humans in the wild area & Ind \\
+%$F_W$ & Wild fauna & Ind \\
+%\hline
 $e$ & Prey-food conversion & - \\
 $f_D$ & Food produced by human population & Year$^{-1}$ \\
 $\mu_D$ & Human mortality rate  & Year$^{-1}$ \\
@@ -88,21 +89,69 @@ $\mathcal{I}$ & Immigration rate &Ind/Year\\
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline 
-Parameter & Value & Reference \\ 
+Param. & Description & Unit & Value & Reference \\ 
 \hline 
-$e$ & & Assumed\\
-$f_D$ & 0.0137 & \cite{koppert_consommation_1996}\\
-$\mu_D$ & $1/60$ & \cite{ins_demographie}\\
-$m_D$ & $0.483$ & \cite{avila_interpreting_2019}\\
-$m_W$ & 24.3 & \cite{avila_interpreting_2019}\\
-$r_F$ & $0.68$ & \cite{robinson_intrinsic_1986}\\
-$K_F$ & 22725 & \cite{janson_ecological_1990} \\
-$\alpha$ & $[0, 1)$ & parameter of interest; varies \\
-$\beta$ & $\in [0, \beta^*)$ &  \\
-$\lfw$ & - & parameter of interest; varies \\
-$\mathcal{I}$ &  & \\
+$e$ & Prey-food conversion &- & Unit Order & Assumed\\
+$f_D$ & Food produced&  Year$^-1$ &0.0164 & \cite{koppert_consommation_1996}\\
+$\mu_D$ & Human mortality rate& Year$^-1$  & $1/50$ & \cite{ins_demographie}\\
+$m_D$ & Displacement from D to W &Year$^-1$  &$7.83$ & \cite{avila_interpreting_2019}\\
+$m_W$ &Displacement from W to D  &Year$^-1$  &24.3 & \cite{avila_interpreting_2019}\\
+$r_F$ & Wild animal growth rate& Year$^-1$ & $3.35$ & \cite{robinson_intrinsic_1986}\\
+$K_F$ & Carrying capacity for $F_W$ & Ind& 22725 & \cite{janson_ecological_1990} \\
+\textcolor{red}{$\bm{\alpha}$}  & \textcolor{red}{\textbf{Prop. of anthropized environment}} &-&  $[0, 1)$ & Param of interest; varies \\
+$\beta$ & Positive impact& Ind$^-1$ & $\in [0, \beta^*)$ &  \\
+\textcolor{red}{$\bm{\lfw}$} & \textcolor{red}{\textbf{Hunting rate}} & Ind Year$^-1$ & - & Param of interest; varies \\
+$\mathcal{I}$ &  Immigration rate& Ind Year$^-1$ & & Varies \\
+\hline
+\end{tabular}
+
+\caption{Parameters values}
+\end{table}
+
+
+%\begin{table}[ht]
+%\centering
+%\begin{tabular}{|c|c|c|}
+%\hline 
+%Parameter & Value & Reference \\ 
+%\hline 
+%$e$ & & Assumed\\
+%$f_D$ & 0.0137 & \cite{koppert_consommation_1996}\\
+%$\mu_D$ & $1/60$ & \cite{ins_demographie}\\
+%$m_D$ & $0.483$ & \cite{avila_interpreting_2019}\\
+%$m_W$ & 24.3 & \cite{avila_interpreting_2019}\\
+%$r_F$ & $0.68$ & \cite{robinson_intrinsic_1986}\\
+%$K_F$ & 22725 & \cite{janson_ecological_1990} \\
+%$\alpha$ & $[0, 1)$ & parameter of interest; varies \\
+%$\beta$ & $\in [0, \beta^*)$ &  \\
+%$\lfw$ & - & parameter of interest; varies \\
+%$\mathcal{I}$ &  & \\
+%\hline
+%\end{tabular}
+%
+%\caption{Parameters values}
+%\end{table}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Parameter & Unit & Value & Reference \\ 
+\hline 
+$e$ & - & Unit Order & Assumed\\
+$f_D$ & Year$^-1$ &0.0164 & \cite{koppert_consommation_1996}\\
+$\mu_D$ & Year$^-1$  & $1/50$ & \cite{ins_demographie}\\
+$m_D$ & Year$^-1$  &$7.83$ & \cite{avila_interpreting_2019}\\
+$m_W$ &Year$^-1$  &24.3 & \cite{avila_interpreting_2019}\\
+$r_F$ & Year$^-1$ & $3.35$ & \cite{robinson_intrinsic_1986}\\
+$K_F$ & Ind& 22725 & \cite{janson_ecological_1990} \\
+$\alpha$ &-&  $[0, 1)$ & Parameter of interest; varies \\
+$\beta$ & Ind$^-1$ & $\in [0, \beta^*)$ &  \\
+$\lfw$ & Ind Year$^-1$ & - & Parameter of interest; varies \\
+$\mathcal{I}$ &  Ind Year$^-1$ & & Varies \\
 \hline
 \end{tabular}
 

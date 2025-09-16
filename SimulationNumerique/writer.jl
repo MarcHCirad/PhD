@@ -1,8 +1,9 @@
-function writeResult(myModel::numericalModel, dirName::String)
+function writeResult(myModel::numericalModel, dirName::String; nameSuffix = "")
     if !isdir(dirName)
         mkdir(dirName)
     end
-    resultFile = dirName * "/result.csv"
+    resultFile = dirName * "/result" * nameSuffix * ".csv"
+    println("Result wrote in : ", resultFile)
 
     CSV.write(resultFile, 
         DataFrame(transpose(myModel.result)[1:1:end,1:end], :auto),

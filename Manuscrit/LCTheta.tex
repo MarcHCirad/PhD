@@ -1,0 +1,193 @@
+\documentclass{article}
+\usepackage{authblk}
+\usepackage{graphicx,ulem} 
+\usepackage{color}
+\usepackage{amsfonts,amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mathtools}
+\usepackage{multirow}
+%\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{caption}
+%\usepackage{lscape}
+\usepackage{graphicx}
+\captionsetup{justification=justified}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{pdftricks}
+\usepackage[dvipsnames]{xcolor}
+\begin{psinputs}
+\usepackage{amsfonts,amsmath}
+	\usepackage{pstricks-add}
+   \usepackage{pstricks, pst-node}
+   \usepackage{multido}
+   \newcommand{\lfw}{\lambda_{F}}
+\end{psinputs}
+
+\textheight240mm \voffset-23mm \textwidth160mm \hoffset-20mm
+
+ \graphicspath{{./Images/}{../Schema}{./Images/HT1/}}
+%\graphicspath{{Figures}}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\lfd}{\lambda_{F, D}}
+\newcommand{\lfw}{\lambda_{F}}
+\newcommand{\Kfa}{K_{F,\alpha}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\mW}{\tilde{m}_W}
+\newcommand{\mD}{\tilde{m}_D}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathcal{N}}
+
+\newcommand{\marc}[1]{\textcolor{teal}{#1}}
+\newcommand{\YD}[1]{\textcolor{magenta}{#1}}
+\newcommand{\VY}[1]{\textcolor{blue}{#1}}
+\newcommand{\vdeux}[1]{\textcolor{orange}{#1}}
+\newcommand{\vtrois}[1]{\textcolor{OliveGreen}{#1}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{cor}[theorem]{Corollary}
+\newcommand*\phantomrel[1]{\mathrel{\phantom{#1}}}
+
+\title{Human-environment interactions in a tropical forest context: modeling, analysis and simulations}
+\author[1,2,3]{Yves Dumont} 
+\author[2]{Marc Hétier}
+\author[2,4]{Valaire Yatat-Djeumen}
+
+\affil[1]{CIRAD, UMR AMAP, 3P, F-97410 Saint Pierre, France}
+\affil[2]{AMAP, Univ Montpellier, CIRAD, CNRS, INRA, IRD, Montpellier, France}
+\affil[3]{University of Pretoria, Department of Mathematics and Applied Mathematics, Pretoria, South Africa}
+\affil[4]{ENSPY, University of Yaoundé 1, Cameroon}
+\begin{document}
+
+\maketitle
+
+\section{Evolution des cycles limites lorsque $\theta > 0$}
+
+Valeurs des paramètres utilisées:
+\begin{itemize}
+\item $r_F = 3.75$
+\item $K_F = 7250$
+\item $\alpha = 0.5$
+\item $\beta= 0.0$
+\item $\lfw$ varies
+\item $e=0.2$
+\item $\cI=0.0$
+\item $\theta$ varies
+\item $\mu_D=0.02$
+\item $f_D=0.00$
+\item $m_D=2.10$
+\item $m_W=7.30$
+\end{itemize}
+
+A chaque fois, le système est dans une configuration de cycle limite si $\lfw > \lfw^{max}$ avec:
+
+\begin{multline*}
+\lambda^{max}_{F, \theta = 0} := \left[m_{W}(\mu_{D}-f_{D})+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right] \times \\
+ \dfrac{\left(1+\sqrt{1+4\dfrac{(1-\alpha)m_{W}r_{F}\left(\mu_{D}-f_{D}\right)\big(\mu_{D}-f_{D}+m_{D}+m_{W})}{\left[m_{W}\dfrac{\mu_{D}-f_{D}}{e}+\big(\mu_{D}-f_{D}+m_{D}+m_{W})^{2}\right]^{2}}}\right)}{2em_D (1-\alpha) K_F }.
+\end{multline*}
+et
+$$
+\lambda^{max}_{F, \theta > 0} =  \dfrac{me - \theta (\mu_D - f_D)}{me + \theta(\mu_D - f_D)}\dfrac{1}{\theta K_F(1-\alpha)}
+$$
+
+Prendre  $\lfw >> \lfw^{max}$ conduit à des problèmes de convergence numérique, sûrement du au fait que $F_W$ décroit très rapidement. Dans la suite, j'ai donc adapté la valeur de $\lfw $ pour rester proche de la valeur $\lfw^{max}$.
+
+Pour:
+\begin{itemize}
+\item $\theta =0$, $\lfw^{max} = 0.0584$, $\lfw = 0.06$
+\item $\theta =0.005$, $\lfw^{max} = 0.0553$, $\lfw = 0.06$
+\item $\theta =0.1$, $\lfw^{max} = 0.00295$, $\lfw = 0.06$ puis $\lfw = 0.003$
+\item $\theta = 1$, $\lfw^{max} = 0.00057$, $\lfw = 0.0006$
+\end{itemize}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCgradientTheta.png}
+\end{figure}
+
+\newpage
+
+\subsection{$\theta = 0$}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta0.png}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta01D.png}
+\caption{$\theta = 0$, $\lfw = 0.06$, $\lfw^{max} = 0.0584$}
+\end{figure}
+
+\newpage
+
+\subsection{$\theta = 0.005$}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta005.png}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta0051D.png}
+\caption{$\theta = 0.005$, $\lfw = 0.06$, $\lfw^{max} = 0.0553$}
+\end{figure}
+
+\newpage
+
+\subsection{$\theta = 0.1$}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta01.png}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta011D.png}
+\caption{$\theta = 0.01$, $\lfw = 0.06$, $\lfw^{max} = 0.00295$}
+\end{figure}
+
+\newpage
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta01B.png}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta01B1D.png}
+\caption{$\theta = 0.01$, $\lfw = 0.003$, $\lfw^{max} = 0.00295$}
+\end{figure}
+
+
+\newpage
+\subsection{$\theta = 1$}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta1.png}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=1\textwidth]{LCTheta11D.png}
+\caption{$\theta = 1$, $\lfw = 0.0006$, $\lfw^{max} = 0.00057$}
+\end{figure}
+
+\end{document}

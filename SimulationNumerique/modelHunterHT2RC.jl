@@ -38,8 +38,8 @@ function equationModel(model::modelHunterHT2, variables::Vector{Float64})
     Return the right hand side of the model
     """
     HD2d, FW2d, HW2d = variables[1], variables[2], variables[3]
-    dHD2d = (model.I + model.e * model.lambdaFWH * FW2d / (1 + model.theta * model.lambdaFWH * FW2d) * model.m * HD2d + 
-        (model.fD - model.muD) * HD2d)
+    dHD2d = (model.I / (1 + model.m) + model.e / (1 + model.m) * model.lambdaFWH * FW2d / (1 + model.theta * model.lambdaFWH * FW2d) * model.m * HD2d + 
+        (model.fD - model.muD) / (1 + model.m) * HD2d)
     dFW2d = ((1 - model.alpha) * (1 + model.beta * model.m * HD2d) * model.rF * (1 - FW2d / (model.KF * (1 - model.alpha))) * FW2d -
             model.lambdaFWH * FW2d / (1 + model.theta * model.lambdaFWH * FW2d) * model.m * HD2d)
 
@@ -67,11 +67,10 @@ function computeMaxVal(model::modelHunterHT2)
         {H_D + H_W + e F_W < Smax, F_W < Fmax, H_W < m_D/(m_D+m_W) Smax}
     """
     Fmax = model.KF * (1 - model.alpha)
-    Smax = (1 + model.m) * (model.I + 
-        (model.muD - model.fD + model.rF * (1-model.alpha) / 4) * model.e * model.KF * (1-model.alpha))
-    Smax = Smax / ((model.muD - model.fD) / model.m - model.e * model.rF * (1-model.alpha)^2 * model.KF * model.beta / 4)
+    Smax = model.I + (model.muD - model.fD + model.rF * (1-model.alpha) / 4) * model.e * model.KF * (1-model.alpha)
+    Smax = Smax / (model.muD - model.fD - model.m * model.e * model.rF * (1-model.alpha)^2 * model.KF * model.beta / 4)
     
-    Hwmax = model.mD / (model.mD + model.mW) * Smax
+    Hwmax = model.m * Smax
     
     return (Smax, Fmax, Hwmax)
 end
@@ -247,22 +246,36 @@ function computeLambdaMinI0(model::modelHunterHT2 ; alpha = -1.0, e = -1.0, mW =
     return lambdaMin
 end
 
-function computelambdaMaxI0(model::modelHunterHT2)
+function computeLambdaMaxI0(model::modelHunterHT2; alpha = -1.0, e = -1.0, mW = -1.0)
     """
     When I = 0 and theta > 0
     or I = theta = beta = 0, 
     compute lambda^max such that lambda < lambda^max iff EE^HFW is AS
     """
+    if alpha < 0
+        alpha = model.alpha
+    end
+
+    if e < 0
+        e = model.e
+    end
+
+    if mW < 0
+        mW = model.mW
+    end
+
+    m = model.mD / mW
+
     if model.theta > 0
-        num = (model.m * model.e + model.theta * (model.muD - model.fD))
-        den = (model.m * model.e - model.theta * (model.muD - model.fD))
-        return num / den / (model.KF * (1-model.alpha) * model.theta)
+        num = (m * e + model.theta * (model.muD - model.fD))
+        den = (m * e - model.theta * (model.muD - model.fD))
+        return num / den / (model.KF * (1- alpha) * model.theta)
     else
         if model.beta == 0
-            a0 = (-(model.muD - model.fD + model.mD + mW) * 
+            a0 = (-(model.muD - model.fD + model.mD + model.mW) * 
                     model.rF * (model.muD - model.fD) / (e * m * model.KF))
-            a1 = -(mW * (model.muD - model.fD) + 
-            (model.muD - model.fD + model.mD + mW)^2)
+            a1 = -(model.mW * (model.muD - model.fD) + 
+            (model.muD - model.fD + model.mD + model.mW)^2)
             a2 = (1 - alpha) * model.KF * e * model.mD
 
             PDeltaStab = Polynomial([a0, a1, a2])
@@ -301,38 +314,38 @@ function computeLambdaMax(model::modelHunterHT2 ; alpha = -1.0, mD = -1.0, e = -
     return lambdaMax
 end
 
-function computeLambdaMaxI0(model::modelHunterHT2 ; alpha = -1.0, e = -1.0, mW = -1.0)
-    """
-    When I = \beta = 0, compute lambda^max such that lambda < lambda^max iff EE^HFW is AS
-    """    
-    @assert (model.I == 0) && (model.beta == 0) && (model.theta == 0) "beta : $(model.beta) and I : $(model.I)" 
-    if alpha < 0
-        alpha = model.alpha
-    end
+# function computeLambdaMaxI0(model::modelHunterHT2 ; alpha = -1.0, e = -1.0, mW = -1.0)
+#     """
+#     When I = \beta = 0, compute lambda^max such that lambda < lambda^max iff EE^HFW is AS
+#     """    
+#     @assert (model.I == 0) && (model.beta == 0) && (model.theta == 0) "beta : $(model.beta) and I : $(model.I)" 
+#     if alpha < 0
+#         alpha = model.alpha
+#     end
 
-    if e < 0
-        e = model.e
-    end
+#     if e < 0
+#         e = model.e
+#     end
 
-    if mW < 0
-        mW = model.mW
-    end
+#     if mW < 0
+#         mW = model.mW
+#     end
 
-    m = model.mD / mW
+#     m = model.mD / mW
 
-    a0 = (-(model.muD - model.fD + model.mD + mW) * 
-            model.rF * (model.muD - model.fD) / (e * m * model.KF)
-            )
-    a1 = -(mW * (model.muD - model.fD) + 
-            (model.muD - model.fD + model.mD + mW)^2)
-    a2 = (1 - alpha) * model.KF * e * model.mD
+#     a0 = (-(model.muD - model.fD + model.mD + mW) * 
+#             model.rF * (model.muD - model.fD) / (e * m * model.KF)
+#             )
+#     a1 = -(mW * (model.muD - model.fD) + 
+#             (model.muD - model.fD + model.mD + mW)^2)
+#     a2 = (1 - alpha) * model.KF * e * model.mD
 
-    PDeltaStab = Polynomial([a0, a1, a2])
-    rootsPDeltaStab = real(PolynomialRoots.roots(coeffs(PDeltaStab)))
-    lambdaMaxStab = maximum(rootsPDeltaStab)
+#     PDeltaStab = Polynomial([a0, a1, a2])
+#     rootsPDeltaStab = real(PolynomialRoots.roots(coeffs(PDeltaStab)))
+#     lambdaMaxStab = maximum(rootsPDeltaStab)
 
-    return lambdaMaxStab
-end
+#     return lambdaMaxStab
+# end
 
 function computeEigenVal2D(model::modelHunterHT2, val::Vector{Float64}; eigenvector = false,)
     HD, FW = val[1], val[2]
@@ -496,7 +509,7 @@ function longTermDynamicStrI0(model::modelHunterHT2)
         return "F"
     else ## coexistence exist, F is unstable
         if model.theta > 0 ## ie 2D case
-            lambdaMax = computelambdaMaxI0(model)
+            lambdaMax = computeLambdaMaxI0(model)
             if model.lambdaFWH < lambdaMax
                 return "HFW"
             else

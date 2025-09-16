@@ -1,7 +1,6 @@
 *.csv
 *.html
 SimulationNumerique/*/*/*/
-*Test*
 *Old*
 *.aux
 *.blg
@@ -14,8 +13,3 @@ SimulationNumerique/*/*/*/
 *.out
 *.dvi
 *.png
-Wild/
-Images/
-Anthropized/
-Migration/
-WildLW/
